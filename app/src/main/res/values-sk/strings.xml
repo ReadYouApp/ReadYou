@@ -334,4 +334,16 @@
     <string name="load_next_feed">Načítať ďalší kanál</string>
     <string name="mark_all_as_read_and_load_next_feed">Označiť všetko ako prečítané a načítať ďalší kanál</string>
     <string name="pull_from_bottom">Ťahajte zospodu</string>
+    <string name="account">Účet</string>
+    <string name="feed">Výstup</string>
+    <string name="folder">Priečinok</string>
+    <string name="data_source">Zdroj údajov</string>
+    <string name="theme">Téma</string>
+    <string name="widget_settings">Nastavenia widgetu</string>
+    <string name="done">Hotovo</string>
+    <string name="last_updated">Naposledy aktualizované</string>
+    <string name="no_unread_articles">Žiadne neprečítané články</string>
+    <string name="list_widget_label">Zobrazenie zoznamu</string>
+    <string name="card_widget_label">Zobrazenie karty</string>"
+    <string name="widget_description">Zobraziť najnovšie neprečítané články z vybraných zdrojov</string>
 </resources>
