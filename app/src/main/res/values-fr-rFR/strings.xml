@@ -334,4 +334,16 @@
     <string name="load_next_feed">Charger le flux suivant</string>
     <string name="mark_all_as_read_and_load_next_feed">Marquer tout comme lu et charger le flux suivant</string>
     <string name="pull_from_bottom">Tirer depuis le bas</string>
+    <string name="account">Compte</string>
+    <string name="feed">Fil d\'actualité</string>
+    <string name="folder">Dossier</string>
+    <string name="data_source">Source de données</string>
+    <string name="theme">Thème</string>
+    <string name="widget_settings">Paramètres Widget</string>
+    <string name="done">Terminé</string>
+    <string name="last_updated">Dernière mise à jour</string>
+    <string name="no_unread_articles">Aucun article non lu</string>
+    <string name="list_widget_label">Vue liste</string>
+    <string name="card_widget_label">Vue carte</string>"
+    <string name="widget_description">Voir les derniers articles non lus à partir de sources sélectionnées</string>
 </resources>
