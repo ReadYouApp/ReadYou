@@ -1,0 +1,6 @@
+## 0.11.1
+
+Wichtige Änderungen:
+1. Unterstützung benutzerdefinierter Schriftarten für den WebView-Reader
+2. Neue visuelle Stile für die Symbolleisten auf der Flow- und Leseseite
+3. Verbesserungen und Fehlerbehebungen der Benutzeroberfläche
