@@ -441,7 +441,7 @@ private constructor(
 
     companion object {
 
-        const val MAXIMUM_ITEMS_LIMIT = "10000"
+        const val MAXIMUM_ITEMS_LIMIT = "1000"
 
         private const val PREFIX = "tag:google.com,2005:reader/item/"
 
