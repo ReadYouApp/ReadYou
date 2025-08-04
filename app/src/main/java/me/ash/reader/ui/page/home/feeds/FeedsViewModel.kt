@@ -65,7 +65,7 @@ class FeedsViewModel @Inject constructor(
         MutableStateFlow(FeedsUiState())
     val feedsUiState: StateFlow<FeedsUiState> = _feedsUiState.asStateFlow()
 
-    val syncWorkLiveData = workManager.getWorkInfosByTagLiveData(SyncWorker.WORK_TAG)
+    val syncWorkLiveData = workManager.getWorkInfosByTagLiveData(SyncWorker.SYNC_TAG)
 
     val filterStateFlow = filterStateUseCase.filterStateFlow
     val groupWithFeedsListFlow = groupWithFeedsListUseCase.groupWithFeedListFlow

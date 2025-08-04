@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
     val filterStateFlow = filterStateUseCase.filterStateFlow
     val pagerFlow: StateFlow<PagerData> = pagingListUseCase.pagerFlow
 
-    val syncWorkLiveData = workManager.getWorkInfosByTagLiveData(SyncWorker.WORK_TAG)
+    val syncWorkLiveData = workManager.getWorkInfosByTagLiveData(SyncWorker.SYNC_TAG)
 
     fun sync() {
         applicationScope.launch(ioDispatcher) {
