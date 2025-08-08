@@ -1,0 +1,21 @@
+## 0.7.2
+
+1. Nowy dynamiczny system kolorów (wymaga Androida 8.1+, liczba dynamicznych kolorów zależy od nasycenia aktualnych kolorów tapety, zazwyczaj od 1 do 3).
+
+2. Wartość koloru akcentującego można teraz również dostosować (wpis znajduje się w ostatnim wzorniku koloru podstawowego; należy pamiętać, że kolor niestandardowy ma charakter wyłącznie informacyjny, a algorytm doboru kolorów automatycznie wybierze odpowiednią wartość koloru Monet).
+
+3. Niezaimplementowane funkcje są teraz oznaczone na szaro, aby zmniejszyć ryzyko pomyłki.
+
+4. Naprawiono problem z mylącym sortowaniem czasu przepływu informacji, gdy warunkiem filtrowania jest źródło subskrypcji.
+
+5. Poprawiono rozmiar ikon powiadomień.
+
+6. Zduplikowane artykuły nie będą teraz synchronizowane (duplikat oznacza, że link do oryginalnej strony jest taki sam).
+
+## Uwagi:
+
+1. Pierwsza zmiana kolorów po instalacji może spowodować powrót do strony głównej, więc naprawimy to w następnej wersji.
+
+2. Następna wersja to głównie strona „O programie” i wbudowana funkcja sprawdzania dostępności nowej wersji.
+
+3. Strona do czytania zostanie oddzielona od grupy suwaków i stanie się osobną stroną.
