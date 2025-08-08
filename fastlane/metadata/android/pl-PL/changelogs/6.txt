@@ -1,0 +1,35 @@
+## 0.7.4
+
+1. Dodanie strony „Wskazówki i wsparcie”.
+
+2. Dodanie sprawdzania i pobierania aktualizacji.
+
+3. Wybór domyślnego motywu dynamicznego kolorów podczas pierwszej instalacji (jeśli jest dostępny).
+
+4. Dodanie funkcji synchronizacji przesuwania w dół do strony przepływu informacji.
+
+5. Tymczasowe dodanie wskazówki dotyczącej ładowania podczas pełnego przetwarzania treści.
+
+6. Zaktualizowanie niektórych zależności źródłowych (mogą zawierać nieznane błędy).
+
+7. Obsługa protokołu RSS v1.0 (do przetestowania).
+
+8. Naprawiono tło paska nawigacji systemowej.
+
+9. Naprawiono problem z nieprzechwytywaniem zdarzenia „wstecz” po otwarciu menu opcji.
+
+10. Zoptymalizowano niektóre style wideo na stronie czytania.
+
+11. Zoptymalizowano niektóre nietypowe style.
+
+## Uwagi
+
+1. Automatyczne sprawdzanie dostępności aktualizacji przy każdym zimnym starcie (będzie to widoczne po wydaniu kolejnej wersji).
+
+2. Podczas sprawdzania dostępności aktualizacji należy korzystać z interfejsu API Gitee w przypadku języków chińskiego uproszczonego oraz z interfejsu API GitHub w przypadku innych języków.
+
+3. Prosimy nie sprawdzać ręcznie dostępności aktualizacji zbyt często (ustawiono 2-sekundowy interwał chłodzenia), ponieważ ten sam adres IP może uzyskać dostęp do interfejsu API GitHub tylko 60 razy na godzinę, a dokładny limit częstotliwości dostępu do interfejsu API Gitee jest nieznany (nie został zresetowany od 8 godzin).
+
+4. Refaktoryzacja stron odczytu została wprowadzona po wersji 0.8, a refaktoryzacja ikon i okładek po wersji 0.9. Obsługa FreshRSS (Fever API, Google Reader API) została wprowadzona po wersji 1.0.
+
+5. Tę wersję można synchronizować tylko w jednym wątku z powodu błędu wtyczki do analizy upstream, która może być nieco powolna. Autor wtyczki wspomina, że zostanie to naprawione w kolejnej wersji, a protokół Atom również będzie obsługiwany.
