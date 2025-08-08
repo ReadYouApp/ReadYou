@@ -47,4 +47,4 @@ Ez egy hibajavító javítás. Ha esetleg lemaradtál róla, itt a 0.10.0 verzi�
 3. Más szponzorációs csatornákat keresünk, jelenleg az AFDIAN érhető el. Ha szeretné támogatni a ReadYou fejlesztését, megteheti az [AFDIAN](https://afdian.net/a/ashinch) oldalon keresztül.
 4. Köszönet a szponzorainknak: @User_3072e, @User_223be, @User_3c5c7(Simon), @User_97ebe, @Lowae, @User_28b9f, @User_yuHC, @nullqwertyuiop, @openisgood, @User_vWca, @qgmzmy, @User_97ee1
 
-**Teljes változáslista:** [0.9.12...0.10.0](https://github.com/Ashinch/ReadYou/compare/0.9.12...0.10.0)
+**Teljes változáslista:** [0.9.12...0.10.0](https://github.com/ReadYouApp/ReadYou/compare/0.9.12...0.10.0)

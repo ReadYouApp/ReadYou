@@ -1,0 +1,6 @@
+## 0.11.1
+
+Ważne zmiany:
+1. Obsługa niestandardowych czcionek dla czytnika WebView
+2. Dodanie nowych stylów wizualnych do pasków narzędzi na stronie przepływu i stronie czytania
+3. Ulepszenia i poprawki interfejsu użytkownika

@@ -1,0 +1,7 @@
+## 0.7.6
+
+1. Oddzielenie ViewPagers.
+
+2. Scalenie powiadomienia według kanałów.
+
+3. Pliki aktualizacji nie będą już pobierane, ale będą wykonywane przekierowania na stronę wydania.

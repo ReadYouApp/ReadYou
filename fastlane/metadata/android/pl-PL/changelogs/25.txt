@@ -1,0 +1,50 @@
+## 0.10.1
+
+1. Naprawienie stylu ikony tekstowej dla kanału (#726, @Ashinch)
+2. Naprawienie problemu, który uniemożliwiał wczesnym użytkownikom uruchomienie aplikacji po zaimportowaniu preferencji aplikacji (#718, @Ashinch)
+3. Naprawienie niektórych przypadków powodujących błędy importu OPML (#735, @Ashinch)
+4. Naprawienie niektórych animacji nawigacji w oknie (#717, @JunkFood02)
+5. Naprawienie niektórych problemów ze stylem dla języków RTL (#732, #733, @JunkFood02)
+6. Aktualizacje tłumaczeń (Podziękowania dla wszystkich współautorów)
+
+### Uwagi
+
+**Pełny dziennik zmian:** [0.10.0...0.10.1](https://github.com/ReadYouApp/ReadYou/compare/0.10.0...0.10.1)
+
+To jest poprawka naprawiająca błąd. W razie przegapienia, oto lista zmian dla wersji 0.10.0:
+
+## 0.10.0
+
+1. Zwiększenie zależności Material Design 3, kompilacja SDK i wersja Gradle (#502, @JunkFood02)
+2. Obsługa selektora języka w aplikacji dla Androida 13 (#541, #571, @JunkFood02)
+3. Obsługa dodawania kanału za pośrednictwem arkusza udostępniania systemowego (#618, @JunkFood02)
+4. Obsługa określania składu udostępnianej zawartości (#660, @Ashinch)
+5. Ulepszenie funkcji przesuwania palcem w celu oznaczenia/odznaczenia gwiazdką, przesuwania palcem w celu oznaczenia nieprzeczytanych i dodanie konfiguracji (#594, @JunkFood02)
+6. Domyślne formatowanie wyświetlania czasu za pomocą ustawień regionalnych systemu. (#617, @JunkFood02)
+7. Przejście na implementację AndroidX Edge to Edge (#690, @Moderpach)
+8. Dodanie przeglądarki obrazów do strony czytania (#578, #545, @JunkFood02, @nvllz)
+9. Dodanie gestów do przesuwania w górę i w dół na stronie czytania w celu przełączania artykułów (#589, @JunkFood02)
+10. Dodanie aktywności raportowania awarii w celu obsługi nieprzechwyconych wyjątków (#576, @JunkFood02)
+11. Dodanie menu kontekstowego po długim naciśnięciu dla elementów na stronie przepływu (#613, @JunkFood02)
+12. Dodanie preferencji wielu wysokości wiersza dla strony czytania (#620, @JunkFood02)
+13. Dodanie strony z listą licencji i ulepszenie strony „O aplikacji” (#664, @Ashinch)
+14. Dodanie strony rozwiązywania problemów i narzędzi do importu/eksportu preferencji aplikacji (#672, #710, @Ashinch)
+15. Naprawienie prośby o pozwolenie na powiadomienia podczas uruchamiania systemu Android 13 (@JunkFood02)
+16. Naprawienie konfliktu, gdy data publikacji i data aktualizacji są puste (@JunkFood02)
+17. Teraz zastępuje datę publikacji artykułu bieżącą godziną, jeśli jest to data w przyszłości (#638, @Ashinch)
+18. Teraz podczas czyszczenia kanału lub grupy, artykuły oznaczone gwiazdką będą ignorowane (#652, @Ashinch)
+19. Teraz automatycznie uruchamia ponownie aplikację po załadowaniu czcionek zewnętrznych (#667, @Ashinch)
+20. Teraz najpierw znajduje tag `<enclosure>` jako miniaturę artykułu (#681, @Ashinch)
+21. Teraz domyślnie sortuj kategorie alfabetycznie podczas synchronizacji w Google Reader (#700, @mbestavros)
+22. Nowy symbol zastępczy obrazu (#712, @JunkFood02)
+23. Więcej ulepszeń interfejsu użytkownika i poprawek błędów (@Ashinch, @JunkFood02)
+24. Aktualizacje tłumaczeń (dziękujemy wszystkim, którzy pomogli)
+
+### Uwagi
+
+1. Aby umożliwić eksport ustawień, niektóre z nich zostały przywrócone do domyślnych i może być konieczne ich przywrócenie.
+2. Kanał sponsorowania buymeacoffee.com jest obecnie niedostępny, a wcześniej przekazane środki zostały zwrócone na konta darczyńców.
+3. Szukamy innych kanałów sponsorowania, obecnie dostępny jest AFDIAN. Jeśli chcesz wesprzeć rozwój ReadYou, możesz go sponsorować za pośrednictwem [AFDIAN](https://afdian.net/a/ashinch).
+4. Dziękujemy naszym sponsorom: @User_3072e, @User_223be, @User_3c5c7(Simon), @User_97ebe, @Lowae, @User_28b9f, @User_yuHC, @nullqwertyuiop, @openisgood, @User_vWca, @qgmzmy, @User_97ee1
+
+**Pełna lista zmian:** [0.9.12...0.10.0](https://github.com/ReadYouApp/ReadYou/compare/0.9.12...0.10.0)

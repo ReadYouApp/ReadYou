@@ -1,0 +1,7 @@
+## 0.11.0
+
+Wichtige Änderungen:
+2. Automatisches Markieren von Einträgen beim Scrollen
+3. Klicken Sie auf die obere App-Leiste, um zum Seitenanfang zurückzukehren
+4. Hinzufügen von Trennlinien zu den Symbolleisten auf der Leseseite
+5. Hinzufügen einer Schaltfläche zum Ein- und Ausblenden von Feedgruppen

@@ -1,0 +1,13 @@
+## 0.7.7
+
+1. Dodanie ustawienia stylu strony kanałów.
+
+2. Dodanie ustawienia stylu strony przepływu.
+
+3. Dodanie początkowego ustawienia strony.
+
+4. Dodanie początkowego ustawienia filtra.
+
+5. Dodanie funkcji zmiany adresu URL kanału.
+
+6. Poprawienie opisu filtra banerowego.

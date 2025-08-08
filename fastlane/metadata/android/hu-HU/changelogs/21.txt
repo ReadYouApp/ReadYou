@@ -24,7 +24,7 @@
 
 „Amikor nincs elég szabadidőm, mélyen értékelem, hogy mindenki összefogott, hogy hozzájáruljon ehhez a projekthez. @mbestavros és @JunkFood02 felkerülnek a projekt munkatársainak listájára, és bizonyos jogosultságokat biztosítanak a projekt kiadási terveinek kezeléséhez.”
 
-(Forrás: https://github.com/Ashinch/ReadYou/issues/495#issuecomment-1880344011)
+(Forrás: https://github.com/ReadYouApp/ReadYou/issues/495#issuecomment-1880344011)
 
 Hogy teljesen egyértelmű legyen: ez nem azt jelenti, hogy @Ashinch kilép a projektből! Ez csak azt jelenti, hogy több ember áll rendelkezésre, hogy segítsen az új kiadások létrehozásában. Ez rengeteget fog segíteni, amikor @Ashinch elfoglalt, és csökkenteni fogja a kód szállításának idejét, miután az már beolvadt a Githubra.
 
