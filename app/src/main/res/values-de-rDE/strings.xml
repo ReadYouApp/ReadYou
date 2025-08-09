@@ -331,4 +331,16 @@
     <string name="load_next_feed">Nächsten Feed laden</string>
     <string name="mark_all_as_read_and_load_next_feed">Alles als gelesen markieren und nächsten Feed laden</string>
     <string name="pull_from_bottom">Nach oben wischen</string>
+    <string name="account">Konto</string>
+    <string name="feed">Feed</string>
+    <string name="folder">Ordner</string>
+    <string name="data_source">Datenquelle</string>
+    <string name="theme">Theme</string>
+    <string name="widget_settings">Widget Einstellungen</string>
+    <string name="done">Erledigt</string>
+    <string name="last_updated">Zuletzt aktualisiert</string>
+    <string name="no_unread_articles">Keine ungelesenen Artikel</string>
+    <string name="list_widget_label">Listenansicht</string>
+    <string name="card_widget_label">Kartenansicht</string>"
+    <string name="widget_description">Neueste ungelesene Artikel aus ausgewählten Quellen anzeigen</string>
 </resources>

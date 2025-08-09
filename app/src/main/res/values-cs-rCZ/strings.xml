@@ -247,7 +247,7 @@
     <string name="username">Uživatelské jméno</string>
     <string name="password">Heslo</string>
     <string name="delete_account_tips">Opravdu chcete tento účet smazat?</string>
-    <string name="open_link_something_wrong">Nastavení \"Otevřít odkaz\" bylo ignorováno, protože se něco pokazilo.</string>
+    <string name="open_link_something_wrong">Nastavení \"Otevřít odkaz\" bylo ignorováno, protože se něco pokazilo</string>
     <string name="open_link_ask_dialog_title">Otevřít pomocí…</string>
     <string name="every_2_hours">Každé dvě hodiny</string>
     <string name="accounts_tips">Klepněte na název účtu na hlavní stránce pro jeho přepnutí</string>
@@ -331,4 +331,19 @@
     <string name="bold_characters">Tučné znaky</string>
     <string name="use_bold_characters">Použít tučné znaky</string>
     <string name="bold_characters_preview">Tučně označit několik prvních znaků slov v článku</string>
+    <string name="load_next_feed">Načíst další zdroj</string>
+    <string name="mark_all_as_read_and_load_next_feed">Označit vše jako přečtené a načíst další zdroj</string>
+    <string name="account">Účet</string>
+    <string name="feed">Zdroj</string>
+    <string name="folder">Složka</string>
+    <string name="data_source">Zdroj dat</string>
+    <string name="theme">Motiv</string>
+    <string name="widget_settings">Nastavení widgetu</string>
+    <string name="done">Hotovo</string>
+    <string name="last_updated">Poslední aktualizace</string>
+    <string name="no_unread_articles">Žádné nepřečtené články</string>
+    <string name="list_widget_label">Zobrazení seznamu</string>
+    <string name="card_widget_label">Zobrazení karty</string>"
+    <string name="widget_description">Zobrazit nejnovější nepřečtené články z vybraných zdrojů</string>
+    <string name="pull_from_bottom">Potáhnout zespodu</string>
 </resources>
