@@ -334,4 +334,19 @@
     <string name="bold_characters">Жирные символы</string>
     <string name="bold_characters_preview">Выделите жирным первые несколько символов слов в статье</string>
     <string name="use_bold_characters">Используйте жирные символы</string>
+    <string name="load_next_feed">Загрузить следующую ленту</string>
+    <string name="mark_all_as_read_and_load_next_feed">Отметить всё прочитанным и загрузить следующую ленту</string>
+    <string name="pull_from_bottom">Потяните снизу</string>
+    <string name="account">Профиль</string>
+    <string name="feed">Лента</string>
+    <string name="folder">Папка</string>
+    <string name="data_source">Источник данных</string>
+    <string name="theme">Тема</string>
+    <string name="widget_settings">Настройки виджета</string>
+    <string name="done">Готово</string>
+    <string name="last_updated">Последнее обновление</string>
+    <string name="no_unread_articles">Нет непрочитанных статей</string>
+    <string name="list_widget_label">Вид списком</string>
+    <string name="card_widget_label">Вид карточками</string>"
+    <string name="widget_description">Просмотр последних непрочитанных статей из выбранных источников</string>
 </resources>

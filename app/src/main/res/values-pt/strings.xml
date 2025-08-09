@@ -331,4 +331,19 @@
     <string name="use_bold_characters">Use caracteres em negrito</string>
     <string name="bold_characters_preview">Colocar em negrito os primeiros caracteres das palavras num artigo</string>
     <string name="client_certificate">Certificado de cliente (opcional)</string>
+    <string name="load_next_feed">Carregar próximo feed</string>
+    <string name="mark_all_as_read_and_load_next_feed">Marcar todos como lodo e carregar o próximo feed</string>
+    <string name="pull_from_bottom">Puxar de baixo</string>
+    <string name="account">Conta</string>
+    <string name="feed">Feed</string>
+    <string name="folder">Pasta</string>
+    <string name="data_source">Fonte de informação</string>
+    <string name="theme">Tema</string>
+    <string name="widget_settings">Configurações do widget</string>
+    <string name="done">Pronto</string>
+    <string name="last_updated">Último atualizado</string>
+    <string name="no_unread_articles">Nenhum artigo não lido</string>
+    <string name="list_widget_label">Lista</string>
+    <string name="card_widget_label">Cartão</string>"
+    <string name="widget_description">Ver os últimos artigos não lidos das fontes selecionadas</string>
 </resources>

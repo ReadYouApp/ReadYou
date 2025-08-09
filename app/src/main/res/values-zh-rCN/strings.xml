@@ -237,11 +237,11 @@
     <string name="delete_account_tips">确定要删除该账户吗？</string>
     <string name="must_have_an_account">必须至少有一个账户</string>
     <string name="clear_all_articles_toast"> 已清空文章列表</string>
-    <string name="delete_account_toast">已删除帐户</string>
+    <string name="delete_account_toast">已删除账户</string>
     <string name="synchronous_tips">需要重新启动才能使更改生效</string>
     <string name="switch_account">切换</string>
     <string name="add">添加</string>
-    <string name="accounts_tips">在订阅源页面中轻按帐户名称来切换</string>
+    <string name="accounts_tips">在订阅源页面中轻按账户名称来切换</string>
     <string name="server_url">服务器地址</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
