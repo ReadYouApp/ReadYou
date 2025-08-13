@@ -6,17 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import me.ash.reader.R
 import me.ash.reader.ui.ext.PreferenceKey
-import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.get
-import me.ash.reader.ui.ext.set
 
 val LocalDarkTheme = compositionLocalOf<DarkThemePreference> { DarkThemePreference.default }
 
 sealed class DarkThemePreference(override val value: Int) :
-    AppPreference.IntPreference, AppPreference.Editable {
+    AppPreference.IntPreference {
     override val key: PreferenceKey.IntKey = Companion.key
 
     object UseDeviceTheme : DarkThemePreference(0)
@@ -24,10 +21,6 @@ sealed class DarkThemePreference(override val value: Int) :
     object ON : DarkThemePreference(1)
 
     object OFF : DarkThemePreference(2)
-
-    override suspend fun put(context: Context) {
-        context.dataStore.edit { it[key] = value }
-    }
 
     fun toDesc(context: Context): String =
         when (this) {

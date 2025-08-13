@@ -2,18 +2,25 @@ package me.ash.reader.infrastructure.preference
 
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.ash.reader.ui.ext.PreferenceKey
+import me.ash.reader.ui.ext.dataStore
+import me.ash.reader.ui.ext.set
 import org.json.JSONObject
 
 sealed interface AppPreference {
     val value: Any
     val key: PreferenceKey
 
-    interface IntPreference : AppPreference {
+    interface IntPreference : AppPreference, Editable {
         override val value: Int
         override val key: PreferenceKey.IntKey
+
+        override suspend fun put(context: Context) {
+            context.dataStore.edit { it[key] = value }
+        }
     }
 
     interface LongPreference : AppPreference {

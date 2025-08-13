@@ -27,7 +27,6 @@ import me.ash.reader.ui.ext.PreferenceKey.FloatKey
 import me.ash.reader.ui.ext.PreferenceKey.IntKey
 import me.ash.reader.ui.ext.PreferenceKey.LongKey
 import me.ash.reader.ui.ext.PreferenceKey.StringKey
-import org.json.JSONObject
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -51,32 +50,17 @@ val Context.initialFilter: Int
 val Context.languages: Int
     get() = this.dataStore.get(DataStoreKey.languages) ?: 0
 
+@Deprecated("Use AppPreference.Editable.put instead")
 suspend fun DataStore<Preferences>.put(dataStoreKeys: String, value: Any) {
-    val key = DataStoreKey.keys[dataStoreKeys]?.key ?: return
+    val key = PreferenceKey.keys[dataStoreKeys] ?: return
     this.edit {
         withContext(Dispatchers.IO) {
-            when (value) {
-                is Int -> {
-                    it[key as Preferences.Key<Int>] = value
-                }
-                is Long -> {
-                    it[key as Preferences.Key<Long>] = value
-                }
-                is String -> {
-                    it[key as Preferences.Key<String>] = value
-                }
-                is Boolean -> {
-                    it[key as Preferences.Key<Boolean>] = value
-                }
-                is Float -> {
-                    it[key as Preferences.Key<Float>] = value
-                }
-                is Double -> {
-                    it[key as Preferences.Key<Double>] = value
-                }
-                else -> {
-                    throw IllegalArgumentException("Unsupported type")
-                }
+            when (key) {
+                is BooleanKey -> if (value is Boolean) it[key] = value
+                is FloatKey -> if (value is Float) it[key] = value
+                is IntKey -> if (value is Int) it[key] = value
+                is LongKey -> if (value is Long) it[key] = value
+                is StringKey -> if (value is String) it[key] = value
             }
         }
     }
@@ -85,18 +69,17 @@ suspend fun DataStore<Preferences>.put(dataStoreKeys: String, value: Any) {
 @Suppress("UNCHECKED_CAST")
 fun <T> DataStore<Preferences>.get(key: String): T? {
     return runBlocking {
+        val key = PreferenceKey.keys[key] ?: return@runBlocking null
         this@get.data
             .catch { exception ->
                 if (exception is IOException) {
-                    Log.e("RLog", "Get data store error $exception")
-                    exception.printStackTrace()
                     emit(emptyPreferences())
                 } else {
                     throw exception
                 }
             }
-            .map { it[DataStoreKey.keys[key]?.key as Preferences.Key<T>] }
-            .first() as T
+            .first()[key.key]
+            as? T
     }
 }
 
@@ -452,158 +435,160 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
         // Languages
         const val languages = "languages"
 
+
         val keys: MutableMap<String, DataStoreKey<*>> =
             mutableMapOf(
                 // Version
                 isFirstLaunch to
-                    DataStoreKey(booleanPreferencesKey(isFirstLaunch), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(isFirstLaunch), Boolean::class.java),
                 newVersionPublishDate to
-                    DataStoreKey(stringPreferencesKey(newVersionPublishDate), String::class.java),
+                        DataStoreKey(stringPreferencesKey(newVersionPublishDate), String::class.java),
                 newVersionLog to
-                    DataStoreKey(stringPreferencesKey(newVersionLog), String::class.java),
+                        DataStoreKey(stringPreferencesKey(newVersionLog), String::class.java),
                 newVersionSizeString to
-                    DataStoreKey(stringPreferencesKey(newVersionSizeString), String::class.java),
+                        DataStoreKey(stringPreferencesKey(newVersionSizeString), String::class.java),
                 newVersionDownloadUrl to
-                    DataStoreKey(stringPreferencesKey(newVersionDownloadUrl), String::class.java),
+                        DataStoreKey(stringPreferencesKey(newVersionDownloadUrl), String::class.java),
                 newVersionNumber to
-                    DataStoreKey(stringPreferencesKey(newVersionNumber), String::class.java),
+                        DataStoreKey(stringPreferencesKey(newVersionNumber), String::class.java),
                 skipVersionNumber to
-                    DataStoreKey(stringPreferencesKey(skipVersionNumber), String::class.java),
+                        DataStoreKey(stringPreferencesKey(skipVersionNumber), String::class.java),
                 currentAccountId to
-                    DataStoreKey(intPreferencesKey(currentAccountId), Int::class.java),
+                        DataStoreKey(intPreferencesKey(currentAccountId), Int::class.java),
                 currentAccountType to
-                    DataStoreKey(intPreferencesKey(currentAccountType), Int::class.java),
+                        DataStoreKey(intPreferencesKey(currentAccountType), Int::class.java),
                 themeIndex to DataStoreKey(intPreferencesKey(themeIndex), Int::class.java),
                 customPrimaryColor to
-                    DataStoreKey(stringPreferencesKey(customPrimaryColor), String::class.java),
+                        DataStoreKey(stringPreferencesKey(customPrimaryColor), String::class.java),
                 darkTheme to DataStoreKey(intPreferencesKey(darkTheme), Int::class.java),
                 amoledDarkTheme to
-                    DataStoreKey(booleanPreferencesKey(amoledDarkTheme), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(amoledDarkTheme), Boolean::class.java),
                 basicFonts to DataStoreKey(intPreferencesKey(basicFonts), Int::class.java),
                 // Feeds page
                 feedsFilterBarStyle to
-                    DataStoreKey(intPreferencesKey(feedsFilterBarStyle), Int::class.java),
+                        DataStoreKey(intPreferencesKey(feedsFilterBarStyle), Int::class.java),
                 feedsFilterBarPadding to
-                    DataStoreKey(intPreferencesKey(feedsFilterBarPadding), Int::class.java),
+                        DataStoreKey(intPreferencesKey(feedsFilterBarPadding), Int::class.java),
                 feedsFilterBarTonalElevation to
-                    DataStoreKey(intPreferencesKey(feedsFilterBarTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(feedsFilterBarTonalElevation), Int::class.java),
                 feedsTopBarTonalElevation to
-                    DataStoreKey(intPreferencesKey(feedsTopBarTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(feedsTopBarTonalElevation), Int::class.java),
                 feedsGroupListExpand to
-                    DataStoreKey(booleanPreferencesKey(feedsGroupListExpand), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(feedsGroupListExpand), Boolean::class.java),
                 feedsGroupListTonalElevation to
-                    DataStoreKey(intPreferencesKey(feedsGroupListTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(feedsGroupListTonalElevation), Int::class.java),
                 // Flow page
                 flowFilterBarStyle to
-                    DataStoreKey(intPreferencesKey(flowFilterBarStyle), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowFilterBarStyle), Int::class.java),
                 flowFilterBarPadding to
-                    DataStoreKey(intPreferencesKey(flowFilterBarPadding), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowFilterBarPadding), Int::class.java),
                 flowFilterBarTonalElevation to
-                    DataStoreKey(intPreferencesKey(flowFilterBarTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowFilterBarTonalElevation), Int::class.java),
                 flowTopBarTonalElevation to
-                    DataStoreKey(intPreferencesKey(flowTopBarTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowTopBarTonalElevation), Int::class.java),
                 flowArticleListFeedIcon to
-                    DataStoreKey(
-                        booleanPreferencesKey(flowArticleListFeedIcon),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(flowArticleListFeedIcon),
+                            Boolean::class.java,
+                        ),
                 flowArticleListFeedName to
-                    DataStoreKey(
-                        booleanPreferencesKey(flowArticleListFeedName),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(flowArticleListFeedName),
+                            Boolean::class.java,
+                        ),
                 flowArticleListImage to
-                    DataStoreKey(booleanPreferencesKey(flowArticleListImage), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(flowArticleListImage), Boolean::class.java),
                 flowArticleListDesc to
-                    DataStoreKey(booleanPreferencesKey(flowArticleListDesc), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(flowArticleListDesc), Boolean::class.java),
                 flowArticleListTime to
-                    DataStoreKey(booleanPreferencesKey(flowArticleListTime), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(flowArticleListTime), Boolean::class.java),
                 flowArticleListDateStickyHeader to
-                    DataStoreKey(
-                        booleanPreferencesKey(flowArticleListDateStickyHeader),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(flowArticleListDateStickyHeader),
+                            Boolean::class.java,
+                        ),
                 flowArticleListTonalElevation to
-                    DataStoreKey(intPreferencesKey(flowArticleListTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowArticleListTonalElevation), Int::class.java),
                 flowArticleListReadIndicator to
-                    DataStoreKey(intPreferencesKey(flowArticleListReadIndicator), Int::class.java),
+                        DataStoreKey(intPreferencesKey(flowArticleListReadIndicator), Int::class.java),
                 flowSortUnreadArticles to
-                    DataStoreKey(
-                        booleanPreferencesKey(flowSortUnreadArticles),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(flowSortUnreadArticles),
+                            Boolean::class.java,
+                        ),
                 // Reading page
                 readingRenderer to
-                    DataStoreKey(intPreferencesKey(readingRenderer), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingRenderer), Int::class.java),
                 readingBoldCharacters to
-                    DataStoreKey(booleanPreferencesKey(readingBoldCharacters), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingBoldCharacters), Boolean::class.java),
                 readingPageTonalElevation to
-                    DataStoreKey(intPreferencesKey(readingPageTonalElevation), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingPageTonalElevation), Int::class.java),
                 readingTextFontSize to
-                    DataStoreKey(intPreferencesKey(readingTextFontSize), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingTextFontSize), Int::class.java),
                 readingTextLineHeight to
-                    DataStoreKey(floatPreferencesKey(readingTextLineHeight), Float::class.java),
+                        DataStoreKey(floatPreferencesKey(readingTextLineHeight), Float::class.java),
                 readingTextLetterSpacing to
-                    DataStoreKey(floatPreferencesKey(readingTextLetterSpacing), Float::class.java),
+                        DataStoreKey(floatPreferencesKey(readingTextLetterSpacing), Float::class.java),
                 readingTextHorizontalPadding to
-                    DataStoreKey(intPreferencesKey(readingTextHorizontalPadding), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingTextHorizontalPadding), Int::class.java),
                 readingTextBold to
-                    DataStoreKey(booleanPreferencesKey(readingTextBold), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingTextBold), Boolean::class.java),
                 readingTextAlign to
-                    DataStoreKey(intPreferencesKey(readingTextAlign), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingTextAlign), Int::class.java),
                 readingTitleAlign to
-                    DataStoreKey(intPreferencesKey(readingTitleAlign), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingTitleAlign), Int::class.java),
                 readingSubheadAlign to
-                    DataStoreKey(intPreferencesKey(readingSubheadAlign), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingSubheadAlign), Int::class.java),
                 readingTheme to DataStoreKey(intPreferencesKey(readingTheme), Int::class.java),
                 readingFonts to DataStoreKey(intPreferencesKey(readingFonts), Int::class.java),
                 readingAutoHideToolbar to
-                    DataStoreKey(
-                        booleanPreferencesKey(readingAutoHideToolbar),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(readingAutoHideToolbar),
+                            Boolean::class.java,
+                        ),
                 readingTitleBold to
-                    DataStoreKey(booleanPreferencesKey(readingTitleBold), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingTitleBold), Boolean::class.java),
                 readingSubheadBold to
-                    DataStoreKey(booleanPreferencesKey(readingSubheadBold), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingSubheadBold), Boolean::class.java),
                 readingTitleUpperCase to
-                    DataStoreKey(booleanPreferencesKey(readingTitleUpperCase), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingTitleUpperCase), Boolean::class.java),
                 readingSubheadUpperCase to
-                    DataStoreKey(
-                        booleanPreferencesKey(readingSubheadUpperCase),
-                        Boolean::class.java,
-                    ),
+                        DataStoreKey(
+                            booleanPreferencesKey(readingSubheadUpperCase),
+                            Boolean::class.java,
+                        ),
                 readingImageMaximize to
-                    DataStoreKey(booleanPreferencesKey(readingImageMaximize), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(readingImageMaximize), Boolean::class.java),
                 readingImageHorizontalPadding to
-                    DataStoreKey(intPreferencesKey(readingImageHorizontalPadding), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingImageHorizontalPadding), Int::class.java),
                 readingImageRoundedCorners to
-                    DataStoreKey(intPreferencesKey(readingImageRoundedCorners), Int::class.java),
+                        DataStoreKey(intPreferencesKey(readingImageRoundedCorners), Int::class.java),
                 // Interaction
                 initialPage to DataStoreKey(intPreferencesKey(initialPage), Int::class.java),
                 initialFilter to DataStoreKey(intPreferencesKey(initialFilter), Int::class.java),
                 swipeStartAction to
-                    DataStoreKey(intPreferencesKey(swipeStartAction), Int::class.java),
+                        DataStoreKey(intPreferencesKey(swipeStartAction), Int::class.java),
                 swipeEndAction to DataStoreKey(intPreferencesKey(swipeEndAction), Int::class.java),
                 markAsReadOnScroll to
-                    DataStoreKey(booleanPreferencesKey(markAsReadOnScroll), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(markAsReadOnScroll), Boolean::class.java),
                 hideEmptyGroups to
-                    DataStoreKey(booleanPreferencesKey(hideEmptyGroups), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(hideEmptyGroups), Boolean::class.java),
                 pullToLoadNextFeed to
-                    DataStoreKey(booleanPreferencesKey(pullToLoadNextFeed), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(pullToLoadNextFeed), Boolean::class.java),
                 pullToSwitchArticle to
-                    DataStoreKey(booleanPreferencesKey(pullToSwitchArticle), Boolean::class.java),
+                        DataStoreKey(booleanPreferencesKey(pullToSwitchArticle), Boolean::class.java),
                 openLink to DataStoreKey(intPreferencesKey(openLink), Int::class.java),
                 openLinkAppSpecificBrowser to
-                    DataStoreKey(
-                        stringPreferencesKey(openLinkAppSpecificBrowser),
-                        String::class.java,
-                    ),
+                        DataStoreKey(
+                            stringPreferencesKey(openLinkAppSpecificBrowser),
+                            String::class.java,
+                        ),
                 sharedContent to DataStoreKey(intPreferencesKey(sharedContent), Int::class.java),
                 // Languages
                 languages to DataStoreKey(intPreferencesKey(languages), Int::class.java),
             )
     }
+
 }
 
 val ignorePreferencesOnExportAndImport =
