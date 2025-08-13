@@ -6,26 +6,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.datastore.preferences.core.Preferences
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.datastore.preferences.core.edit
 import me.ash.reader.R
-import me.ash.reader.ui.ext.DataStoreKey
-import me.ash.reader.ui.ext.DataStoreKey.Companion.darkTheme
+import me.ash.reader.ui.ext.PreferenceKey
 import me.ash.reader.ui.ext.dataStore
-import me.ash.reader.ui.ext.put
+import me.ash.reader.ui.ext.get
+import me.ash.reader.ui.ext.set
 
-val LocalDarkTheme =
-    compositionLocalOf<DarkThemePreference> { DarkThemePreference.default }
+val LocalDarkTheme = compositionLocalOf<DarkThemePreference> { DarkThemePreference.default }
 
-sealed class DarkThemePreference(val value: Int) : Preference() {
+sealed class DarkThemePreference(override val value: Int) :
+    AppPreference.IntPreference, AppPreference.Editable {
+    override val key: PreferenceKey.IntKey = Companion.key
+
     object UseDeviceTheme : DarkThemePreference(0)
+
     object ON : DarkThemePreference(1)
+
     object OFF : DarkThemePreference(2)
 
-    override fun put(context: Context, scope: CoroutineScope) {
-        scope.launch {
-            context.dataStore.put(darkTheme, value)
-        }
+    override suspend fun put(context: Context) {
+        context.dataStore.edit { it[key] = value }
     }
 
     fun toDesc(context: Context): String =
@@ -37,19 +38,21 @@ sealed class DarkThemePreference(val value: Int) : Preference() {
 
     @Composable
     @ReadOnlyComposable
-    fun isDarkTheme(): Boolean = when (this) {
-        UseDeviceTheme -> isSystemInDarkTheme()
-        ON -> true
-        OFF -> false
-    }
+    fun isDarkTheme(): Boolean =
+        when (this) {
+            UseDeviceTheme -> isSystemInDarkTheme()
+            ON -> true
+            OFF -> false
+        }
 
-    companion object {
+    companion object : AppPreference.PreferenceCompanion {
+        override val key: PreferenceKey.IntKey = PreferenceKey.DarkTheme
 
-        val default = UseDeviceTheme
-        val values = listOf(UseDeviceTheme, ON, OFF)
+        override val default = UseDeviceTheme
+        override val values = listOf(UseDeviceTheme, ON, OFF)
 
-        fun fromPreferences(preferences: Preferences) =
-            when (preferences[DataStoreKey.keys[darkTheme]?.key as Preferences.Key<Int>]) {
+        override fun fromPreferences(preferences: Preferences) =
+            when (preferences[key]) {
                 0 -> UseDeviceTheme
                 1 -> ON
                 2 -> OFF
@@ -61,11 +64,12 @@ sealed class DarkThemePreference(val value: Int) : Preference() {
 @Composable
 operator fun DarkThemePreference.not(): DarkThemePreference =
     when (this) {
-        DarkThemePreference.UseDeviceTheme -> if (isSystemInDarkTheme()) {
-            DarkThemePreference.OFF
-        } else {
-            DarkThemePreference.ON
-        }
+        DarkThemePreference.UseDeviceTheme ->
+            if (isSystemInDarkTheme()) {
+                DarkThemePreference.OFF
+            } else {
+                DarkThemePreference.ON
+            }
 
         DarkThemePreference.ON -> DarkThemePreference.OFF
         DarkThemePreference.OFF -> DarkThemePreference.ON
