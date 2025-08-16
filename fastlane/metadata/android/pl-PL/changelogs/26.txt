@@ -1,0 +1,7 @@
+## 0.11.0
+
+Ważne zmiany:
+1. Automatyczne oznaczanie elementów jako przeczytanych po przewijaniu
+2. Klikanie górnego paska aplikacji, aby wrócić na górę strony
+3. Dodanie separatora do pasków narzędzi na stronie czytania
+4. Dodanie przycisku do zwijania/rozwijania grup kanałów
