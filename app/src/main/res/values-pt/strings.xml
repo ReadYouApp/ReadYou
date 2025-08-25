@@ -155,7 +155,7 @@
     <string name="search_for">Procurar por %1$s itens</string>
     <string name="mark_as_read">Marcar como lido</string>
     <string name="empty">Vazio</string>
-    <string name="tos_content"><h5> Política de Privacidade </h5> <br/> <p> Levo a sua privacidade muito a sério. </p> <br/> <p> <b>Read You</b> não coleta nenhum dado de utilizador e todas as informações sensíveis (como senha e outras informações de contas) são guardadas de forma segura localmente no seu aparelho. </p> <br/> <p> <b>Read You</b> utiliza das seguintes permissões para fornecer os serviços. </p> <br/> <p> - Acesso a Internet (para acessar o conteúdo online conforme especificado pelo utilizador) </p> <p> - Obter status de conexão (Para conseguir identificar quando o aparelho está conectado a internet) </p> <p> - Serviços em plano de fundo (para automaticamente sincronizar seus favoritos periodicamente) </p> <br/> <br/> <h5> Serviços de Terceiros </h5> <br/> <p> Esta política não se aplica a serviços de terceiros que você usa com <b>Read You</b>. Pode visualizar a Política de Privacidade de cada serviço nos seus respectivos sites </p> <br/> <br/> <h5> Disclaimer </h5> <br/> <p> <b>Read You</b> é apenas um agregador de conteúdo. O uso de <b>Read You</b> está sujeito as leis e regulamentações do seu país e região e qualquer responsabilidade decorrente das suas ações será assumida diretamente por você. </p> <br/> <br/> <h5> Licenças de Código Aberto </h5> <br/> <p> <b>Read You</b> é um projeto de código aberto sobre a licença GNU GPL 3.0 Open Source License[1], na qual permite que use, referencie e modifique o código fonte de <b>Read You</b> gratuitamente, mas não permite que modifique o código para que seja vendido como uma solução comercial de código fechado. Para mais detalhes, veja a documentação completa da licença GNU GPL 3.0 Open Source License[2]. </p> <br/> <br/> <h5> Apêndice </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Política de Privacidade </h5> <br></br> <p> Levo a sua privacidade muito a sério. </p> <br></br> <p> <b>Read You</b> não coleta nenhum dado de utilizador e todas as informações sensíveis (como senha e outras informações de contas) são guardadas de forma segura localmente no seu aparelho. </p> <br></br> <p> <b>Read You</b> utiliza das seguintes permissões para fornecer os serviços. </p> <br></br> <p> - Acesso a Internet (para acessar o conteúdo online conforme especificado pelo utilizador) </p> <p> - Obter status de conexão (Para conseguir identificar quando o aparelho está conectado a internet) </p> <p> - Serviços em plano de fundo (para automaticamente sincronizar seus favoritos periodicamente) </p> <br></br> <br></br> <h5> Serviços de Terceiros </h5> <br></br> <p> Esta política não se aplica a serviços de terceiros que você usa com <b>Read You</b>. Pode visualizar a Política de Privacidade de cada serviço nos seus respectivos sites </p> <br></br> <br></br> <h5> Disclaimer </h5> <br></br> <p> <b>Read You</b> é apenas um agregador de conteúdo. O uso de <b>Read You</b> está sujeito as leis e regulamentações do seu país e região e qualquer responsabilidade decorrente das suas ações será assumida diretamente por você. </p> <br></br> <br></br> <h5> Licenças de Código Aberto </h5> <br></br> <p> <b>Read You</b> é um projeto de código aberto sobre a licença GNU GPL 3.0 Open Source License[1], na qual permite que use, referencie e modifique o código fonte de <b>Read You</b> gratuitamente, mas não permite que modifique o código para que seja vendido como uma solução comercial de código fechado. Para mais detalhes, veja a documentação completa da licença GNU GPL 3.0 Open Source License[2]. </p> <br></br> <br></br> <h5> Apêndice </h5> <br></br> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="always_expand">Sempre expandir</string>
     <string name="icons">Ícones</string>
     <string name="icons_and_labels">Ícones e etiquetas</string>
@@ -316,14 +316,14 @@
     <string name="become_a_sponsor">Torne-se um patrocinador</string>
     <string name="sponsor_desc">Construímos e mantemos este aplicativo gratuito e de código aberto fora do horário comercial. Se você gostou, considere nos apoiar com uma pequena doação! ☕️</string>
     <string name="pull_to_switch_feed">Arraste para carregar a próxima feed</string>
-    <string name="all_open_in_browser_toast">Abrir todos os artigos do grupo \"%1$s\" utilizando o navegador</string>
+    <string name="all_open_in_browser_toast">Abrir todos os artigos do grupo \"%1$s\" utilizando o navegador padrão é permitido</string>
     <string name="all_open_in_browser_tips">Abrir todos os artigos do grupo \"%1$s\" utilizando o navegador predefinido</string>
     <string name="long_desc">Longo</string>
     <string name="short_desc">Curto</string>
     <string name="none_desc">Nenhum</string>
     <string name="bold_characters">Caracteres em negrito</string>
     <string name="open_in_browser">Abrir no navegador</string>
-    <string name="all_deny_open_in_browser_toast">Não é mais necessário abrir todos os artigos do grupo \"%1$s\" usando o navegador</string>
+    <string name="all_deny_open_in_browser_toast">Abrir todos os artigos do grupo \"%1$s\" usando o navegador padrão foi negado</string>
     <string name="hide_empty_groups">Ocultar grupos vazios</string>
     <string name="sort_unread_articles">Classificar artigos não lidos</string>
     <string name="latest">Mais recente</string>
@@ -346,4 +346,14 @@
     <string name="list_widget_label">Lista</string>
     <string name="card_widget_label">Cartão</string>"
     <string name="widget_description">Ver os últimos artigos não lidos das fontes selecionadas</string>
+    <string name="apply">Aplicar</string>
+    <string name="notifications">Notificações</string>
+    <string name="group_configuration_description">Configuração \"%1$s\" para feed em \"%2$s\"</string>
+    <string name="disabled">Desabilitado</string>
+    <string name="enabled">Habilitado</string>
+    <string name="notifications_desc">Receba notificações quando novos artigos não lidos estiverem disponíveis</string>
+    <string name="open_in_browser_desc">Abra artigos no navegador</string>
+    <string name="parse_full_content_desc">Ler artigos inteiros das páginas</string>
+    <string name="enable">Habilitar</string>
+    <string name="disable">Desabilitar</string>
 </resources>
