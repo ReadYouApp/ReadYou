@@ -7,8 +7,8 @@
     <string name="all">Összes</string>
     <string name="clear">Törlés</string>
     <plurals name="all_desc">
-        <item quantity="one">%1$d archivált elem</item>
-        <item quantity="other">%1$d archivált elem</item>
+        <item quantity="one">%1$d archivált cikk</item>
+        <item quantity="other">%1$d archivált cikk</item>
     </plurals>
     <string name="unread">Olvasatlanok</string>
     <plurals name="unread_desc">
@@ -34,9 +34,9 @@
     <string name="preset">Előbeállítás</string>
     <string name="selected">Kiválasztott</string>
     <string name="allow_notification">Értesítések engedélyezése</string>
-    <string name="all_allow_notification_tips">Értesítések küldésének engedélyezése a(z) „%1$s” csoportban lévő összes hírforrás számára</string>
-    <string name="all_allow_notification_toast">Értesítések engedélyezve a(z) „%1$s” csoporttól</string>
-    <string name="all_deny_notification_toast">Értesítések megtagadva a(z) „%1$s” csoporttól</string>
+    <string name="all_allow_notification_tips">Értesítések küldésének engedélyezése a(z) „%1$s” nevű csoportban lévő összes hírforrás számára</string>
+    <string name="all_allow_notification_toast">Értesítések engedélyezve a(z) „%1$s” nevű csoporttól</string>
+    <string name="all_deny_notification_toast">Értesítések megtagadva a(z) „%1$s” nevű csoporttól</string>
     <string name="parse_full_content">Teljes tartalom feldolgozása</string>
     <string name="all_parse_full_content_tips">A(z) „%1$s” csoportban lévő összes cikk teljes tartalmának feldolgozása</string>
     <string name="all_parse_full_content_toast">A(z) „%1$s” csoportban lévő összes cikk teljes tartalmának feldolgozása engedélyezve</string>
@@ -115,8 +115,8 @@
     <string name="clear_articles_group_tips">A(z) „%1$s” csoport összes archivált cikkének törlése</string>
     <string name="add_to_group">Hozzáadás csoporthoz</string>
     <string name="move_to_group">Áthelyezés csoportba</string>
-    <string name="all_move_to_group_tips">A(z) „%1$s” csoportban lévő összes hírforrás áthelyezése a(z) „%2$s” csoportba</string>
-    <string name="all_move_to_group_toast">Az összes hírforrás áthelyezve a(z) „%1$s” csoportba</string>
+    <string name="all_move_to_group_tips">A(z) „%1$s” csoportban lévő összes hírforrás áthelyezése a(z) „%2$s” nevű csoportba</string>
+    <string name="all_move_to_group_toast">Az összes hírforrás áthelyezve a(z) „%1$s” nevű csoportba</string>
     <string name="change_url">Webcím megváltoztatása</string>
     <string name="open_with">A(z) %1$s megnyitása</string>
     <string name="options">Beállítások</string>
@@ -124,8 +124,8 @@
     <string name="unsubscribe">Leiratkozás</string>
     <string name="delete_group">Csoport törlése</string>
     <string name="date_at_time">%1$s – %2$s</string>
-    <string name="search_for_in">%1$s elemek keresése ebben: „%2$s”</string>
-    <string name="search_for">%1$s elemek keresése</string>
+    <string name="search_for_in">%1$s cikkek keresése ebben: „%2$s”</string>
+    <string name="search_for">%1$s cikkek keresése</string>
     <string name="mark_as_read">Megjelölés olvasottként</string>
     <string name="mark_all_as_read">Összes megjelölése olvasottként</string>
     <string name="mark_as_unread">Megjelölés olvasatlanként</string>
@@ -153,7 +153,7 @@
     <string name="terms_of_service">Használati feltételek</string>
     <string name="article_date_sticky_header">Ragadós közzétételi dátumfejléc</string>
     <string name="article_list">Cikklista</string>
-    <string name="tos_content"><h5> Adatvédelmi irányelvek </h5> <br/> <p> Nagyon komolyan veszem a magánéletét. </p> <br/> <p> A <b>Read You</b> nem gyűjt semmilyen felhasználói adatot, és minden érzékeny információ (jelszavak és egyéb fiókinformációk) biztonságosan van tárolva az alkalmazás helyi adatbázisában az Ön eszközén. </p> <br/> <p> A <b>Read You</b> a következő engedélyeket használja a szolgáltatás nyújtásához: </p> <br/> <p> – Hálózati hozzáférés engedély (az Ön által megadott internetes tartalmak eléréséhez). </p> <p> – Hálózatállapot lekérése engedély (annak meghatározásához, hogy az eszköz jelenleg rendelkezik-e elérhető hálózati feltételekkel). </p> <p> – Háttérszolgáltatási engedély (a kedvencek automatikus, rendszeres szinkronizálásához). </p> <br/> <br/> <h5> Harmadik féltől származó szolgáltatások </h5> <br/> <p> Ez az irányelv nem vonatkozik azokra a harmadik féltől származó szolgáltatásokra, amelyeket a <b>Read You</b> szolgáltatással együtt használ. Az Ön által használt harmadik féltől származó szolgáltatások adatvédelmi irányelveit azok weboldalán tekintheti meg. </p> <br/> <br/> <h5> Felelősségi nyilatkozatok </h5> <br/> <p> A <b>Read You</b> csak egy tartalomgyűjtő eszköz. A <b>Read You</b> használata az Ön országának és régiójának törvényei és szabályai szerint történik, és az Ön tevékenységéből eredő felelősséget Ön személyesen viseli. </p> <br/> <br/> <h5> Nyílt forráskódú licenc </h5> <br/> <p> A <b>Read You</b> egy nyílt forráskódú projekt a GNU GPL 3.0 nyílt forráskódú licenc[1] szerint, amely lehetővé teszi a <b>Read You</b> forráskódjának ingyenes használatát, hivatkozását és módosítását, de nem engedélyezi a módosított és származtatott kód zárt forráskódú kereskedelmi szoftverként való terjesztését és értékesítését. A részleteket nézze meg a teljes GNU GPL 3.0 nyílt forráskódú licencet[2]. </p> <br/> <br/> <h5> Függelék </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Adatvédelmi irányelvek </h5> <br></br> <p> Nagyon komolyan veszem a magánéletét. </p> <br></br> <p> A <b>Read You</b> nem gyűjt semmilyen felhasználói adatot, és minden érzékeny információ (jelszavak és egyéb fiókinformációk) biztonságosan van tárolva az alkalmazás helyi adatbázisában az Ön eszközén. </p> <br></br> <p> A <b>Read You</b> a következő engedélyeket használja a szolgáltatás nyújtásához: </p> <br></br> <p> – Hálózati hozzáférés engedély (az Ön által megadott internetes tartalmak eléréséhez). </p> <p> – Hálózatállapot lekérése engedély (annak meghatározásához, hogy az eszköz jelenleg rendelkezik-e elérhető hálózati feltételekkel). </p> <p> – Háttérszolgáltatási engedély (a kedvencek automatikus, rendszeres szinkronizálásához). </p> <br></br> <br></br> <h5> Harmadik féltől származó szolgáltatások </h5> <br></br> <p> Ez az irányelv nem vonatkozik azokra a harmadik féltől származó szolgáltatásokra, amelyeket a <b>Read You</b> szolgáltatással együtt használ. Az Ön által használt harmadik féltől származó szolgáltatások adatvédelmi irányelveit azok weboldalán tekintheti meg. </p> <br></br> <br></br> <h5> Felelősségi nyilatkozatok </h5> <br></br> <p> A <b>Read You</b> csak egy tartalomgyűjtő eszköz. A <b>Read You</b> használata az Ön országának és régiójának törvényei és szabályai szerint történik, és az Ön tevékenységéből eredő felelősséget Ön személyesen viseli. </p> <br></br> <br></br> <h5> Nyílt forráskódú licenc </h5> <br></br> <p> A <b>Read You</b> egy nyílt forráskódú projekt a GNU GPL 3.0 nyílt forráskódú licenc[1] szerint, amely lehetővé teszi a <b>Read You</b> forráskódjának ingyenes használatát, hivatkozását és módosítását, de nem engedélyezi a módosított és származtatott kód zárt forráskódú kereskedelmi szoftverként való terjesztését és értékesítését. A részleteket nézze meg a teljes GNU GPL 3.0 nyílt forráskódú licencet[2]. </p> <br></br> <br></br> <h5> Függelék </h5> <br></br> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="agree">Elfogadás</string>
     <string name="wallpaper_colors">Háttérszínek</string>
     <string name="no_palettes">Nincsenek paletták</string>
@@ -271,7 +271,7 @@
     <string name="unexpected_error_msg">Az alkalmazás váratlan hibát észlelt, és bezárult.\n\nHogy segítsen nekünk a probléma gyors azonosításában és kijavításában, %1$s az alábbi stack trace segítségével.</string>
     <string name="unfold_more">Összes kibontása</string>
     <string name="unfold_less">Összes összecsukása</string>
-    <string name="keep_archived_tips">Az archivált elemek olyan cikkek, amelyek olvasottként vannak megjelölve, nincsenek csillagozva és nincsenek megjelölve. Az „Archivált cikkek megőrzése” beállítás csak ezen az eszközön érvényes. A régebbi archivált cikkek törlődnek erről az eszközről. A cikkek törlése nem vonható vissza.</string>
+    <string name="keep_archived_tips">Az archivált cikkek olvasottként vannak megjelölve, nincsenek csillagozva és nincsenek megjelölve. Az „Archivált cikkek megőrzése” beállítás csak ezen az eszközön érvényes. A régebbi archivált cikkek törlődnek erről az eszközről. A cikkek törlése nem vonható vissza.</string>
     <string name="title_and_link">Cím és hivatkozás</string>
     <string name="troubleshooting">Problémakeresés</string>
     <string name="exclude">Kizárás</string>
@@ -326,7 +326,7 @@
     <string name="read_excluding_starred">Olvasás, csillagozott cikkek kizárása</string>
     <string name="invalid_protobuf_file_warning">Ez a fájl lehet, hogy nem érvényes protobuf-fájl. Az importálása potenciálisan megrongálhatja az alkalmazást, és a jelenlegi beállítások elvesztéséhez vezethet. Biztosan folytatni szeretné?</string>
     <string name="grey_out_articles">Olvasott cikkek elszürkítése</string>
-    <string name="additional_info_desc">További információk tartalmazzák az egyes hírforrások konfigurációs beállításait, például hogy engedélyezzék-e az értesítést, elemezzék-e a teljes tartalmat stb. Ha az exportált OPML-fájlt más olvasókkal kívánja használni, válassza a „kizárás” lehetőséget.</string>
+    <string name="additional_info_desc">További információk tartalmazzák az egyes hírforrások konfigurációs beállításait, például, hogy engedélyezzék-e az értesítést, elemezzék-e a teljes tartalmat stb. Ha az exportált OPML-fájlt más olvasókkal kívánja használni, válassza a „kizárás” lehetőséget.</string>
     <string name="bold_characters_preview">A szavak első néhány karaktereinek félkövér kiemelése egy cikkben</string>
     <string name="load_next_feed">Következő hírforrás betöltése</string>
     <string name="mark_all_as_read_and_load_next_feed">Összes megjelölése olvasottként és a következő hírforrás betöltése</string>
