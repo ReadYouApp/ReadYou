@@ -1,0 +1,11 @@
+## 0.7.5
+
+1. Obsługa protokołu RSS Atom.
+
+### Uwagi
+
+1. Obsługa parsowania elementu `<content>` w protokole Atom będzie wkrótce dostępna.
+
+2. ViewPager jest ostatnio poddawany separacji i refaktoryzacji, co poprawi płynność działania.
+
+3. Ta wersja jest wydaniem bezpośrednim, więc można przetestować funkcję sprawdzania aktualizacji.

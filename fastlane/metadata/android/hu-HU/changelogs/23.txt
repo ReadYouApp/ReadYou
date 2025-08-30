@@ -21,4 +21,4 @@
 5. A tesztelésben részt vevő felhasználók a „0.9.12” verzió telepítése után szinkronizálják újra vagy adják hozzá újra a Google Reader API fiókjukat.
 6. Várjuk a következő verzióban részletesen kidolgozott további fejlesztéseket.
 
-**Teljes változáslista:** [0.9.11...0.9.12](https://github.com/Ashinch/ReadYou/compare/0.9.11...0.9.12)
+**Teljes változáslista:** [0.9.11...0.9.12](https://github.com/ReadYouApp/ReadYou/compare/0.9.11...0.9.12)
