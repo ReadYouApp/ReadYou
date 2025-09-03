@@ -129,7 +129,7 @@
     <string name="reading_page">阅读页面</string>
     <string name="sponsor">捐赠</string>
     <string name="open_source_licenses">开放源代码许可</string>
-    <string name="update_link">https://gitee.com/api/v5/repos/ReadYouApp/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="change_log">更新日志</string>
     <string name="update">更新</string>
     <string name="skip_this_version">跳过这个版本</string>
