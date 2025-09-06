@@ -309,4 +309,13 @@
     <string name="mark_as_read_on_scroll">捲動時標記為已讀</string>
     <string name="become_a_sponsor">成為贊助者</string>
     <string name="sponsor_desc">我們在空閒時間建立並維護這個免費的開源應用程式。如果您喜歡它，請考慮給予我們一點小額捐款支持！☕️</string>
+    <string name="open_in_browser">在瀏覽器中打開</string>
+    <string name="client_certificate">用戶端憑證（可選）</string>
+    <string name="hide_empty_groups">隱藏空群組</string>
+    <string name="sort_unread_articles">排序未讀文章</string>
+    <string name="latest">最新</string>
+    <string name="earliest">最早</string>
+    <string name="short_desc">短</string>
+    <string name="long_desc">長</string>
+    <string name="none_desc">无</string>
 </resources>
