@@ -36,6 +36,8 @@ import org.jsoup.Jsoup
 val enclosureRegex = """<enclosure\s+url="([^"]+)"\s+type=".*"\s*/>""".toRegex()
 val imgRegex = """img.*?src=(["'])((?!data).*?)\1""".toRegex(RegexOption.DOT_MATCHES_ALL)
 
+const val substackLabelText = """Text within this block will maintain its original spacing when published"""
+
 /** Some operations on RSS. */
 class RssHelper
 @Inject
@@ -106,7 +108,7 @@ constructor(
                         h1Element.remove()
                     }
                     if (link.contains("substack.com")) {
-                        it.selectFirst("label")?.remove()
+                        it.select("label").find { label -> label.text().equals(substackLabelText, true) }?.remove()
                         it.selectFirst("[data-component-name=\"PreformattedTextBlockToDOM\"]")?.unwrap()
                         it.selectFirst("pre")?.attr("style", "white-space: pre-wrap;")
                         return@let it.toString().replace("pre", "div")
