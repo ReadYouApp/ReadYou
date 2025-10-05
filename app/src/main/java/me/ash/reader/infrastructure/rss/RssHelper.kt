@@ -105,6 +105,12 @@ constructor(
                     if (h1Element != null && h1Element.hasText() && h1Element.text() == title) {
                         h1Element.remove()
                     }
+                    if (link.contains("substack.com")) {
+                        it.selectFirst("label")?.remove()
+                        it.selectFirst("[data-component-name=\"PreformattedTextBlockToDOM\"]")?.unwrap()
+                        it.selectFirst("pre")?.attr("style", "white-space: pre-wrap;")
+                        return@let it.toString().replace("pre", "div")
+                    }
                     articleContent.toString()
                 } ?: throw IOException("articleContent is null")
             } else throw IOException(response.message)
