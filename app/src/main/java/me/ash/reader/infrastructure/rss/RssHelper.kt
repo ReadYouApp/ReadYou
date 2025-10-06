@@ -108,10 +108,10 @@ constructor(
                         h1Element.remove()
                     }
                     if (link.contains("substack.com")) {
-                        it.select("label").find { label -> label.text().equals(substackLabelText, true) }?.remove()
-                        it.selectFirst("[data-component-name=\"PreformattedTextBlockToDOM\"]")?.unwrap()
-                        it.selectFirst("pre")?.attr("style", "white-space: pre-wrap;")
-                        return@let it.toString().replace("pre", "div")
+                        it.select("label:contains($substackLabelText)")?.remove()
+                        it.select("pre")?.attr("style", "white-space: pre-wrap;")
+                        // manually replace the pre tags to not mess up the formatting (like .tagName() does)
+                        return@let it.toString().replace("<pre", "<div").replace("</pre", "</div")
                     }
                     articleContent.toString()
                 } ?: throw IOException("articleContent is null")
