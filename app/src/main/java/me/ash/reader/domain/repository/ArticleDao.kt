@@ -410,6 +410,16 @@ interface ArticleDao {
     @Query(
         """
         DELETE FROM article
+        WHERE accountId = :accountId
+        AND feedId = :feedId
+        AND title LIKE '%' || :keyword || '%'
+        """
+    )
+    suspend fun deleteByKeyword(accountId: Int, feedId: String, keyword: String)
+
+    @Query(
+        """
+        DELETE FROM article
         WHERE id IN (
             SELECT a.id FROM article AS a, feed AS b, `group` AS c
             WHERE a.accountId = :accountId
@@ -916,5 +926,13 @@ interface ArticleDao {
         ).associateBy { it.link }
 
         return articles.filterNot { existingArticles.containsKey(it.link) }.also { insertList(it) }
+    }
+
+    @Transaction
+    suspend fun deleteList(articles: List<Article>) {
+        articles.forEach {
+            println("delete : " + it.title)
+            delete(it)
+        }
     }
 }
