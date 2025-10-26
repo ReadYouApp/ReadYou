@@ -2,8 +2,8 @@
 <resources>
     <string name="all">Hepsi</string>
     <plurals name="unread_desc">
-        <item quantity="one">%1$d Okunmamış Öge</item>
-        <item quantity="other">%1$d Okunmamış Öge</item>
+        <item quantity="one">%1$d okunmamış öge</item>
+        <item quantity="other">%1$d okunmamış öge</item>
     </plurals>
     <string name="feeds">Beslemeler</string>
     <string name="syncing">Eşitleniyor…</string>
@@ -13,12 +13,12 @@
     <string name="unread">Okunmamış</string>
     <string name="expand_less">Daralt</string>
     <plurals name="all_desc">
-        <item quantity="one">%1$d Arşivlenen Öge</item>
-        <item quantity="other">%1$d Arşivlenen Öge</item>
+        <item quantity="one">%1$d arşivlenen öge</item>
+        <item quantity="other">%1$d arşivlenen öge</item>
     </plurals>
     <plurals name="starred_desc">
-        <item quantity="one">%1$d Yıldızlanan Öge</item>
-        <item quantity="other">%1$d Yıldızlanan Öge</item>
+        <item quantity="one">%1$d yıldızlanan öge</item>
+        <item quantity="other">%1$d yıldızlanan öge</item>
     </plurals>
     <string name="starred">Yıldızlı</string>
     <string name="cancel">İptal et</string>
@@ -35,13 +35,13 @@
     <string name="feed_or_site_url">Akış veya site URL\'si</string>
     <string name="import_from_opml">OPML\'den içe aktar</string>
     <string name="preset">Ön Ayar</string>
-    <string name="allow_notification">Bildirime izin ver</string>
-    <string name="all_allow_notification_toast">\"%1$s\" grubundan gelen tüm bildirimlere izin verilir</string>
+    <string name="allow_notification">Bildirimlere izin ver</string>
+    <string name="all_allow_notification_toast">\"%1$s\" grubundan gelen bildirimlere izin verilir</string>
     <string name="selected">Seçildi</string>
-    <string name="all_deny_notification_toast">\"%1$s\" grubundan gelen tüm bildirimler reddedilir</string>
+    <string name="all_deny_notification_toast">\"%1$s\" grubundan gelen bildirimler reddedilir</string>
     <string name="parse_full_content">Tam içeriği ayrıştır</string>
     <string name="all_parse_full_content_tips">\"%1$s\" grubundaki tüm makalelerin tam içerik ayrıştırılması</string>
-    <string name="all_parse_full_content_toast">\"%1$s\" grubundaki tüm makalelerin tam içerik ayrıştırması</string>
+    <string name="all_parse_full_content_toast">\"%1$s\" grubundaki tüm makalelerin tam içerik ayrıştırmasına izin verilir</string>
     <string name="all_deny_parse_full_content_toast">Artık \"%1$s\" grubundaki tüm makalelerin tam içerik ayrıştırması yok</string>
     <string name="clear_articles">Makaleleri temizle</string>
     <string name="clear_articles_in_feed_toast">\"%1$s\" beslemesindeki tüm arşivlenmiş makaleler temizlendi</string>
@@ -71,7 +71,7 @@
     <string name="languages">Dil</string>
     <string name="use_device_languages">Cihaz dilini kullan</string>
     <string name="tips_and_support">İpuçları ve destek</string>
-    <string name="tips_and_support_desc">Hakkında, açık kaynak lisansları</string>
+    <string name="tips_and_support_desc">Hakkında, sponsor, açık kaynak lisansları</string>
     <string name="welcome">Hoş geldin</string>
     <string name="tos_tips">Devam etmek için lütfen Read You\'nun hizmet koşullarını ve gizlilik politikasını okuyun ve kabul edin.</string>
     <string name="browse_tos_tips"><i><u>Hizmet koşulları ve gizlilik politikasına göz atın</u></i></string>
@@ -164,17 +164,17 @@
     <string name="only_android_8.1_plus">Yalnızca Android 8.1+</string>
     <string name="basic_colors">Temel renkler</string>
     <string name="color_and_style_desc">Tema, renk stili, yazı tipi boyutu</string>
-    <string name="interaction">Etkileşim</string>
+    <string name="interaction">Kullanım</string>
     <string name="tos_content"><h5> Gizlilik politikası </h5> <br/> <p> Gizliliğinizi çok ciddiye alıyoruz. </p> <br/> <p> <b>Read You</b> herhangi bir kullanıcı verisi toplamaz ve tüm hassas bilgiler (şifreler ve diğer hesap bilgileri) cihazınızdaki yerel uygulama veritabanında güvenli bir şekilde saklanır. </p> <br/> <p> <b>Read You</b> size hizmet sağlamak için aşağıdaki izinleri kullanacaktır. </p> <br/> <p> - Ağa erişim izni (belirttiğiniz şekilde çevrimiçi içeriğe erişmek için) </p> <p> - Ağ durumunu al izni (cihazın o anda kullanılabilir ağ koşullarına sahip olup olmadığını öğrenmek için) </p> <p> - Arka plan hizmeti izni (favorilerinizi düzenli ve otomatik olarak senkronize etmek için) </p> <br/> <br/> <h5> Üçüncü taraf hizmetleri </h5> <br/> <p> Bu politika <b>Read You</b> ile birlikte kullandığınız üçüncü taraf hizmetleri için geçerli değildir. Kullandığınız üçüncü taraf hizmetlerinin gizlilik politikalarını kendi web sitelerinde inceleyebilirsiniz </p> <br/> <br/> <h5> Feragatnameler </h5> <br/> <p> <b> Read You</b> yalnızca bir içerik toplama aracıdır. <b> Read You</b> kullanımınız ülkenizin ve bölgenizin yasa ve yönetmeliklerine tabidir ve eylemlerinizden kaynaklanan her türlü sorumluluk şahsen size ait olacaktır. </p> <br/> <br/> <h5> Açık kaynak lisansı </h5> <br/> <p> <b> Read You</b>, <b>Read You</b> kaynak kodunu ücretsiz olarak kullanmanıza, referans vermenize ve değiştirmenize izin veren, ancak değiştirilmiş ve türetilmiş kodun kapalı kaynaklı ticari yazılım olarak dağıtılmasına ve satılmasına izin vermeyen GNU GPL 3.0 Açık Kaynak Lisansı[1] kapsamında açık kaynaklı bir projedir. Ayrıntılar için lütfen GNU GPL 3.0 Açık Kaynak Lisansının tamamına bakın[2]. </p> <br/> <br/> <h5> Ek </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="use_device_theme">Cihaz temasını kullan</string>
-    <string name="interaction_desc">İlk sayfa, haptik geribildirim</string>
+    <string name="interaction_desc">Başlangıç sayfası, hareketler</string>
     <string name="primary_color_hint">#666666 veya 666666 gibi</string>
     <string name="help_translate">Çeviriye yardım et</string>
     <string name="primary_color">Ana renk</string>
     <string name="update">Güncelle</string>
     <string name="rate_limit">Talep oranı sınırlı</string>
-    <string name="initial_page">İlk sayfa</string>
-    <string name="initial_filter">İlk filtre</string>
+    <string name="initial_page">Başlangıç sayfası</string>
+    <string name="initial_filter">Varsayılan filtre</string>
     <string name="preview_feed_name">Reddit</string>
     <string name="preview_article_title">Gizemlerin Efendisi romanı nihayet sona erdi</string>
     <string name="other">Diğer</string>
@@ -292,7 +292,7 @@
     <string name="title_and_link">Başlık ve bağlantı</string>
     <string name="keep_archived_tips">Arşivlenen ögeler okundu olarak işaretlenen, yıldızlanmayan ve etiketlenmeyen makalelerdir. \"Arşivlenmiş makaleleri sakla\" ayarı yalnızca bu aygıtlarda etkilidir. Daha eski arşivlenmiş makaleler bu aygıtlardan silinecektir. Makalelerin silinmesi geri alınamaz.</string>
     <string name="troubleshooting">Sorun giderme</string>
-    <string name="troubleshooting_desc">Hata bildirimi, hata ayıklama</string>
+    <string name="troubleshooting_desc">Hata bildirimi, uygulama tercihleri</string>
     <string name="bug_report">Hata bildirimi</string>
     <string name="app_preferences">Uygulama tercihleri</string>
     <string name="import_from_protobuf_file">Protobuf dosyasından içe aktar</string>
@@ -315,4 +315,18 @@
     <string name="short_desc">Kısa</string>
     <string name="long_desc">Uzun</string>
     <string name="none_desc">Hiçbiri</string>
+    <string name="account">Hesap</string>
+    <string name="feed">Akış</string>
+    <string name="folder">Klasör</string>
+    <string name="data_source">Veri kaynağı</string>
+    <string name="theme">Tema</string>
+    <string name="done">Bitti</string>
+    <string name="last_updated">Son güncellendi</string>
+    <string name="no_unread_articles">Okunmamış makale yok</string>
+    <string name="apply">Uygula</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="all_deny_open_in_browser_toast">\"%1$s\" grubundaki tüm makaleleri varsayılan tarayıcıda açma işlemi engellendi.</string>
+    <string name="client_certificate">İstemci sertifikası (isteğe bağlı)</string>
+    <string name="content_renderer">İçerik Oluşturucu</string>
+    <string name="only_available_on_webview">Yalnızca WebView içerik işleyicisi kullanılırken kullanılabilir</string>
 </resources>
