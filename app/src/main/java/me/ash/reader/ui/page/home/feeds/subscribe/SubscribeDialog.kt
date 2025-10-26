@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.ash.reader.R
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.ui.component.FeedIcon
 import me.ash.reader.ui.component.RenameDialog
 import me.ash.reader.ui.component.base.ClipboardTextField
@@ -137,6 +138,7 @@ fun SubscribeDialog(
                             FeedOptionView(
                                 link = state.feedLink,
                                 groups = state.groups,
+                                filteredKeywords = state.filteredKeywords.map { KeywordFilter("", it) },
                                 selectedAllowNotificationPreset = state.notification,
                                 selectedParseFullContentPreset = state.fullContent,
                                 selectedOpenInBrowserPreset = state.browser,
@@ -155,6 +157,12 @@ fun SubscribeDialog(
                                 },
                                 onAddNewGroup = {
                                     subscribeViewModel.showNewGroupDialog()
+                                },
+                                onFilteredKeywordClick = {
+                                    subscribeViewModel.removeFilteredKeyword(it)
+                                },
+                                onAddKeywordFilter = {
+                                    subscribeViewModel.showNewKeywordFilterDialog()
                                 },
                             )
                         }
@@ -248,5 +256,23 @@ fun SubscribeDialog(
                 subscribeViewModel.addNewGroup()
             }
         )
+
+        TextFieldDialog(
+            visible = subscribeUiState.newKeywordFilterDialogVisible,
+            title = stringResource(R.string.add_keyword_filter),
+            icon = Icons.Outlined.CreateNewFolder,
+            value = subscribeUiState.newKeywordFilterContent,
+            placeholder = stringResource(R.string.keyword),
+            onValueChange = {
+                subscribeViewModel.inputNewKeywordFilter(it)
+            },
+            onDismissRequest = {
+                subscribeViewModel.hideNewKeywordFilterDialog()
+            },
+            onConfirm = {
+                subscribeViewModel.addFilteredKeyword()
+            }
+        )
+
     }
 }

@@ -5,9 +5,13 @@ import be.ceau.opml.OpmlParser
 import be.ceau.opml.entity.Outline
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.serialization.json.Json
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.FeedWithKeywordFilter
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.model.group.GroupWithFeed
+import me.ash.reader.domain.model.group.GroupWithFeedWithKeywordFilters
 import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.spacerDollar
@@ -27,9 +31,9 @@ class OPMLDataSource @Inject constructor(
         inputStream: InputStream,
         defaultGroup: Group,
         targetAccountId: Int,
-    ): List<GroupWithFeed> {
+    ): List<GroupWithFeedWithKeywordFilters> {
         val opml = OpmlParser().parse(inputStream)
-        val groupWithFeedList = mutableListOf<GroupWithFeed>().also {
+        val groupWithFeedList = mutableListOf<GroupWithFeedWithKeywordFilters>().also {
             it.addGroup(defaultGroup)
         }
 
@@ -75,9 +79,10 @@ class OPMLDataSource @Inject constructor(
                 }
                 for (subOutline in outline.subElements) {
                     if (subOutline != null && subOutline.attributes != null) {
+                        val feedId = targetAccountId.spacerDollar(UUID.randomUUID().toString())
                         groupWithFeedList.addFeed(
                             Feed(
-                                id = targetAccountId.spacerDollar(UUID.randomUUID().toString()),
+                                id = feedId,
                                 name = subOutline.extractName(),
                                 url = subOutline.extractUrl() ?: continue,
                                 groupId = groupId,
@@ -85,7 +90,8 @@ class OPMLDataSource @Inject constructor(
                                 isNotification = subOutline.extractPresetNotification(),
                                 isFullContent = subOutline.extractPresetFullContent(),
                                 isBrowser = subOutline.extractPresetBrowser(),
-                            )
+                            ),
+                            subOutline.extractFilteredKeywords().map { KeywordFilter(feedId, it) },
                         )
                     }
                 }
@@ -94,16 +100,29 @@ class OPMLDataSource @Inject constructor(
         return groupWithFeedList
     }
 
-    private fun MutableList<GroupWithFeed>.addGroup(group: Group) {
-        add(GroupWithFeed(group = group, feeds = mutableListOf()))
+    private fun MutableList<GroupWithFeedWithKeywordFilters>.addGroup(group: Group) {
+        add(GroupWithFeedWithKeywordFilters(group = group, feedsWithKeywordFilters = mutableListOf()))
     }
 
-    private fun MutableList<GroupWithFeed>.addFeed(feed: Feed) {
-        last().feeds.add(feed)
+    private fun MutableList<GroupWithFeedWithKeywordFilters>.addFeed(
+        feed: Feed,
+        filteredKeywords: List<KeywordFilter>
+    ) {
+        last().feedsWithKeywordFilters.add(
+            FeedWithKeywordFilter(
+                feed = feed,
+                keywordFilters = filteredKeywords,
+            )
+        )
     }
 
-    private fun MutableList<GroupWithFeed>.addFeedToDefault(feed: Feed) {
-        first().feeds.add(feed)
+    private fun MutableList<GroupWithFeedWithKeywordFilters>.addFeedToDefault(feed: Feed) {
+        first().feedsWithKeywordFilters.add(
+            FeedWithKeywordFilter(
+                feed = feed,
+                keywordFilters = emptyList(),
+            )
+        )
     }
 
     private fun Outline?.extractName(): String {
@@ -131,6 +150,15 @@ class OPMLDataSource @Inject constructor(
 
     private fun Outline?.extractPresetBrowser(): Boolean =
         this?.attributes?.getOrDefault("isBrowser", null).toBoolean()
+
+    private fun Outline?.extractFilteredKeywords(): List<String> {
+        val attribute = this?.attributes?.getOrDefault("filteredKeywords", null);
+        if (attribute == null) {
+            return emptyList()
+        }
+
+        return Json.decodeFromString(attribute)
+    }
 
     private fun Outline?.isDefaultGroup(): Boolean =
         this?.attributes?.getOrDefault("isDefault", null).toBoolean()

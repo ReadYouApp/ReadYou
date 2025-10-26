@@ -20,6 +20,7 @@ import me.ash.reader.domain.model.feed.FeedWithArticle
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.di.DefaultDispatcher
 import me.ash.reader.infrastructure.di.IODispatcher
@@ -37,6 +38,7 @@ constructor(
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
     private val groupDao: GroupDao,
+    private val keywordFilterDao: KeywordFilterDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val workManager: WorkManager,
@@ -46,6 +48,7 @@ constructor(
     AbstractRssRepository(
         articleDao,
         groupDao,
+        keywordFilterDao,
         feedDao,
         workManager,
         rssHelper,
@@ -91,9 +94,17 @@ constructor(
                                     archivedArticles.contains(it.link)
                                 }
 
+                            val filteredKeywords =
+                                keywordFilterDao.queryAllWithFeedId(currentFeed.id).map { it.keyword.lowercase() }
+                            val (filteredArticles, removedArticles) = fetchedArticles.partition { article ->
+                                filteredKeywords.none { keyword ->
+                                    article.title.lowercase().contains(keyword.lowercase())
+                                }
+                            }
+
                             val newArticles =
                                 articleDao.insertListIfNotExist(
-                                    articles = fetchedArticles,
+                                    articles = filteredArticles,
                                     feed = currentFeed,
                                 )
                             if (currentFeed.isNotification && newArticles.isNotEmpty()) {

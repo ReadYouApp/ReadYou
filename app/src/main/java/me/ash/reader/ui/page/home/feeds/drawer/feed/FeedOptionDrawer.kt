@@ -57,7 +57,12 @@ fun FeedOptionDrawer(
     val feedOptionUiState = feedOptionViewModel.feedOptionUiState.collectAsStateValue()
     val feed = feedOptionUiState.feed
     val toastString = stringResource(R.string.rename_toast, feedOptionUiState.newName)
-
+    val filteredKeywords =
+        if (feed != null) {
+            feedOptionUiState.filteredKeywords.filter { it.feedId == feed.id }
+        } else {
+            emptyList()
+        }
 
     BackHandler(drawerState.isVisible) {
         scope.launch {
@@ -95,6 +100,7 @@ fun FeedOptionDrawer(
                 FeedOptionView(
                     link = feed?.url ?: stringResource(R.string.unknown),
                     groups = feedOptionUiState.groups,
+                    filteredKeywords = filteredKeywords.reversed(),
                     selectedAllowNotificationPreset = feedOptionUiState.feed?.isNotification
                         ?: false,
                     selectedParseFullContentPreset = feedOptionUiState.feed?.isFullContent ?: false,
@@ -133,7 +139,13 @@ fun FeedOptionDrawer(
                             view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                             feedOptionViewModel.showFeedUrlDialog()
                         }
-                    }
+                    },
+                    onFilteredKeywordClick = {
+                        feedOptionViewModel.removeFilteredKeyword(it)
+                    },
+                    onAddKeywordFilter = {
+                        feedOptionViewModel.showNewKeywordFilterDialog()
+                    },
                 )
             }
         }
@@ -163,6 +175,23 @@ fun FeedOptionDrawer(
         },
         onConfirm = {
             feedOptionViewModel.addNewGroup()
+        }
+    )
+
+    TextFieldDialog(
+        visible = feedOptionUiState.newKeywordFilterDialogVisible,
+        title = stringResource(R.string.add_keyword_filter),
+        icon = Icons.Outlined.CreateNewFolder,
+        value = feedOptionUiState.newKeywordFilterContent,
+        placeholder = stringResource(R.string.keyword),
+        onValueChange = {
+            feedOptionViewModel.inputNewKeywordFilter(it)
+        },
+        onDismissRequest = {
+            feedOptionViewModel.hideNewKeywordFilterDialog()
+        },
+        onConfirm = {
+            feedOptionViewModel.addFilteredKeyword()
         }
     )
 

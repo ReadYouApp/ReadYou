@@ -10,6 +10,7 @@ import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.db.AndroidDatabase
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ import javax.inject.Singleton
  * - [ArticleDao]
  * - [FeedDao]
  * - [GroupDao]
+ * - [KeywordFilterDao]
  * - [AccountDao]
  */
 @Module
@@ -39,6 +41,11 @@ object DatabaseModule {
     @Singleton
     fun provideGroupDao(androidDatabase: AndroidDatabase): GroupDao =
         androidDatabase.groupDao()
+
+    @Provides
+    @Singleton
+    fun provideKeywordFilterDao(androidDatabase: AndroidDatabase): KeywordFilterDao =
+        androidDatabase.keywordFilterDao()
 
     @Provides
     @Singleton

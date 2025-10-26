@@ -385,4 +385,8 @@
     <string name="parse_full_content_desc">Fetch full articles from webpages</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
+    <string name="add_keyword_filter">Add keyword filter</string>
+    <string name="keyword">Keyword</string>
+    <string name="keyword_filtering_title">Keyword Filtering</string>
+    <string name="keyword_filtering_desc">Add new keyword filter</string>
 </resources>

@@ -11,6 +11,8 @@ import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.OpenInBrowser
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import me.ash.reader.R
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.ui.component.base.RYSelectionChip
 import me.ash.reader.ui.component.base.Subtitle
@@ -32,6 +35,7 @@ fun FeedOptionView(
     modifier: Modifier = Modifier,
     link: String = "",
     groups: List<Group> = emptyList(),
+    filteredKeywords: List<KeywordFilter> = emptyList(),
     selectedAllowNotificationPreset: Boolean = false,
     selectedParseFullContentPreset: Boolean = false,
     selectedOpenInBrowserPreset: Boolean = false,
@@ -49,6 +53,8 @@ fun FeedOptionView(
     onAddNewGroup: () -> Unit = {},
     onFeedUrlClick: () -> Unit = {},
     onFeedUrlLongClick: () -> Unit = {},
+    onFilteredKeywordClick: (KeywordFilter) -> Unit = {},
+    onAddKeywordFilter: () -> Unit = {},
 ) {
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
@@ -66,6 +72,13 @@ fun FeedOptionView(
             openInBrowserPresetOnClick = openInBrowserPresetOnClick,
             clearArticlesOnClick = clearArticlesOnClick,
             unsubscribeOnClick = unsubscribeOnClick,
+        )
+
+        Spacer(modifier = Modifier.height(26.dp))
+        KeywordFiltering(
+            filteredKeywords,
+            onFilteredKeywordClick,
+            onAddKeywordFilter,
         )
 
         if (showGroup) {
@@ -199,6 +212,43 @@ private fun Preset(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
+private fun KeywordFiltering(
+    filteredKeywords: List<KeywordFilter>,
+    onFilteredKeywordClick: (keywordId: KeywordFilter) -> Unit = {},
+    onAddKeywordFilter: () -> Unit = {},
+) {
+    Subtitle(text = stringResource(R.string.keyword_filtering_title))
+    Spacer(modifier = Modifier.height(10.dp))
+    LazyRow(verticalAlignment = Alignment.CenterVertically) {
+        item {
+            AddButton(
+                onAddKeywordFilter,
+                stringResource(R.string.keyword_filtering_desc),
+                Modifier
+            )
+        }
+        items(filteredKeywords) {
+            Spacer(modifier = Modifier.width(10.dp))
+            RYSelectionChip(
+                modifier = Modifier,
+                content = it.keyword,
+                selected = true,
+                selectedIcon = {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = null,
+                    )
+                }
+            ) {
+                onFilteredKeywordClick(it)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
 private fun AddToGroup(
     isMoveToGroup: Boolean = false,
     groups: List<Group>,
@@ -223,7 +273,13 @@ private fun AddToGroup(
                 }
                 Spacer(modifier = Modifier.width(10.dp))
             }
-            item { NewGroupButton(onAddNewGroup, Modifier) }
+            item {
+                AddButton(
+                    onAddNewGroup,
+                    stringResource(R.string.create_new_group),
+                    Modifier
+                )
+            }
         }
     } else {
         FlowRow(
@@ -239,26 +295,34 @@ private fun AddToGroup(
                     onGroupClick(it.id)
                 }
             }
-            NewGroupButton(onAddNewGroup, Modifier.align(Alignment.CenterVertically))
+            AddButton(
+                onAddNewGroup,
+                stringResource(R.string.create_new_group),
+                Modifier.align(Alignment.CenterVertically)
+            )
         }
     }
 }
 
 @Composable
-private fun NewGroupButton(onAddNewGroup: () -> Unit, modifier: Modifier) {
+private fun AddButton(
+    onAdd: () -> Unit,
+    contentDescription: String?,
+    modifier: Modifier,
+) {
     Box(
         modifier =
             modifier
                 .size(36.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable { onAddNewGroup() },
+                .clickable { onAdd() },
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             modifier = Modifier.size(20.dp),
             imageVector = Icons.Outlined.Add,
-            contentDescription = stringResource(R.string.create_new_group),
+            contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
