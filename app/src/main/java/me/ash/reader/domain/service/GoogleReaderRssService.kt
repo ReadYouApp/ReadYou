@@ -33,9 +33,11 @@ import me.ash.reader.domain.model.account.AccountType.Companion.FreshRSS
 import me.ash.reader.domain.model.account.security.GoogleReaderSecurityKey
 import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.FeedWithGroups
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.di.DefaultDispatcher
@@ -68,6 +70,7 @@ constructor(
     @ApplicationContext private val context: Context,
     private val articleDao: ArticleDao,
     private val feedDao: FeedDao,
+    private val feedGroupDao: FeedGroupDao,
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
     private val groupDao: GroupDao,
@@ -82,6 +85,7 @@ constructor(
         articleDao,
         groupDao,
         feedDao,
+        feedGroupDao,
         workManager,
         rssHelper,
         notificationHelper,
@@ -261,7 +265,7 @@ constructor(
             requireNotNull(account) { "cannot find account" }
             check(
                 account.type.id == AccountType.GoogleReader.id ||
-                    account.type.id == AccountType.FreshRSS.id
+                        account.type.id == AccountType.FreshRSS.id
             ) {
                 "account type is invalid"
             }
@@ -291,12 +295,12 @@ constructor(
             val isFreshRss = account.type.id == FreshRSS.id
             val remoteReadIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getReadItemIds(
-                            since = lastMonthAt,
-                            continuationId = it,
-                            useIt = isFreshRss,
-                        )
-                    }
+                    googleReaderAPI.getReadItemIds(
+                        since = lastMonthAt,
+                        continuationId = it,
+                        useIt = isFreshRss,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
@@ -369,13 +373,16 @@ constructor(
                             val feedUrl = it.url ?: it.htmlUrl
                             requireNotNull(feedUrl) { "feed url is null" }
                             val feedId = accountId spacerDollar it.id.ofFeedStreamIdToId()
-                            Feed(
-                                id = feedId,
-                                name = it.title.decodeHTML() ?: context.getString(R.string.empty),
-                                url = feedUrl,
-                                groupId = group.id,
-                                accountId = accountId,
-                                icon = it.iconUrl,
+                            FeedWithGroups(
+                                feed = Feed(
+                                    id = feedId,
+                                    name = it.title.decodeHTML()
+                                        ?: context.getString(R.string.empty),
+                                    url = feedUrl,
+                                    accountId = accountId,
+                                    icon = it.iconUrl,
+                                ),
+                                groups = listOf(group)
                             )
                         }
                     }
@@ -390,29 +397,36 @@ constructor(
 
             val deferredList =
                 fetchItemsContentsDeferred(
-                        itemIds = toBeSync.await(),
-                        googleReaderAPI = googleReaderAPI,
-                        accountId = accountId,
-                        unreadIds = remoteUnreadIds.await(),
-                        starredIds = remoteStarredIds.await(),
-                        scope = this,
-                    )
+                    itemIds = toBeSync.await(),
+                    googleReaderAPI = googleReaderAPI,
+                    accountId = accountId,
+                    unreadIds = remoteUnreadIds.await(),
+                    starredIds = remoteStarredIds.await(),
+                    scope = this,
+                )
                     .toMutableList()
 
             val remoteGroups = async { groupWithFeedsMap.await().keys.toList() }
-            val remoteFeeds = async { groupWithFeedsMap.await().values.flatten() }
+            val remoteFeedWithGroups = async { groupWithFeedsMap.await().values.flatten() }
 
             // Handle empty icon for feeds
             launch {
                 val localFeeds = feedDao.queryAll(accountId)
-                val remoteFeeds = remoteFeeds.await()
-                val newFeeds = remoteFeeds.filter { feed -> feed.id !in localFeeds.map { it.id } }
+                val remoteFeeds = remoteFeedWithGroups.await()
+                val newFeeds =
+                    remoteFeeds.filter { feedWithGroups -> feedWithGroups.feed.id !in localFeeds.map { it.id } }
 
                 val feedsWithIconFetched =
                     newFeeds
-                        .filter { it.icon == null }
-                        .map { feed ->
-                            async { feed.copy(icon = rssHelper.queryRssIconLink(feed.url)) }
+                        .filter { it.feed.icon == null }
+                        .map { feedWithGroup ->
+                            async {
+                                feedWithGroup.feed.copy(
+                                    icon = rssHelper.queryRssIconLink(
+                                        feedWithGroup.feed.url
+                                    )
+                                )
+                            }
                         }
                 feedsWithIconFetched
                     .awaitAll()
@@ -421,7 +435,8 @@ constructor(
             }
 
             groupDao.insertOrUpdate(remoteGroups.await())
-            feedDao.insertOrUpdate(remoteFeeds.await())
+            feedDao.insertOrUpdate(remoteFeedWithGroups.await().map { it.feed })
+            feedGroupDao.insert()
 
             val notificationFeeds =
                 feedDao.queryNotificationEnabled(accountId).associateBy { it.id }
@@ -430,21 +445,21 @@ constructor(
 
             if (deferredList.isNotEmpty()) {
                 launch {
-                        whileSelect {
-                            for (deferred in deferredList) {
-                                deferred.onAwait {
-                                    articleDao.insertList(it)
-                                    articlesToNotify.addAll(
-                                        it.fastFilter {
-                                            it.isUnread && notificationFeedIds.contains(it.feedId)
-                                        }
-                                    )
-                                    deferredList.remove(deferred)
-                                    deferredList.isNotEmpty()
-                                }
+                    whileSelect {
+                        for (deferred in deferredList) {
+                            deferred.onAwait {
+                                articleDao.insertList(it)
+                                articlesToNotify.addAll(
+                                    it.fastFilter {
+                                        it.isUnread && notificationFeedIds.contains(it.feedId)
+                                    }
+                                )
+                                deferredList.remove(deferred)
+                                deferredList.isNotEmpty()
                             }
                         }
                     }
+                }
                     .invokeOnCompletion {
                         launch {
                             articlesToNotify
@@ -479,7 +494,7 @@ constructor(
                 .forEach { super.deleteGroup(it, true) }
             feedDao
                 .queryAll(accountId)
-                .filter { it.id !in remoteFeeds.await().map { feed -> feed.id } }
+                .filter { it.id !in remoteFeedWithGroups.await().map { item -> item.feed.id } }
                 .forEach { super.deleteFeed(it, true) }
 
             accountService.update(account.copy(updateAt = Date()))
@@ -526,24 +541,24 @@ constructor(
 
             val remoteUnreadIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getItemIdsForFeed(
-                            feedId = feedId.dollarLast(),
-                            filterRead = true,
-                            continuationId = it,
-                        )
-                    }
+                    googleReaderAPI.getItemIdsForFeed(
+                        feedId = feedId.dollarLast(),
+                        filterRead = true,
+                        continuationId = it,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
 
             val remoteAllIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getItemIdsForFeed(
-                            feedId = feedId.dollarLast(),
-                            filterRead = false,
-                            continuationId = it,
-                        )
-                    }
+                    googleReaderAPI.getItemIdsForFeed(
+                        feedId = feedId.dollarLast(),
+                        filterRead = false,
+                        continuationId = it,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
@@ -685,13 +700,13 @@ constructor(
         starredIds: Set<String>,
     ): List<Article> = supervisorScope {
         fetchItemsContentsDeferred(
-                itemIds = itemIds,
-                googleReaderAPI = googleReaderAPI,
-                accountId = accountId,
-                unreadIds = unreadIds,
-                starredIds = starredIds,
-                scope = this,
-            )
+            itemIds = itemIds,
+            googleReaderAPI = googleReaderAPI,
+            accountId = accountId,
+            unreadIds = unreadIds,
+            starredIds = starredIds,
+            scope = this,
+        )
             .awaitAll()
             .flatten()
     }
@@ -715,28 +730,28 @@ constructor(
             when {
                 groupId != null -> {
                     if (before == null) {
-                            articleDao.queryMetadataByGroupIdWhenIsUnread(
-                                accountId,
-                                groupId,
-                                !isUnread,
-                            )
-                        } else {
-                            articleDao.queryMetadataByGroupIdWhenIsUnread(
-                                accountId,
-                                groupId,
-                                !isUnread,
-                                before,
-                            )
-                        }
+                        articleDao.queryMetadataByGroupIdWhenIsUnread(
+                            accountId,
+                            groupId,
+                            !isUnread,
+                        )
+                    } else {
+                        articleDao.queryMetadataByGroupIdWhenIsUnread(
+                            accountId,
+                            groupId,
+                            !isUnread,
+                            before,
+                        )
+                    }
                         .map { it.id.dollarLast() }
                 }
 
                 feedId != null -> {
                     if (before == null) {
-                            articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread)
-                        } else {
-                            articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread, before)
-                        }
+                        articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread)
+                    } else {
+                        articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread, before)
+                    }
                         .map { it.id.dollarLast() }
                 }
 
@@ -746,10 +761,10 @@ constructor(
 
                 else -> {
                     if (before == null) {
-                            articleDao.queryMetadataAll(accountId, !isUnread)
-                        } else {
-                            articleDao.queryMetadataAll(accountId, !isUnread, before)
-                        }
+                        articleDao.queryMetadataAll(accountId, !isUnread)
+                    } else {
+                        articleDao.queryMetadataAll(accountId, !isUnread, before)
+                    }
                         .map { it.id.dollarLast() }
                 }
             }

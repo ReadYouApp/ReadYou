@@ -19,6 +19,7 @@ import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.feed.FeedWithArticle
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.di.DefaultDispatcher
@@ -34,6 +35,7 @@ constructor(
     @ApplicationContext private val context: Context,
     private val articleDao: ArticleDao,
     private val feedDao: FeedDao,
+    private val feedGroupDao: FeedGroupDao,
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
     private val groupDao: GroupDao,
@@ -47,6 +49,7 @@ constructor(
         articleDao,
         groupDao,
         feedDao,
+        feedGroupDao,
         workManager,
         rssHelper,
         notificationHelper,

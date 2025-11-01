@@ -18,10 +18,12 @@ import me.ash.reader.R
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.account.AccountType
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feedgroup.FeedGroup
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.preference.SettingsProvider
@@ -39,6 +41,7 @@ constructor(
     private val accountDao: AccountDao,
     private val groupDao: GroupDao,
     private val feedDao: FeedDao,
+    private val feedGroupDao: FeedGroupDao,
     private val articleDao: ArticleDao,
     @ApplicationScope private val coroutineScope: CoroutineScope,
     settingsProvider: SettingsProvider,
@@ -101,17 +104,17 @@ constructor(
     suspend fun initWithDefaultAccount() {
         val account = addDefaultAccount()
         val group = getDefaultGroup()
-        val initialFeed = getInitialFeed(account, group)
+        val initialFeed = getInitialFeed(account)
         feedDao.insert(initialFeed)
+        feedGroupDao.insert(FeedGroup(feedId = initialFeed.id, groupId = group.id, accountId = getCurrentAccountId()))
     }
 
-    private fun getInitialFeed(account: Account, group: Group): Feed =
+    private fun getInitialFeed(account: Account): Feed =
         Feed(
             id = account.id!!.spacerDollar(UUID.randomUUID().toString()),
             name = "ReadYou Releases",
             icon = "https://github.com/ReadYouApp.png",
             url = "https://github.com/ReadYouApp/ReadYou/releases.atom",
-            groupId = group.id,
             accountId = account.id,
         )
 
