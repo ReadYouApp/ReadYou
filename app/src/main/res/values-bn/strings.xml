@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all">সব</string>
+    <plurals name="all_desc">
+        <item quantity="one">%1$d সংরক্ষিত বস্তু</item>
+        <item quantity="other">%1$d সংরক্ষিত বস্তুগন</item>
+    </plurals>
+    <string name="unread">অপঠিত</string>
+    <plurals name="unread_desc">
+        <item quantity="one">%1$d অপঠিত বস্তু</item>
+        <item quantity="other">%1$d অপঠিত বস্তুগন</item>
+    </plurals>
+    <string name="starred">চিহ্নিত</string>
+    <plurals name="starred_desc">
+        <item quantity="one">%1$d চিহ্নিত বস্তু</item>
+        <item quantity="other">%1$d চিহ্নিত বস্তুগন</item>
+    </plurals>
+    <string name="syncing">সিঙ্ক হচ্ছে…</string>
+    <string name="loading">লোড হচ্ছে…</string>
+    <string name="expand_less">সঙ্কুচিত করা</string>
+    <string name="expand_more">বিস্তৃত করা</string>
+    <string name="unfold_more">সবগুলো বিস্তৃত করা</string>
+    <string name="unfold_less">সবগুলো সঙ্কুচিত করা</string>
+    <string name="confirm">নিশ্চিত</string>
+    <string name="cancel">বাতিল</string>
+    <string name="allow">অনুমতি দিন</string>
+    <string name="deny">অস্বীকার করুন</string>
+    <string name="defaults">ডিফল্ট</string>
+    <string name="unknown">অজানা</string>
+    <string name="empty">খালি</string>
+    <string name="back">পিছনে</string>
+</resources>

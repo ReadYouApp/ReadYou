@@ -331,4 +331,20 @@
     <string name="load_next_feed">Cargar a seguinte fonte</string>
     <string name="mark_all_as_read_and_load_next_feed">Marcar todo como lido e cargar a seguinte fonte</string>
     <string name="pull_from_bottom">Tirar desde debaixo</string>
+    <string name="account">Conta</string>
+    <string name="feed">Fonte</string>
+    <string name="folder">Cartafol</string>
+    <string name="data_source">Fonte de datos</string>
+    <string name="theme">Tema</string>
+    <string name="widget_settings">Configuración do widget</string>
+    <string name="done">Feito</string>
+    <string name="last_updated">Última actualización</string>
+    <string name="no_unread_articles">Non hai artigos sen ler</string>
+    <string name="apply">Aplicar</string>
+    <string name="notifications">Notificacións</string>
+    <string name="disabled">Deshabilitado</string>
+    <string name="enabled">Habilitado</string>
+    <string name="open_in_browser_desc">Abrir artigos no navegador</string>
+    <string name="enable">Habilitar</string>
+    <string name="disable">Deshabilitar</string>
 </resources>

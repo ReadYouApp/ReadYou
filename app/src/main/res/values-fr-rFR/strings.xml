@@ -346,4 +346,14 @@
     <string name="list_widget_label">Vue liste</string>
     <string name="card_widget_label">Vue carte</string>"
     <string name="widget_description">Voir les derniers articles non lus à partir de sources sélectionnées</string>
+    <string name="apply">Appliquer</string>
+    <string name="notifications">Notifications</string>
+    <string name="disabled">Désactivé</string>
+    <string name="enabled">Activé</string>
+    <string name="notifications_desc">Être notifié quand de nouveaux articles non lus sont disponible</string>
+    <string name="open_in_browser_desc">Ouvrir les articles dans le navigateur</string>
+    <string name="parse_full_content_desc">Récupérer les articles complets depuis les pages wev</string>
+    <string name="enable">Activer</string>
+    <string name="disable">Désactiver</string>
+    <string name="group_configuration_description">Configurer \"%1$s\" pour les flux dans \"%2$s\"</string>
 </resources>

@@ -43,7 +43,7 @@
     <string name="all_parse_full_content_tips">Análise de conteúdo completo de todos os artigos do grupo \"%1$s\"</string>
     <string name="all_parse_full_content_toast">Mostrar conteúdo completo dos artigos do grupo \"%1$s\" é permitido</string>
     <string name="clear_articles_group_tips">Limpar todos os artigos arquivados no grupo \"%1$s\"</string>
-    <string name="add_to_group">Adicionar a um grupo</string>
+    <string name="add_to_group">Adicionar ao grupo</string>
     <string name="all_move_to_group_toast">Todos as fontes movidas para o grupo \"%1$s\"</string>
     <plurals name="unread_desc">
         <item quantity="one">%1$d item não lido</item>
@@ -151,11 +151,11 @@
     <string name="horizontal_padding">Enchimento horizontal</string>
     <string name="date_at_time">%1$s às %2$s</string>
     <string name="search_for_in">Pesquisar por %1$s itens em \"%2$s\"</string>
-    <string name="accounts_tips">Clique no nome da conta na página do feed para trocá-los</string>
+    <string name="accounts_tips">Você pode trocar de contas apertando no nome da conta na página de feed</string>
     <string name="search_for">Procurar por %1$s itens</string>
     <string name="mark_as_read">Marcar como lido</string>
     <string name="empty">Vazio</string>
-    <string name="tos_content"><h5> Política de Privacidade </h5> <br></br> <p> Levo a sua privacidade muito a sério. </p> <br></br> <p> <b>Read You</b> não coleta nenhum dado de utilizador e todas as informações sensíveis (como senha e outras informações de contas) são guardadas de forma segura localmente no seu aparelho. </p> <br></br> <p> <b>Read You</b> utiliza das seguintes permissões para fornecer os serviços. </p> <br></br> <p> - Acesso a Internet (para acessar o conteúdo online conforme especificado pelo utilizador) </p> <p> - Obter status de conexão (Para conseguir identificar quando o aparelho está conectado a internet) </p> <p> - Serviços em plano de fundo (para automaticamente sincronizar seus favoritos periodicamente) </p> <br></br> <br></br> <h5> Serviços de Terceiros </h5> <br></br> <p> Esta política não se aplica a serviços de terceiros que você usa com <b>Read You</b>. Pode visualizar a Política de Privacidade de cada serviço nos seus respectivos sites </p> <br></br> <br></br> <h5> Disclaimer </h5> <br></br> <p> <b>Read You</b> é apenas um agregador de conteúdo. O uso de <b>Read You</b> está sujeito as leis e regulamentações do seu país e região e qualquer responsabilidade decorrente das suas ações será assumida diretamente por você. </p> <br></br> <br></br> <h5> Licenças de Código Aberto </h5> <br></br> <p> <b>Read You</b> é um projeto de código aberto sobre a licença GNU GPL 3.0 Open Source License[1], na qual permite que use, referencie e modifique o código fonte de <b>Read You</b> gratuitamente, mas não permite que modifique o código para que seja vendido como uma solução comercial de código fechado. Para mais detalhes, veja a documentação completa da licença GNU GPL 3.0 Open Source License[2]. </p> <br></br> <br></br> <h5> Apêndice </h5> <br></br> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Política de Privacidade </h5> <br/> <p> Levo a sua privacidade muito a sério. </p> <br/> <p> <b>Read You</b> não coleta nenhum dado de utilizador e todas as informações sensíveis (como senha e outras informações de contas) são guardadas de forma segura localmente no seu aparelho. </p> <br/> <p> <b>Read You</b> utiliza das seguintes permissões para fornecer os serviços. </p> <br/> <p> - Acesso a Internet (para acessar o conteúdo online conforme especificado pelo utilizador) </p> <p> - Obter status de conexão (Para conseguir identificar quando o aparelho está conectado a internet) </p> <p> - Serviços em plano de fundo (para automaticamente sincronizar seus favoritos periodicamente) </p> <br/> <br/> <h5> Serviços de Terceiros </h5> <br/> <p> Esta política não se aplica a serviços de terceiros que você usa com <b>Read You</b>. Pode visualizar a Política de Privacidade de cada serviço nos seus respectivos sites </p> <br/> <br/> <h5> Disclaimer </h5> <br/> <p> <b>Read You</b> é apenas um agregador de conteúdo. O uso de <b>Read You</b> está sujeito as leis e regulamentações do seu país e região e qualquer responsabilidade decorrente das suas ações será assumida diretamente por você. </p> <br/> <br/> <h5> Licenças de Código Aberto </h5> <br/> <p> <b>Read You</b> é um projeto de código aberto sobre a licença GNU GPL 3.0 Open Source License[1], na qual permite que use, referencie e modifique o código fonte de <b>Read You</b> gratuitamente, mas não permite que modifique o código para que seja vendido como uma solução comercial de código fechado. Para mais detalhes, veja a documentação completa da licença GNU GPL 3.0 Open Source License[2]. </p> <br/> <br/> <h5> Apêndice </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="always_expand">Sempre expandir</string>
     <string name="icons">Ícones</string>
     <string name="icons_and_labels">Ícones e etiquetas</string>
@@ -165,7 +165,7 @@
     <string name="touch_to_play_video">Toque para executar o video</string>
     <string name="alignment">Alinhamento</string>
     <string name="general">Geral</string>
-    <string name="auto_hide_toolbars">Esconder automaticamente a barra de ferramentas</string>
+    <string name="auto_hide_toolbars">Esconder automaticamente barras de ferramentas</string>
     <string name="rounded_corners">Cantos arredondados</string>
     <string name="videos">Vídeos</string>
     <string name="align_start">Alinhar a esquerda</string>
@@ -176,7 +176,7 @@
     <string name="images_desc">Cantos arredondados, espaçamento horizontal</string>
     <string name="every_3_hours">A cada 3 horas</string>
     <string name="for_2_days">2 dias</string>
-    <string name="add_accounts_desc">Local, Serviços, Host próprio</string>
+    <string name="add_accounts_desc">Local, aerviços, auto-hospedado</string>
     <string name="display">Exibição</string>
     <string name="synchronous">Sincronizando</string>
     <string name="sync_interval">Sincronizar</string>
@@ -184,7 +184,7 @@
     <string name="delete_account">Deletar conta</string>
     <string name="clear_all_articles_tips">Tem certeza que quer apagar todos os artigos dessa conta?</string>
     <string name="delete_account_tips">Tem certeza que quer deletar essa conta\?</string>
-    <string name="must_have_an_account">Deve ter uma conta</string>
+    <string name="must_have_an_account">Deve ter ao menos uma conta</string>
     <string name="clear_all_articles_toast">Todos os artigos dessa conta foram apagados</string>
     <string name="switch_account">Trocar</string>
     <string name="add">Adicionar</string>
@@ -234,7 +234,7 @@
     <string name="local">Local</string>
     <string name="local_desc">Nesse aparelho</string>
     <string name="services">Serviços</string>
-    <string name="self_hosted">Host próprio</string>
+    <string name="self_hosted">Auto-hospedado</string>
     <string name="fever_desc">Descontinuado. Não recomendado.</string>
     <string name="more">Mais</string>
     <string name="add_accounts">Adicionar contas</string>
@@ -254,8 +254,8 @@
     <string name="feed_names">Nome do Feed</string>
     <string name="system_default">Sistema</string>
     <string name="open_link_specific_browser_not_selected">Nenhum(a)</string>
-    <string name="auto_customtabs">Auto (Prefir as guias personalizadas)</string>
-    <string name="auto_default_browser">Auto (Preferir o navegador padrão)</string>
+    <string name="auto_customtabs">Auto (Prefir guias personalizadas)</string>
+    <string name="auto_default_browser">Auto (Preferir navegador padrão)</string>
     <string name="custom_tabs">Forçar guias personalizadas</string>
     <string name="specific_browser">Forçar navegador específico</string>
     <string name="default_browser">Forçar o navegador padrão</string>
@@ -277,7 +277,7 @@
     <string name="external_links">Links externos</string>
     <string name="unexpected_error_title">Ops! Algo deu errado…</string>
     <string name="copy_error_report">Copiar relatório de erro</string>
-    <string name="submit_bug_report">enviar um relatório de bug no GitHub</string>
+    <string name="submit_bug_report">Enviar um relatório de bug no GitHub</string>
     <string name="mark_below_as_read">Marque abaixo como lido</string>
     <string name="save">Salvar</string>
     <string name="shared_content">Conteúdo compartilhado</string>
@@ -285,7 +285,7 @@
     <string name="title_and_link">Título e link</string>
     <string name="bug_report">Relatório de erros</string>
     <string name="troubleshooting">Solução de problemas</string>
-    <string name="troubleshooting_desc">Relatório de erros, ferramentas de depuração</string>
+    <string name="troubleshooting_desc">Relatório de erros, preferências do aplicativo</string>
     <string name="app_preferences">Preferências do aplicativo</string>
     <string name="import_from_protobuf_file">Importar do arquivo protobuf</string>
     <string name="export_as_protobuf_file">Exportar como arquivo protobuf</string>
@@ -297,8 +297,8 @@
     <string name="all_read">Todos lidos</string>
     <string name="read_excluding_starred">Ler, excluindo preferido</string>
     <string name="include_additional_info">Incluir informações adicionais</string>
-    <string name="keep_archived_tips">Itens arquivados são artigos marcados como lidos, não marcados com estrela e não marcados. A configuração \"Manter artigos arquivados\" só é válida nesses dispositivos. Os artigos arquivados mais antigos serão excluídos desses dispositivos. A exclusão de artigos não pode ser desfeita.</string>
-    <string name="unexpected_error_msg">O aplicativo encontrou um erro inesperado e precisou ser fechado. \n \nPara nos ajudar a identificar e corrigir esse problema rapidamente, você pode %1$s com o pilha de rastreamento de erros abaixo.</string>
+    <string name="keep_archived_tips">Itens arquivados são artigos marcados como lidos, não marcados com estrela e não marcados. A configuração \"Manter artigos arquivados\" só é válida nesse dispositivo. Os artigos arquivados mais antigos serão excluídos desse dispositivo. A exclusão de artigos não pode ser desfeita.</string>
+    <string name="unexpected_error_msg">O aplicativo encontrou um erro inesperado e fechou. \n \nPara nos ajudar a identificar e corrigir esse problema rapidamente, você pode %1$s com o pilha de rastreamento de erros abaixo.</string>
     <string name="image_saved">Imagem salva</string>
     <string name="permission_denied">Permissão negada</string>
     <string name="invalid_json_file_warning">Esse arquivo pode não ser um JSON válido. Importá-lo poderá corromper o app e resultar na perda das preferências atuais. Tem certeza de que deseja prosseguir?</string>
@@ -309,12 +309,12 @@
     <string name="native_component">Componente nativo</string>
     <string name="content_renderer">Renderizador de conteúdo</string>
     <string name="read_aloud">Ler em voz alta</string>
-    <string name="only_available_on_webview">Disponível apenas em WebView</string>
+    <string name="only_available_on_webview">Disponível apenas usando o renderizador de conteúdo do WebView</string>
     <string name="about">Sobre</string>
     <string name="mark_as_read_on_scroll">Marcar como lido na rolagem</string>
     <string name="toolbars">Barras de ferramentas</string>
     <string name="become_a_sponsor">Torne-se um patrocinador</string>
-    <string name="sponsor_desc">Construímos e mantemos este aplicativo gratuito e de código aberto fora do horário comercial. Se você gostou, considere nos apoiar com uma pequena doação! ☕️</string>
+    <string name="sponsor_desc">Construímos e mantemos este aplicativo gratuito, de código aberto fora no nosso tempo livre. Se você gostou, considere nos apoiar com uma pequena doação! ☕️</string>
     <string name="pull_to_switch_feed">Arraste para carregar a próxima feed</string>
     <string name="all_open_in_browser_toast">Abrir todos os artigos do grupo \"%1$s\" utilizando o navegador padrão é permitido</string>
     <string name="all_open_in_browser_tips">Abrir todos os artigos do grupo \"%1$s\" utilizando o navegador predefinido</string>
