@@ -4,19 +4,19 @@
     <string name="all">Tot</string>
     <plurals name="all_desc">
         <item quantity="one">%1$d Article arxivat</item>
-        <item quantity="many"/>
+        <item quantity="many">%1$d Articles arxivats</item>
         <item quantity="other">%1$d Articles arxivats</item>
     </plurals>
     <string name="unread">Sense llegir</string>
     <plurals name="unread_desc">
         <item quantity="one">%1$d Article sense llegir</item>
-        <item quantity="many"/>
+        <item quantity="many">%1$d Articles sense llegir</item>
         <item quantity="other">%1$d Articles sense llegir</item>
     </plurals>
     <string name="starred">Destacat</string>
     <plurals name="starred_desc">
         <item quantity="one">%1$d Article destacat</item>
-        <item quantity="many"/>
+        <item quantity="many">%1$d Articles destacats</item>
         <item quantity="other">%1$d Articles destacats</item>
     </plurals>
     <string name="feeds">Fonts</string>
@@ -282,4 +282,8 @@
     <string name="open_link_specific_browser">Navegador</string>
     <string name="copy_error_report">Copia l\'informe d\'error</string>
     <string name="open_link_specific_browser_not_selected">Cap</string>
+    <string name="unfold_more">Expandir</string>
+    <string name="unfold_less">Col·lapsar</string>
+    <string name="open_in_browser">Obrir al navegador</string>
+    <string name="all_open_in_browser_tips">Obrir tots els articles del grup \"%1$s\" amb el navegador predeterminat</string>
 </resources>
