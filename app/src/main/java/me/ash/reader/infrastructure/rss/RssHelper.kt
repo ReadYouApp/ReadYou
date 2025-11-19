@@ -49,9 +49,9 @@ constructor(
     suspend fun searchFeed(feedLink: String): SyndFeed {
         return withContext(ioDispatcher) {
             val response = response(okHttpClient, feedLink)
-            val contentType = response.header("Content-Type")
+        //    val contentType = response.header("Content-Type")
             response.body.byteStream().use { inputStream ->
-                SyndFeedInput().build(XmlReader(inputStream, contentType)).also {
+                SyndFeedInput().build(XmlReader(inputStream, Charsets.UTF_8.name())).also {
                     it.icon = SyndImageImpl()
                     it.icon.link = queryRssIconLink(feedLink)
                     it.icon.url = it.icon.link
@@ -119,11 +119,11 @@ constructor(
         try {
             val accountId = context.currentAccountId
             val response = response(okHttpClient, feed.url)
-            val contentType = response.header("Content-Type")
+        //    val contentType = response.header("Content-Type")
             response.body.byteStream().use { inputStream ->
                 SyndFeedInput()
                     .apply { isPreserveWireFeed = true }
-                    .build(XmlReader(inputStream, contentType))
+                    .build(XmlReader(inputStream, Charsets.UTF_8.name()))
                     .entries
                     .asSequence()
                     .takeWhile { latestLink == null || latestLink != it.link }
