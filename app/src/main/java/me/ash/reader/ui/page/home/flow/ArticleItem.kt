@@ -29,6 +29,7 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -289,11 +291,16 @@ fun ArticleItem(
 
 @Composable
 fun StarredIcon(modifier: Modifier = Modifier) {
+    val fontSize = LocalTextStyle.current.fontSize
+    val iconSize = with(LocalDensity.current) { fontSize.toDp() }
+
     Icon(
-        modifier = modifier.size(14.dp).padding(end = 2.dp),
+        modifier = modifier
+            .size(iconSize)
+            .padding(end = 2.dp),
         imageVector = Icons.Rounded.Star,
         contentDescription = stringResource(R.string.starred),
-        tint = MaterialTheme.colorScheme.outlineVariant,
+        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
     )
 }
 
