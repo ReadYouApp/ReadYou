@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.service.RssService
@@ -44,6 +45,13 @@ constructor(
             rssService.flow().collectLatest {
                 it.pullGroups().collectLatest { groups ->
                     _feedOptionUiState.update { it.copy(groups = groups) }
+                }
+            }
+        }
+        viewModelScope.launch(ioDispatcher) {
+            rssService.flow().collectLatest { it ->
+                it.pullFilteredKeywords().collectLatest { filters ->
+                    _feedOptionUiState.update { it.copy(filteredKeywords = filters) }
                 }
             }
         }
@@ -220,6 +228,50 @@ constructor(
             }
         }
     }
+
+    fun showNewKeywordFilterDialog() {
+        _feedOptionUiState.update { it.copy(newKeywordFilterDialogVisible = true, newKeywordFilterContent = "") }
+    }
+
+    fun hideNewKeywordFilterDialog() {
+        _feedOptionUiState.update { it.copy(newKeywordFilterDialogVisible = false, newKeywordFilterContent = "") }
+    }
+
+    fun inputNewKeywordFilter(content: String) {
+        _feedOptionUiState.update { it.copy(newKeywordFilterContent = content) }
+    }
+
+    fun addFilteredKeyword() {
+        if (_feedOptionUiState.value.newKeywordFilterContent.isNotBlank()) {
+            val feed = _feedOptionUiState.value.feed;
+            val keyword = _feedOptionUiState.value.newKeywordFilterContent
+
+            if (feed != null) {
+                applicationScope.launch(ioDispatcher) {
+                    rssService
+                        .get()
+                        .addFilteredKeyword(feed, newFilteredKeyword = keyword)
+                    rssService.get().deleteArticles(feed = feed, keywordFilter = keyword)
+                    hideNewKeywordFilterDialog()
+                }
+            }
+        }
+    }
+
+    fun removeFilteredKeyword(keyword: KeywordFilter) {
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().deleteFilteredKeyword(keyword)
+
+            val feed = _feedOptionUiState.value.feed;
+            if (feed != null) {
+                rssService.get().sync(
+                    feed.accountId,
+                    feed.id,
+                    feed.groupId,
+                )
+            }
+        }
+    }
 }
 
 data class FeedOptionUiState(
@@ -228,6 +280,9 @@ data class FeedOptionUiState(
     val newGroupContent: String = "",
     val newGroupDialogVisible: Boolean = false,
     val groups: List<Group> = emptyList(),
+    val newKeywordFilterContent: String = "",
+    val newKeywordFilterDialogVisible: Boolean = false,
+    val filteredKeywords: List<KeywordFilter> = emptyList(),
     val deleteDialogVisible: Boolean = false,
     val clearDialogVisible: Boolean = false,
     val newName: String = "",

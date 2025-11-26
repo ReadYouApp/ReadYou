@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.ash.reader.R
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.service.AccountService
 import me.ash.reader.domain.service.OpmlService
@@ -192,6 +193,7 @@ constructor(
                     isNotification = state.notification,
                     isFullContent = state.fullContent,
                     isBrowser = state.browser,
+                    filteredKeywords = state.filteredKeywords
                 )
             hideDrawer()
         }
@@ -259,6 +261,49 @@ constructor(
             }
         }
     }
+
+    fun showNewKeywordFilterDialog() {
+        _subscribeUiState.update { it.copy(newKeywordFilterDialogVisible = true, newKeywordFilterContent = "") }
+    }
+
+    fun hideNewKeywordFilterDialog() {
+        _subscribeUiState.update { it.copy(newKeywordFilterDialogVisible = false, newKeywordFilterContent = "") }
+    }
+
+    fun inputNewKeywordFilter(content: String) {
+        _subscribeUiState.update { it.copy(newKeywordFilterContent = content) }
+    }
+
+    fun addFilteredKeyword() {
+        if (_subscribeUiState.value.newKeywordFilterContent.isNotBlank()) {
+            val state = _subscribeState.value
+            if (state !is SubscribeState.Configure) return
+
+            val newKeyword = _subscribeUiState.value.newKeywordFilterContent
+            val keywords = state.filteredKeywords
+
+            _subscribeState.update {
+                when (it) {
+                    is SubscribeState.Configure -> it.copy(filteredKeywords = listOf(newKeyword) + keywords)
+                    else -> it
+                }
+            }
+            hideNewKeywordFilterDialog()
+        }
+    }
+
+    fun removeFilteredKeyword(keyword: KeywordFilter) {
+        val state = _subscribeState.value
+        if (state !is SubscribeState.Configure) return
+
+        val keywords = state.filteredKeywords;
+        _subscribeState.update {
+            when (it) {
+                is SubscribeState.Configure -> it.copy(filteredKeywords = keywords - keyword.keyword)
+                else -> it
+            }
+        }
+    }
 }
 
 data class SubscribeUiState(
@@ -266,6 +311,8 @@ data class SubscribeUiState(
     val newGroupContent: String = "",
     val newName: String = "",
     val renameDialogVisible: Boolean = false,
+    val newKeywordFilterContent: String = "",
+    val newKeywordFilterDialogVisible: Boolean = false,
 )
 
 sealed interface SubscribeState {
@@ -294,5 +341,6 @@ sealed interface SubscribeState {
         val fullContent: Boolean = false,
         val browser: Boolean = false,
         val selectedGroupId: String,
+        val filteredKeywords: List<String> = emptyList(),
     ) : SubscribeState, Visible
 }
