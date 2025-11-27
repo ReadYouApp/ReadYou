@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.db.AndroidDatabase
 import javax.inject.Singleton
@@ -20,6 +21,7 @@ import javax.inject.Singleton
  * - [FeedDao]
  * - [GroupDao]
  * - [AccountDao]
+ * - [FeedGroupDao]
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -44,6 +46,11 @@ object DatabaseModule {
     @Singleton
     fun provideAccountDao(androidDatabase: AndroidDatabase): AccountDao =
         androidDatabase.accountDao()
+
+    @Provides
+    @Singleton
+    fun provideFeedGroupDao(androidDatabase: AndroidDatabase): FeedGroupDao =
+        androidDatabase.feedGroupDao()
 
     @Provides
     @Singleton
