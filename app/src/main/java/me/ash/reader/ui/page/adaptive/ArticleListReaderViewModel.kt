@@ -184,6 +184,7 @@ constructor(
                     .distinctBy { it.article.id }
 
             diffMapHolder.updateDiff(articleWithFeed = items.toTypedArray(), isUnread = false)
+            diffMapHolder.writeDiffsToCache()
         }
     }
 
@@ -207,6 +208,21 @@ constructor(
                     .map { it.articleWithFeed }
 
             diffMapHolder.updateDiff(articleWithFeed = items.toTypedArray(), isUnread = false)
+            diffMapHolder.writeDiffsToCache()
+        }
+    }
+
+    fun toggleReadStatus(articleWithFeed: ArticleWithFeed) {
+        viewModelScope.launch(ioDispatcher) {
+            diffMapHolder.updateDiff(articleWithFeed)
+            diffMapHolder.writeDiffsToCache()
+        }
+    }
+
+    fun markAsReadList(articles: List<ArticleWithFeed>) {
+        viewModelScope.launch(ioDispatcher) {
+            diffMapHolder.updateDiff(articleWithFeed = articles.toTypedArray(), isUnread = false)
+            diffMapHolder.writeDiffsToCache()
         }
     }
 
@@ -295,6 +311,7 @@ constructor(
 
             if (diffMapHolder.checkIfUnread(item)) {
                 diffMapHolder.updateDiff(item, isUnread = false)
+                diffMapHolder.writeDiffsToCache()
             }
             item.run {
                 _readingUiState.update {

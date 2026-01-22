@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.account.AccountType
@@ -63,6 +65,8 @@ class DiffMapHolder @Inject constructor(
     private var currentAccount: Account? = null
 
     private val cacheFile: File get() = userCacheDir.resolve("diff_map.json")
+
+    private val writeMutex = Mutex()
 
     var dbJob: Job? = null
     var remoteJob: Job? = null
@@ -199,25 +203,53 @@ class DiffMapHolder @Inject constructor(
 
     fun commitDiffsToDb() {
         applicationScope.launch(ioDispatcher) {
-            val markAsReadArticles = diffMap.filter { !it.value.isUnread }.map { it.key }.toSet()
-            val markAsUnreadArticles = diffMap.filter { it.value.isUnread }.map { it.key }.toSet()
-            clearDiffs()
+            val snapshot = diffMap.toMap()
+            val markAsReadArticles = snapshot.filter { !it.value.isUnread }.map { it.key }.toSet()
+            val markAsUnreadArticles = snapshot.filter { it.value.isUnread }.map { it.key }.toSet()
+
             rssService.get().batchMarkAsRead(articleIds = markAsReadArticles, isUnread = false)
             rssService.get().batchMarkAsRead(articleIds = markAsUnreadArticles, isUnread = true)
+
+            writeMutex.withLock {
+                val keysToRemove = markAsReadArticles + markAsUnreadArticles
+                keysToRemove.forEach { key ->
+                    val current = diffMap[key]
+                    if (current != null) {
+                        val committedState = if (markAsReadArticles.contains(key)) false else true
+                        if (current.isUnread == committedState) {
+                            diffMap.remove(key)
+                        }
+                    }
+                }
+
+                if (diffMap.isEmpty()) {
+                    if (cacheFile.exists()) cacheFile.delete()
+                } else {
+                    try {
+                        val tmpJson = gson.toJson(diffMap)
+                        userCacheDir.mkdirs()
+                        if (!cacheFile.exists()) cacheFile.createNewFile()
+                        cacheFile.writeText(tmpJson)
+                    } catch (_: Exception) {
+                    }
+                }
+            }
         }
     }
 
-    private fun writeDiffsToCache() {
+    fun writeDiffsToCache() {
         applicationScope.launch(ioDispatcher) {
-            try {
-                val tmpJson = gson.toJson(diffMap)
-                userCacheDir.mkdirs()
-                cacheFile.createNewFile()
-                if (cacheFile.exists() && cacheFile.canWrite()) {
-                    cacheFile.writeText(tmpJson)
-                }
-            } catch (_: Exception) {
+            writeMutex.withLock {
+                try {
+                    val tmpJson = gson.toJson(diffMap)
+                    userCacheDir.mkdirs()
+                    cacheFile.createNewFile()
+                    if (cacheFile.exists() && cacheFile.canWrite()) {
+                        cacheFile.writeText(tmpJson)
+                    }
+                } catch (_: Exception) {
 
+                }
             }
         }
     }
@@ -256,15 +288,17 @@ class DiffMapHolder @Inject constructor(
 
     private fun commitDiffsFromCache() {
         applicationScope.launch(ioDispatcher) {
-            if (cacheFile.exists() && cacheFile.canRead()) {
-                val tmpJson = cacheFile.readText()
-                val mapType = object : TypeToken<Map<String, Diff>>() {}.type
-                val diffMapFromCache = gson.fromJson<Map<String, Diff>>(
-                    tmpJson, mapType
-                )
-                diffMapFromCache?.let {
-                    diffMap.clear()
-                    diffMap.putAll(it)
+            writeMutex.withLock {
+                if (cacheFile.exists() && cacheFile.canRead()) {
+                    val tmpJson = cacheFile.readText()
+                    val mapType = object : TypeToken<Map<String, Diff>>() {}.type
+                    val diffMapFromCache = gson.fromJson<Map<String, Diff>>(
+                        tmpJson, mapType
+                    )
+                    diffMapFromCache?.let {
+                        diffMap.clear()
+                        diffMap.putAll(it)
+                    }
                 }
             }
         }.invokeOnCompletion {
@@ -274,10 +308,12 @@ class DiffMapHolder @Inject constructor(
 
     private fun clearDiffs() {
         applicationScope.launch(ioDispatcher) {
-            if (cacheFile.exists() && cacheFile.canWrite()) {
-                cacheFile.delete()
+            writeMutex.withLock {
+                if (cacheFile.exists() && cacheFile.canWrite()) {
+                    cacheFile.delete()
+                }
+                diffMap.clear()
             }
-            diffMap.clear()
         }
     }
 }

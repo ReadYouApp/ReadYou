@@ -182,7 +182,7 @@ fun FlowPage(
     }
 
     val onToggleRead: (ArticleWithFeed) -> Unit = remember {
-        { articleWithFeed -> viewModel.diffMapHolder.updateDiff(articleWithFeed) }
+        { articleWithFeed -> viewModel.toggleReadStatus(articleWithFeed) }
     }
 
     val sortByEarliest =
@@ -540,10 +540,7 @@ fun FlowPage(
                                     }
                                 }
                                 if (items.isNotEmpty() && found) {
-                                    viewModel.diffMapHolder.updateDiff(
-                                        articleWithFeed = items.toTypedArray(),
-                                        isUnread = false,
-                                    )
+                                    viewModel.markAsReadList(items)
                                 }
                             }
                         }
