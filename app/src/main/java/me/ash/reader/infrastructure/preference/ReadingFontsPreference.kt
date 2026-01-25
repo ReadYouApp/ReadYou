@@ -13,16 +13,24 @@ import me.ash.reader.ui.ext.ExternalFonts
 import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.put
 import me.ash.reader.ui.ext.restart
+import me.ash.reader.ui.theme.GoogleSansFontFamily
 
 val LocalReadingFonts =
     compositionLocalOf<ReadingFontsPreference> { ReadingFontsPreference.default }
 
 sealed class ReadingFontsPreference(val value: Int) : Preference() {
+    object GoogleSans : ReadingFontsPreference(6)
+
     object System : ReadingFontsPreference(0)
+
     object Serif : ReadingFontsPreference(1)
+
     object SansSerif : ReadingFontsPreference(2)
+
     object Monospace : ReadingFontsPreference(3)
+
     object Cursive : ReadingFontsPreference(4)
+
     object External : ReadingFontsPreference(5)
 
     override fun put(context: Context, scope: CoroutineScope) {
@@ -36,6 +44,7 @@ sealed class ReadingFontsPreference(val value: Int) : Preference() {
 
     fun toDesc(context: Context): String =
         when (this) {
+            GoogleSans -> context.getString(R.string.google_sans)
             System -> context.getString(R.string.system_default)
             Serif -> "Serif"
             SansSerif -> "Sans-Serif"
@@ -46,18 +55,21 @@ sealed class ReadingFontsPreference(val value: Int) : Preference() {
 
     fun asFontFamily(context: Context): FontFamily =
         when (this) {
+            GoogleSans -> GoogleSansFontFamily
             System -> FontFamily.Default
             Serif -> FontFamily.Serif
             SansSerif -> FontFamily.SansSerif
             Monospace -> FontFamily.Monospace
             Cursive -> FontFamily.Cursive
-            External -> ExternalFonts.loadReadingTypography(context).displayLarge.fontFamily ?: FontFamily.Default
+            External ->
+                ExternalFonts.loadReadingTypography(context).displayLarge.fontFamily
+                    ?: FontFamily.Default
         }
 
     companion object {
 
-        val default = System
-        val values = listOf(System, Serif, SansSerif, Monospace, Cursive, External)
+        val default = GoogleSans
+        val values = listOf(GoogleSans, System, Serif, SansSerif, Monospace, Cursive, External)
 
         fun fromPreferences(preferences: Preferences): ReadingFontsPreference =
             when (preferences[DataStoreKey.keys[readingFonts]?.key as Preferences.Key<Int>]) {
@@ -67,6 +79,7 @@ sealed class ReadingFontsPreference(val value: Int) : Preference() {
                 3 -> Monospace
                 4 -> Cursive
                 5 -> External
+                6 -> GoogleSans
                 else -> default
             }
     }

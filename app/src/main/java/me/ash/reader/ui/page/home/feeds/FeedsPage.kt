@@ -73,6 +73,7 @@ import me.ash.reader.ui.component.FilterBar
 import me.ash.reader.ui.component.base.DisplayText
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
+import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.currentAccountId
 import me.ash.reader.ui.ext.findActivity
@@ -228,7 +229,7 @@ fun FeedsPage(
         },
         content = {
             PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {
-                LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
+                LazyColumn(modifier = Modifier.fillMaxSize().drawVerticalScrollIndicator(listState), state = listState) {
                     item {
                         DisplayText(text = feedsUiState.account?.name ?: "", desc = "") {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.ContextClick)

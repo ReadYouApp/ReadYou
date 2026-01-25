@@ -149,6 +149,7 @@
     <string name="tonal_elevation">Tonal elevation</string>
     <string name="reading_fonts">Reading fonts</string>
     <string name="basic_fonts">Basic fonts</string>
+    <string name="google_sans" translatable="false">Google Sans Flex</string>
     <string name="feeds_page">Feeds page</string>
     <string name="flow_page">Flow page</string>
     <string name="reading_page">Reading page</string>

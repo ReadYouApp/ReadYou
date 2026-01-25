@@ -33,11 +33,13 @@ fun AppTheme(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (useDarkTheme) {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    0, APPEARANCE_LIGHT_STATUS_BARS
+                    0,
+                    APPEARANCE_LIGHT_STATUS_BARS,
                 )
             } else {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                    APPEARANCE_LIGHT_STATUS_BARS,
                 )
             }
         }
@@ -45,30 +47,32 @@ fun AppTheme(
 
     val themeIndex = LocalThemeIndex.current
 
-    val tonalPalettes = wallpaperPalettes[
-        if (themeIndex >= wallpaperPalettes.size) {
-            when {
-                wallpaperPalettes.size == 5 -> 0
-                wallpaperPalettes.size > 5 -> 5
-                else -> 0
-            }
-        } else {
-            themeIndex
-        }
-    ]
+    val tonalPalettes =
+        wallpaperPalettes[
+            if (themeIndex >= wallpaperPalettes.size) {
+                when {
+                    wallpaperPalettes.size == 5 -> 0
+                    wallpaperPalettes.size > 5 -> 5
+                    else -> 0
+                }
+            } else {
+                themeIndex
+            }]
 
     ProvideZcamViewingConditions {
         CompositionLocalProvider(
             LocalTonalPalettes provides tonalPalettes.apply { Preparing() },
-            LocalTextStyle provides LocalTextStyle.current.applyTextDirection()
+            LocalTextStyle provides LocalTextStyle.current.applyTextDirection(),
         ) {
             val lightColors = dynamicLightColorScheme()
             val darkColors = dynamicDarkColorScheme()
             MaterialTheme(
                 motionScheme = MotionScheme.expressive(),
                 colorScheme = if (useDarkTheme) darkColors else lightColors,
-                typography = LocalBasicFonts.current.asTypography(LocalContext.current)
-                    .applyTextDirection(),
+                typography =
+                    LocalBasicFonts.current
+                        .asTypography(LocalContext.current)
+                        .applyTextDirection(),
                 shapes = Shapes,
                 content = content,
             )

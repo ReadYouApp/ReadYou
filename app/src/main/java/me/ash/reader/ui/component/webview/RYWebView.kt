@@ -46,8 +46,8 @@ fun RYWebView(
     val openLink = LocalOpenLink.current
     val openLinkSpecificBrowser = LocalOpenLinkSpecificBrowser.current
     val tonalElevation = LocalReadingPageTonalElevation.current
-    val backgroundColor = MaterialTheme.colorScheme
-        .surfaceColorAtElevation(tonalElevation.value.dp).toArgb()
+    val backgroundColor =
+        MaterialTheme.colorScheme.surfaceColorAtElevation(tonalElevation.value.dp).toArgb()
     val selectionTextColor = Color.Black.toArgb()
     val selectionBgColor = (MaterialTheme.colorScheme.tertiaryContainer alwaysLight true).toArgb()
     val textColor: Int = MaterialTheme.colorScheme.onSurfaceVariant.toArgb()
@@ -65,31 +65,35 @@ fun RYWebView(
     val imgMargin: Int = LocalReadingImageHorizontalPadding.current
     val imgBorderRadius: Int = LocalReadingImageRoundedCorners.current
     val codeTextColor: Int = MaterialTheme.colorScheme.tertiary.toArgb()
-    val codeBgColor: Int = MaterialTheme.colorScheme
-        .surfaceColorAtElevation((tonalElevation.value + 6).dp).toArgb()
+    val codeBgColor: Int =
+        MaterialTheme.colorScheme.surfaceColorAtElevation((tonalElevation.value + 6).dp).toArgb()
     val boldCharacters = LocalReadingBoldCharacters.current
 
-    val webView by remember(backgroundColor) {
-        mutableStateOf(
-            WebViewLayout.get(
-                context = context,
-                readingFontsPreference = readingFonts,
-                webViewClient = WebViewClient(
+    val webView by
+        remember(backgroundColor) {
+            mutableStateOf(
+                WebViewLayout.get(
                     context = context,
-                    refererDomain = refererDomain,
-                    onOpenLink = { url ->
-                        context.openURL(url, openLink, openLinkSpecificBrowser)
-                    }
-                ),
-                onImageClick = onImageClick
+                    readingFontsPreference = readingFonts,
+                    webViewClient =
+                        WebViewClient(
+                            context = context,
+                            refererDomain = refererDomain,
+                            onOpenLink = { url ->
+                                context.openURL(url, openLink, openLinkSpecificBrowser)
+                            },
+                        ),
+                    onImageClick = onImageClick,
+                )
             )
-        )
-    }
+        }
 
     val fontPath =
-        if (readingFonts is ReadingFontsPreference.External) ExternalFonts.FontType.ReadingFont.toPath(
-            context
-        ) else null
+        if (readingFonts is ReadingFontsPreference.External)
+            ExternalFonts.FontType.ReadingFont.toPath(context)
+        else if (readingFonts is ReadingFontsPreference.GoogleSans) {
+            "/android_res/font/google_sans_flex.ttf"
+        } else null
 
     AndroidView(
         modifier = modifier,
@@ -129,7 +133,8 @@ fun RYWebView(
                         WebViewScript.get(boldCharacters.value),
                     ),
                     "text/HTML",
-                    "UTF-8", null
+                    "UTF-8",
+                    null,
                 )
             }
         },

@@ -28,8 +28,8 @@ import me.ash.reader.infrastructure.preference.LocalReadingSubheadUpperCase
 import me.ash.reader.infrastructure.preference.ReadingRendererPreference
 import me.ash.reader.ui.component.reader.LocalTextContentWidth
 import me.ash.reader.ui.component.reader.Reader
+import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.component.webview.RYWebView
-import me.ash.reader.ui.ext.drawVerticalScrollbar
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.roundClick
 
@@ -80,7 +80,10 @@ fun Content(
             ReadingRendererPreference.WebView -> {
                 Column(
                     modifier =
-                        modifier.padding(top = contentPadding.calculateTopPadding()).fillMaxSize()
+                        modifier
+                            .padding(top = contentPadding.calculateTopPadding())
+                            .fillMaxSize()
+                            .drawVerticalScrollIndicator(scrollState)
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
@@ -110,7 +113,7 @@ fun Content(
             ReadingRendererPreference.NativeComponent -> {
                 SelectionContainer {
                     LazyColumn(
-                        modifier = modifier.fillMaxSize().drawVerticalScrollbar(listState),
+                        modifier = modifier.fillMaxSize().drawVerticalScrollIndicator(listState),
                         state = listState,
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
