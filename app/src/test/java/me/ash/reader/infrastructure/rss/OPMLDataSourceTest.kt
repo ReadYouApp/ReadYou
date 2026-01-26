@@ -2,6 +2,7 @@ package me.ash.reader.infrastructure.rss
 
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.model.group.GroupWithFeed
@@ -30,8 +31,7 @@ class OPMLDataSourceTest {
     @Mock
     private lateinit var mockContext: Context
 
-    @Mock
-    private lateinit var mockIODispatcher: CoroutineDispatcher
+    private lateinit var ioDispatcher: CoroutineDispatcher
 
     private lateinit var opmlDataSource: OPMLDataSource
 
@@ -42,8 +42,8 @@ class OPMLDataSourceTest {
     @Before
     fun setUp() {
         mockContext = mock<Context> { }
-        mockIODispatcher = mock<CoroutineDispatcher> {}
-        opmlDataSource = OPMLDataSource(mockContext, mockIODispatcher)
+        ioDispatcher = Dispatchers.Unconfined
+        opmlDataSource = OPMLDataSource(mockContext, ioDispatcher)
     }
 
     private fun fill(value: String): String = OPML_TEMPLATE.replace("{{var}}", value)
