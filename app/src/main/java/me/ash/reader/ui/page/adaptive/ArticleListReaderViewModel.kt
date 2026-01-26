@@ -213,14 +213,26 @@ constructor(
     }
 
     fun toggleReadStatus(articleWithFeed: ArticleWithFeed) {
-        viewModelScope.launch(ioDispatcher) {
+        if (diffMapHolder.checkIfUnread(articleWithFeed)) {
+            notificationHelper.cancel(articleWithFeed.article.id)
+        }
+        applicationScope.launch(ioDispatcher) {
             diffMapHolder.updateDiff(articleWithFeed)
             diffMapHolder.writeDiffsToCache()
         }
     }
 
+    fun markAsRead(articleWithFeed: ArticleWithFeed) {
+        notificationHelper.cancel(articleWithFeed.article.id)
+        applicationScope.launch(ioDispatcher) {
+            diffMapHolder.updateDiff(articleWithFeed, isUnread = false)
+            diffMapHolder.writeDiffsToCache()
+        }
+    }
+
     fun markAsReadList(articles: List<ArticleWithFeed>) {
-        viewModelScope.launch(ioDispatcher) {
+        articles.forEach { notificationHelper.cancel(it.article.id) }
+        applicationScope.launch(ioDispatcher) {
             diffMapHolder.updateDiff(articleWithFeed = articles.toTypedArray(), isUnread = false)
             diffMapHolder.writeDiffsToCache()
         }

@@ -27,6 +27,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import me.ash.reader.R
 import me.ash.reader.domain.data.SyncLogger
+import me.ash.reader.domain.data.DiffMapHolder
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.account.AccountType
 import me.ash.reader.domain.model.account.AccountType.Companion.FreshRSS
@@ -77,6 +78,7 @@ constructor(
     private val workManager: WorkManager,
     private val accountService: AccountService,
     private val syncLogger: SyncLogger,
+    private val diffMapHolder: dagger.Lazy<DiffMapHolder>,
 ) :
     AbstractRssRepository(
         articleDao,
@@ -362,10 +364,13 @@ constructor(
             }
 
             launch {
+                val pendingReadIds = diffMapHolder.get().diffMap.filter { !it.value.isUnread }.keys
+
                 val toBeUnreadLocal =
-                    localReadIds.intersect(remoteUnreadIds.await()).map {
+                    (localReadIds.intersect(remoteUnreadIds.await()).map {
                         accountId spacerDollar it
-                    }
+                    } - pendingReadIds)
+
                 toBeUnreadLocal.chunked(1000).forEach {
                     articleDao.markAsReadByIdSet(
                         accountId = accountId,
