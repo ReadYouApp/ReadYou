@@ -671,10 +671,7 @@ fun FlowPage(
                                 isSwipeEnabled = { listState.isScrollInProgress },
                                 onClick = { articleWithFeed, index ->
                                     if (articleWithFeed.feed.isBrowser) {
-                                        viewModel.diffMapHolder.updateDiff(
-                                            articleWithFeed,
-                                            isUnread = false,
-                                        )
+                                        viewModel.markAsRead(articleWithFeed)
                                         context.openURL(
                                             articleWithFeed.article.link,
                                             openLink,

@@ -5,6 +5,7 @@ import be.ceau.opml.OpmlParser
 import be.ceau.opml.entity.Outline
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.model.group.GroupWithFeed
@@ -28,7 +29,11 @@ class OPMLDataSource @Inject constructor(
         defaultGroup: Group,
         targetAccountId: Int,
     ): List<GroupWithFeed> {
-        val opml = OpmlParser().parse(inputStream)
+        val opml = withContext(ioDispatcher) {
+            val content = inputStream.bufferedReader().use { it.readText() }
+            val sanitizedContent = content.replace(Regex("&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#[0-9]+|#x[0-9a-fA-F]+);)"), "&amp;")
+            OpmlParser().parse(java.io.ByteArrayInputStream(sanitizedContent.toByteArray(Charsets.UTF_8)))
+        }
         val groupWithFeedList = mutableListOf<GroupWithFeed>().also {
             it.addGroup(defaultGroup)
         }

@@ -74,6 +74,21 @@ constructor(
                     .setStyle(NotificationCompat.InboxStyle().setSummaryText(feed.name))
                     .setGroup(feed.id)
                     .setGroupSummary(true)
+                    .setContentIntent(
+                        PendingIntent.getActivity(
+                            context,
+                            feed.id.hashCode(),
+                            Intent(context, MainActivity::class.java).apply {
+                                flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                putExtra(ExtraName.FEED_ID, feed.id)
+                                putExtra(ExtraName.ACCOUNT_ID, feed.accountId)
+                            },
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                        )
+                    )
                     .build(),
             )
 
@@ -89,23 +104,29 @@ constructor(
                         .setContentIntent(
                             PendingIntent.getActivity(
                                 context,
-                                Random().nextInt() + article.id.hashCode(),
+                                article.id.hashCode(),
                                 Intent(context, MainActivity::class.java).apply {
                                     flags =
                                         Intent.FLAG_ACTIVITY_NEW_TASK or
-                                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                            Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     putExtra(ExtraName.ARTICLE_ID, article.id)
+                                    putExtra(ExtraName.ACCOUNT_ID, article.accountId)
                                 },
                                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                             )
                         )
                         .setGroup(feed.id)
                 notificationManager.notify(
-                    Random().nextInt() + article.id.hashCode(),
+                    article.id.hashCode(),
                     builder.build(),
                 )
             }
         }
+    }
+
+    fun cancel(articleId: String) {
+        notificationManager.cancel(articleId.hashCode())
     }
 
     fun notify(feedWithArticle: FeedWithArticle) {

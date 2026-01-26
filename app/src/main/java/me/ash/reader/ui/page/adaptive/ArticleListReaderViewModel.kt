@@ -40,6 +40,7 @@ import me.ash.reader.domain.service.LocalRssService
 import me.ash.reader.domain.service.RssService
 import me.ash.reader.domain.service.SyncWorker
 import me.ash.reader.infrastructure.android.AndroidImageDownloader
+import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.android.TextToSpeechManager
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.di.IODispatcher
@@ -65,6 +66,7 @@ constructor(
     private val readerCacheHelper: ReaderCacheHelper,
     val textToSpeechManager: TextToSpeechManager,
     private val imageDownloader: AndroidImageDownloader,
+    private val notificationHelper: NotificationHelper,
     private val articleListUseCase: ArticlePagingListUseCase,
     workManager: WorkManager,
 ) : ViewModel() {
@@ -147,6 +149,24 @@ constructor(
         conditions: MarkAsReadConditions,
         isUnread: Boolean,
     ) {
+        if (!isUnread) {
+            val idsToCancel =
+                if (articleId != null) {
+                    listOf(articleId)
+                } else {
+                    val date = conditions.toDate()
+                    articleListUseCase.itemSnapshotList.items
+                        .filterIsInstance<ArticleFlowItem.Article>()
+                        .map { it.articleWithFeed.article }
+                        .filter {
+                            val matchesDate = if (date == null) true else it.date < date
+                            it.isUnread && matchesDate
+                        }
+                        .map { it.id }
+                }
+
+            applicationScope.launch(ioDispatcher) { idsToCancel.forEach { notificationHelper.cancel(it) } }
+        }
         applicationScope.launch(ioDispatcher) {
             rssService
                 .get()
@@ -183,6 +203,7 @@ constructor(
                     }
                     .distinctBy { it.article.id }
 
+            items.forEach { notificationHelper.cancel(it.article.id) }
             diffMapHolder.updateDiff(articleWithFeed = items.toTypedArray(), isUnread = false)
             diffMapHolder.writeDiffsToCache()
         }
@@ -207,19 +228,32 @@ constructor(
                     .filterIsInstance<ArticleFlowItem.Article>()
                     .map { it.articleWithFeed }
 
+            items.forEach { notificationHelper.cancel(it.article.id) }
             diffMapHolder.updateDiff(articleWithFeed = items.toTypedArray(), isUnread = false)
             diffMapHolder.writeDiffsToCache()
         }
     }
 
     fun toggleReadStatus(articleWithFeed: ArticleWithFeed) {
+        if (diffMapHolder.checkIfUnread(articleWithFeed)) {
+            notificationHelper.cancel(articleWithFeed.article.id)
+        }
         viewModelScope.launch(ioDispatcher) {
             diffMapHolder.updateDiff(articleWithFeed)
             diffMapHolder.writeDiffsToCache()
         }
     }
 
+    fun markAsRead(articleWithFeed: ArticleWithFeed) {
+        notificationHelper.cancel(articleWithFeed.article.id)
+        viewModelScope.launch(ioDispatcher) {
+            diffMapHolder.updateDiff(articleWithFeed, isUnread = false)
+            diffMapHolder.writeDiffsToCache()
+        }
+    }
+
     fun markAsReadList(articles: List<ArticleWithFeed>) {
+        articles.forEach { notificationHelper.cancel(it.article.id) }
         viewModelScope.launch(ioDispatcher) {
             diffMapHolder.updateDiff(articleWithFeed = articles.toTypedArray(), isUnread = false)
             diffMapHolder.writeDiffsToCache()
@@ -312,6 +346,7 @@ constructor(
             if (diffMapHolder.checkIfUnread(item)) {
                 diffMapHolder.updateDiff(item, isUnread = false)
                 diffMapHolder.writeDiffsToCache()
+                notificationHelper.cancel(item.article.id)
             }
             item.run {
                 _readingUiState.update {
