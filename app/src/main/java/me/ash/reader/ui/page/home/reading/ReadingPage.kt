@@ -78,8 +78,13 @@ fun ReadingPage(
 
     var isReaderScrollingDown by remember { mutableStateOf(false) }
     var showFullScreenImageViewer by remember { mutableStateOf(false) }
+    var showAiSummaryOverlay by remember { mutableStateOf(false) }
 
     var currentImageData by remember { mutableStateOf(ImageData()) }
+    
+    var summaryContent by remember { mutableStateOf("") }
+    var isSummaryLoading by remember { mutableStateOf(false) }
+    var summaryError by remember { mutableStateOf<String?>(null) }
 
     val isShowToolBar =
         if (LocalReadingAutoHideToolbar.current.value) {
@@ -112,6 +117,23 @@ fun ReadingPage(
                         navigationAction = navigationAction,
                         onNavButtonClick = onNavAction,
                         onNavigateToStylePage = onNavigateToStylePage,
+                        onAiSummaryClick = {
+                            summaryError = null
+                            isSummaryLoading = true
+                            showAiSummaryOverlay = true
+                            coroutineScope.launch {
+                                viewModel.summarizeCurrentArticle(
+                                    onSuccess = { summary ->
+                                        summaryContent = summary
+                                        isSummaryLoading = false
+                                    },
+                                    onError = { error ->
+                                        summaryError = error
+                                        isSummaryLoading = false
+                                    }
+                                )
+                            }
+                        }
                     )
                 }
 
@@ -354,6 +376,15 @@ fun ReadingPage(
                 )
             },
             onDismissRequest = { showFullScreenImageViewer = false },
+        )
+    }
+    
+    if (showAiSummaryOverlay) {
+        AiSummaryOverlay(
+            summary = summaryContent,
+            isLoading = isSummaryLoading,
+            error = summaryError,
+            onDismissRequest = { showAiSummaryOverlay = false }
         )
     }
 }

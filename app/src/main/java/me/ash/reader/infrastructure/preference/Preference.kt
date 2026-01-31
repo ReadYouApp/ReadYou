@@ -89,5 +89,11 @@ fun Preferences.toSettings(): Settings {
 
         // Languages
         languages = LanguagesPreference.fromPreferences(this),
+
+        // AI
+        aiBaseUrl = AiBaseUrlPreference.fromPreferences(this),
+        aiApiKey = AiApiKeyPreference.fromPreferences(this),
+        aiModel = AiModelPreference.fromPreferences(this),
+        aiSummarizationPrompt = AiSummarizationPromptPreference.fromPreferences(this),
     )
 }

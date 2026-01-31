@@ -35,6 +35,7 @@ import me.ash.reader.domain.model.article.ArticleFlowItem
 import me.ash.reader.domain.model.article.ArticleWithFeed
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.general.MarkAsReadConditions
+import me.ash.reader.domain.repository.AiSummaryRepository
 import me.ash.reader.domain.service.GoogleReaderRssService
 import me.ash.reader.domain.service.LocalRssService
 import me.ash.reader.domain.service.RssService
@@ -66,6 +67,7 @@ constructor(
     val textToSpeechManager: TextToSpeechManager,
     private val imageDownloader: AndroidImageDownloader,
     private val articleListUseCase: ArticlePagingListUseCase,
+    private val aiSummaryRepository: AiSummaryRepository,
     workManager: WorkManager,
 ) : ViewModel() {
 
@@ -442,6 +444,38 @@ constructor(
     ) {
         viewModelScope.launch {
             imageDownloader.downloadImage(url).onSuccess(onSuccess).onFailure(onFailure)
+        }
+    }
+
+    fun summarizeCurrentArticle(
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            val articleContent = readerStateStateFlow.value.content.text ?: ""
+            val settings = settingsProvider.settings
+
+            if (settings.aiApiKey.value.isEmpty() || settings.aiBaseUrl.value.isEmpty()) {
+                onError("Please configure API URL and key first")
+                return@launch
+            }
+
+            val result = aiSummaryRepository.summarizeArticle(
+                baseUrl = settings.aiBaseUrl.value,
+                apiKey = settings.aiApiKey.value,
+                model = settings.aiModel.value.ifEmpty { "gpt-3.5-turbo" },
+                prompt = settings.aiSummarizationPrompt.value.ifEmpty {
+                    "Please provide a concise summary of the following article in 3-5 bullet points:\n\n"
+                },
+                articleContent = articleContent
+            )
+
+            when (result) {
+                is me.ash.reader.infrastructure.net.ApiResult.Success -> onSuccess(result.data)
+                is me.ash.reader.infrastructure.net.ApiResult.BizError -> onError(result.exception.message ?: "Business error")
+                is me.ash.reader.infrastructure.net.ApiResult.NetworkError -> onError(result.exception.message ?: "Network error")
+                is me.ash.reader.infrastructure.net.ApiResult.UnknownError -> onError(result.throwable.message ?: "Unknown error")
+            }
         }
     }
 }

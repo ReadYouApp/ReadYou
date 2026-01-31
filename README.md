@@ -22,7 +22,7 @@
 </div>
 
 <div align="center">
-    <h1>Read You</h1>
+    <h1>Read You AI</h1>
     <p>An Android RSS reader presented in <a target="_blank" href="https://m3.material.io/">Material You</a> style.</p>
     <p>English&nbsp;&nbsp;|&nbsp;&nbsp;
     <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -53,6 +53,7 @@ The following are the progress made so far and the goals to be worked on in the 
 - [x] Full content parse for original articles
 - [x] Multi-account
 - [x] Read aloud
+- [x] AI Article Summarization
 - [ ] Android widget
 - [ ] ...
 
@@ -63,12 +64,22 @@ The following are the progress made so far and the goals to be worked on in the 
 - [x] Fever
 - [x] Google Reader
 - [x] FreshRSS
-- [ ] Miniflux
+- [x] Miniflux
 - [ ] Tiny Tiny RSS
 - [ ] Inoreader
 - [ ] Feedly
 - [ ] Feedbin
 - [ ] ...
+
+## AI Summarization
+
+**Read You** supports AI-powered article summarization using OpenAI-compatible APIs. You can configure:
+- API Base URL (default: OpenAI)
+- API Key
+- LLM Model (fetched dynamically)
+- Custom Summarization Prompt
+
+Access these settings in **Settings > AI**.
 
 ## Download
 

@@ -201,6 +201,12 @@ sealed interface PreferencesKey {
         // Languages
         const val languages = "languages"
 
+        // AI
+        const val aiBaseUrl = "aiBaseUrl"
+        const val aiApiKey = "aiApiKey"
+        const val aiModel = "aiModel"
+        const val aiSummarizationPrompt = "aiSummarizationPrompt"
+
         private val keyList =
             listOf(
                 // Version
@@ -275,6 +281,11 @@ sealed interface PreferencesKey {
                 IntKey(sharedContent),
                 // Languages
                 IntKey(languages),
+                // AI
+                StringKey(aiBaseUrl),
+                StringKey(aiApiKey),
+                StringKey(aiModel),
+                StringKey(aiSummarizationPrompt),
             )
 
         val keys = keyList.associateBy { it.name }
@@ -362,6 +373,12 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
 
         // Languages
         const val languages = "languages"
+
+        // AI
+        const val aiBaseUrl = "aiBaseUrl"
+        const val aiApiKey = "aiApiKey"
+        const val aiModel = "aiModel"
+        const val aiSummarizationPrompt = "aiSummarizationPrompt"
 
         val keys: MutableMap<String, DataStoreKey<*>> =
             mutableMapOf(
@@ -513,6 +530,11 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
                 sharedContent to DataStoreKey(intPreferencesKey(sharedContent), Int::class.java),
                 // Languages
                 languages to DataStoreKey(intPreferencesKey(languages), Int::class.java),
+                // AI
+                aiBaseUrl to DataStoreKey(stringPreferencesKey(aiBaseUrl), String::class.java),
+                aiApiKey to DataStoreKey(stringPreferencesKey(aiApiKey), String::class.java),
+                aiModel to DataStoreKey(stringPreferencesKey(aiModel), String::class.java),
+                aiSummarizationPrompt to DataStoreKey(stringPreferencesKey(aiSummarizationPrompt), String::class.java),
             )
     }
 }

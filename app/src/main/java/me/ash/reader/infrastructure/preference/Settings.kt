@@ -82,5 +82,11 @@ data class Settings(
 
     // Languages
     val languages: LanguagesPreference = LanguagesPreference.default,
+
+    // AI
+    val aiBaseUrl: AiBaseUrlPreference = AiBaseUrlPreference.default,
+    val aiApiKey: AiApiKeyPreference = AiApiKeyPreference.default,
+    val aiModel: AiModelPreference = AiModelPreference.default,
+    val aiSummarizationPrompt: AiSummarizationPromptPreference = AiSummarizationPromptPreference.default,
 )
 

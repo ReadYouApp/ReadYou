@@ -386,4 +386,28 @@
     <string name="parse_full_content_desc">Fetch full articles from webpages</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
-</resources>
+
+    <!-- AI Settings -->
+    <string name="ai_settings">AI</string>
+    <string name="ai_settings_desc">Configure AI summarization</string>
+    <string name="ai_base_url">Base URL</string>
+    <string name="ai_base_url_hint">OpenAI-compatible API base URL</string>
+    <string name="ai_base_url_default" translatable="false">https://api.openai.com/v1</string>
+    <string name="ai_api_key">API Key</string>
+    <string name="ai_api_key_hint">Enter your API key</string>
+    <string name="ai_model">LLM Model</string>
+    <string name="ai_model_default" translatable="false">gpt-3.5-turbo</string>
+    <string name="ai_fetch_models">Fetching available models…</string>
+    <string name="ai_fetch_models_error">Failed to fetch models. Check your URL and API key.</string>
+    <string name="ai_summarization_prompt">Summarization Prompt</string>
+    <string name="ai_summarization_prompt_hint">Customize how articles are summarized</string>
+    <string name="ai_summarization_prompt_default">Please provide a concise summary of the following article in 3-5 bullet points:\n\n</string>
+    <string name="api_configuration">API Configuration</string>
+    <string name="summarization_settings">Summarization Settings</string>
+
+    <!-- AI Summary -->
+    <string name="ai_summary">AI Summary</string>
+    <string name="ai_summary_loading">Generating summary…</string>
+    <string name="ai_summary_error">Failed to generate summary: %1$s</string>
+ </resources>
+

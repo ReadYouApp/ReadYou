@@ -34,6 +34,9 @@ object RouteName {
     // Interaction
     const val INTERACTION = "interaction"
 
+    // AI
+    const val AI_SETTINGS = "ai_settings"
+
     // Languages
     const val LANGUAGES = "languages"
 
