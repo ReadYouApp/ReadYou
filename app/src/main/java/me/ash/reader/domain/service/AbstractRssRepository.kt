@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.article.ArchivedArticle
 import me.ash.reader.domain.model.article.Article
@@ -22,6 +23,7 @@ import me.ash.reader.domain.model.group.GroupWithFeed
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.preference.KeepArchivedPreference
 import me.ash.reader.infrastructure.preference.SyncIntervalPreference
@@ -32,6 +34,7 @@ import me.ash.reader.ui.ext.spacerDollar
 abstract class AbstractRssRepository(
     private val articleDao: ArticleDao,
     private val groupDao: GroupDao,
+    private val keywordFilterDao: KeywordFilterDao,
     private val feedDao: FeedDao,
     private val workManager: WorkManager,
     private val rssHelper: RssHelper,
@@ -58,6 +61,7 @@ abstract class AbstractRssRepository(
         isNotification: Boolean,
         isFullContent: Boolean,
         isBrowser: Boolean,
+        filteredKeywords: List<String>
     ) {
         val accountId = accountService.getCurrentAccountId()
         val feed =
@@ -72,10 +76,14 @@ abstract class AbstractRssRepository(
                 isNotification = isNotification,
                 isFullContent = isFullContent,
             )
-        val articles =
-            searchedFeed.entries.map { rssHelper.buildArticleFromSyndEntry(feed, accountId, it) }
+        val articles = searchedFeed.entries.filter { article ->
+            filteredKeywords.none { keyword ->
+                article.title.lowercase().contains(keyword.lowercase())
+            }
+        }.map { rssHelper.buildArticleFromSyndEntry(feed, accountId, it) }
         feedDao.insert(feed)
         articleDao.insertList(articles.map { it.copy(feedId = feed.id) })
+        keywordFilterDao.insertList(filteredKeywords.map { KeywordFilter(feed.id, it) })
     }
 
     open suspend fun addGroup(destFeed: Feed?, newGroupName: String): String {
@@ -84,6 +92,10 @@ abstract class AbstractRssRepository(
                 groupDao.insert(Group(id = it, name = newGroupName, accountId = accountId))
             }
         }
+    }
+
+    open suspend fun addFilteredKeyword(feed: Feed, newFilteredKeyword: String) {
+        keywordFilterDao.insert(KeywordFilter(feedId = feed.id, keyword = newFilteredKeyword))
     }
 
     abstract suspend fun sync(
@@ -208,6 +220,9 @@ abstract class AbstractRssRepository(
 
     fun pullGroups(): Flow<MutableList<Group>> =
         groupDao.queryAllGroup(accountService.getCurrentAccountId()).flowOn(dispatcherIO)
+
+    fun pullFilteredKeywords(): Flow<MutableList<KeywordFilter>> =
+        keywordFilterDao.queryAll().flowOn(dispatcherIO)
 
     fun pullFeeds(): Flow<MutableList<GroupWithFeed>> =
         groupDao
@@ -341,6 +356,10 @@ abstract class AbstractRssRepository(
         groupDao.delete(group)
     }
 
+    open suspend fun deleteFilteredKeyword(keyword: KeywordFilter) {
+        keywordFilterDao.delete(keyword)
+    }
+
     open suspend fun deleteFeed(feed: Feed, onlyDeleteNoStarred: Boolean? = false) {
         if (
             onlyDeleteNoStarred == true &&
@@ -359,9 +378,17 @@ abstract class AbstractRssRepository(
     suspend fun deleteArticles(
         group: Group? = null,
         feed: Feed? = null,
+        keywordFilter: String? = null,
         includeStarred: Boolean = false,
     ) {
         when {
+            feed != null && keywordFilter != null ->
+                articleDao.deleteByKeyword(
+                    accountService.getCurrentAccountId(),
+                    feed.id,
+                    keywordFilter,
+                )
+
             group != null ->
                 articleDao.deleteByGroupId(
                     accountService.getCurrentAccountId(),

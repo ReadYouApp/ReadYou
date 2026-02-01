@@ -9,9 +9,11 @@ import be.ceau.opml.entity.Outline
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.infrastructure.rss.OPMLDataSource
 import me.ash.reader.ui.ext.currentAccountId
@@ -28,6 +30,7 @@ class OpmlService @Inject constructor(
     private val context: Context,
     private val groupDao: GroupDao,
     private val feedDao: FeedDao,
+    private val keywordFilterDao: KeywordFilterDao,
     private val accountService: AccountService,
     private val rssService: RssService,
     private val OPMLDataSource: OPMLDataSource,
@@ -44,20 +47,22 @@ class OpmlService @Inject constructor(
     suspend fun saveToDatabase(inputStream: InputStream) {
         withContext(ioDispatcher) {
             val defaultGroup = groupDao.queryById(getDefaultGroupId(context.currentAccountId))!!
-            val groupWithFeedList =
+            val groupWithFeedsWithKeywordFiltersList =
                 OPMLDataSource.parseFileInputStream(inputStream, defaultGroup, context.currentAccountId)
-            groupWithFeedList.forEach { groupWithFeed ->
-                if (groupWithFeed.group != defaultGroup) {
-                    groupDao.insert(groupWithFeed.group)
+            groupWithFeedsWithKeywordFiltersList.forEach { groupWithFeedsWithKeywordFilters ->
+                if (groupWithFeedsWithKeywordFilters.group != defaultGroup) {
+                    groupDao.insert(groupWithFeedsWithKeywordFilters.group)
                 }
                 val repeatList = mutableListOf<Feed>()
-                groupWithFeed.feeds.forEach {
-                    it.groupId = groupWithFeed.group.id
-                    if (rssService.get().isFeedExist(it.url)) {
-                        repeatList.add(it)
+                groupWithFeedsWithKeywordFilters.feedsWithKeywordFilters.forEach {
+                    it.feed.groupId = groupWithFeedsWithKeywordFilters.group.id
+                    if (rssService.get().isFeedExist(it.feed.url)) {
+                        repeatList.add(it.feed)
                     }
                 }
-                feedDao.insertList((groupWithFeed.feeds subtract repeatList.toSet()).toList())
+                feedDao.insertList((groupWithFeedsWithKeywordFilters.feedsWithKeywordFilters.map { it.feed } subtract repeatList.toSet()).toList())
+                keywordFilterDao.insertList(groupWithFeedsWithKeywordFilters.feedsWithKeywordFilters.map { it.keywordFilters }
+                    .flatten())
             }
         }
     }
@@ -68,6 +73,7 @@ class OpmlService @Inject constructor(
     @Throws(Exception::class)
     suspend fun saveToString(accountId: Int, attachInfo: Boolean): String {
         val defaultGroup = groupDao.queryById(getDefaultGroupId(accountId))
+        val allFilteredKeywords = keywordFilterDao.queryAllBlocking()
         return OpmlWriter().write(
             Opml(
                 "2.0",
@@ -99,6 +105,11 @@ class OpmlService @Inject constructor(
                                         put("isNotification", feed.isNotification.toString())
                                         put("isFullContent", feed.isFullContent.toString())
                                         put("isBrowser", feed.isBrowser.toString())
+                                        put(
+                                            "filteredKeywords",
+                                            Json.encodeToString(allFilteredKeywords.filter { keyword -> keyword.feedId == feed.id }
+                                                .map { keyword -> keyword.keyword })
+                                        )
                                     }
                                 },
                                 listOf()

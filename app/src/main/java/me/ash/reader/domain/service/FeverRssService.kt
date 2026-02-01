@@ -24,6 +24,7 @@ import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.di.DefaultDispatcher
 import me.ash.reader.infrastructure.di.IODispatcher
@@ -47,6 +48,7 @@ constructor(
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
     private val groupDao: GroupDao,
+    private val keywordFilterDao: KeywordFilterDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
@@ -56,6 +58,7 @@ constructor(
     AbstractRssRepository(
         articleDao,
         groupDao,
+        keywordFilterDao,
         feedDao,
         workManager,
         rssHelper,
@@ -98,6 +101,7 @@ constructor(
         isNotification: Boolean,
         isFullContent: Boolean,
         isBrowser: Boolean,
+        filteredKeywords: List<String>
     ) {
         throw FeverAPIException("Unsupported")
     }
@@ -227,6 +231,7 @@ constructor(
                     break
                 }
 
+                val allFilteredKeywords = keywordFilterDao.queryAllBlocking()
                 val articlesFromBatch =
                     fetchedItems.map { item ->
                         Article(
@@ -248,6 +253,13 @@ constructor(
                             isStarred = (item.is_saved ?: 0) > 0,
                             updateAt = preDate,
                         )
+                    }.filter { article ->
+                        val filteredKeywordsForThisArticle = allFilteredKeywords.filter { keyword ->
+                            keyword.feedId == article.feedId
+                        }
+                        filteredKeywordsForThisArticle.none { keyword ->
+                            article.title.lowercase().contains(keyword.keyword.lowercase())
+                        }
                     }
 
                 allArticles.addAll(articlesFromBatch)
