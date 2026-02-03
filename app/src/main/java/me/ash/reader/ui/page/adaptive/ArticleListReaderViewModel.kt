@@ -71,9 +71,8 @@ constructor(
 
     val flowUiState: StateFlow<FlowUiState?> =
         articleListUseCase.pagerFlow
-            .combine(groupWithFeedsListUseCase.groupWithFeedListFlow) {
-                pagerData,
-                groupWithFeedsList ->
+            .combine(groupWithFeedsListUseCase.groupWithFeedListFlow) { pagerData,
+                                                                        groupWithFeedsList ->
                 val filterState = pagerData.filterState
                 var nextFilterState: FilterState? = null
                 if (filterState.group != null) {
@@ -191,7 +190,7 @@ constructor(
         viewModelScope.launch {
             if (
                 settingsProvider.settings.pullToSwitchFeed ==
-                    PullToLoadNextFeedPreference.MarkAsReadAndLoadNextFeed
+                PullToLoadNextFeedPreference.MarkAsReadAndLoadNextFeed
             ) {
                 markAllAsRead()
             }
@@ -226,13 +225,7 @@ constructor(
             val filterState = filterStateUseCase.filterStateFlow.value
             val service = rssService.get()
             when (service) {
-                is LocalRssService ->
-                    service.doSyncOneTime(
-                        feedId = filterState.feed?.id,
-                        groupId = filterState.group?.id,
-                    )
-
-                is GoogleReaderRssService ->
+                is LocalRssService, is GoogleReaderRssService ->
                     service.doSyncOneTime(
                         feedId = filterState.feed?.id,
                         groupId = filterState.group?.id,
@@ -284,7 +277,7 @@ constructor(
                 } else {
                     snapshotList.find { item ->
                         item is ArticleFlowItem.Article &&
-                            item.articleWithFeed.article.id == articleId
+                                item.articleWithFeed.article.id == articleId
                     } as? ArticleFlowItem.Article
                 }
 
@@ -302,13 +295,13 @@ constructor(
                 }
                 _readerState.update {
                     it.copy(
-                            articleId = article.id,
-                            feedName = feed.name,
-                            title = article.title,
-                            author = article.author,
-                            link = article.link,
-                            publishedDate = article.date,
-                        )
+                        articleId = article.id,
+                        feedName = feed.name,
+                        title = article.title,
+                        author = article.author,
+                        link = article.link,
+                        publishedDate = article.date,
+                    )
                         .prefetchArticleId()
                         .renderContent(this)
                 }

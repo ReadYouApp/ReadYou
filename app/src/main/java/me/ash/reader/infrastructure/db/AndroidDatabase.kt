@@ -13,18 +13,20 @@ import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.ui.ext.toInt
 import java.util.*
 
 @Database(
-    entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class],
-    version = 7,
+    entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class, me.ash.reader.domain.model.feedgroup.FeedGroup::class],
+    version = 10,
     autoMigrations = [
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 5, to = 7),
         AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 7, to = 8),
     ]
 )
 @TypeConverters(
@@ -43,6 +45,7 @@ abstract class AndroidDatabase : RoomDatabase() {
     abstract fun feedDao(): FeedDao
     abstract fun articleDao(): ArticleDao
     abstract fun groupDao(): GroupDao
+    abstract fun feedGroupDao(): FeedGroupDao
 
     companion object {
 
@@ -80,6 +83,8 @@ val allMigrations = arrayOf(
     MIGRATION_2_3,
     MIGRATION_3_4,
     MIGRATION_4_5,
+    MIGRATION_8_9,
+    MIGRATION_9_10,
 )
 
 @Suppress("ClassName")
@@ -157,5 +162,26 @@ object MIGRATION_4_5 : Migration(4, 5) {
             ALTER TABLE account ADD COLUMN lastArticleId TEXT DEFAULT NULL
             """.trimIndent()
         )
+    }
+}
+
+@Suppress("ClassName")
+object MIGRATION_8_9 : Migration(8, 9) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            """
+            INSERT INTO feed_group (feedId, groupId, accountId)
+            SELECT id, groupId, accountId FROM feed
+            """.trimIndent()
+        )
+    }
+}
+
+@Suppress("ClassName")
+object MIGRATION_9_10 : Migration(9, 10) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_feedId ON feed_group(feedId)")
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_groupId ON feed_group(groupId)")
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_accountId ON feed_group(accountId)")
     }
 }

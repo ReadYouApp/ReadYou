@@ -7,12 +7,12 @@ import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.feedgroup.FeedGroup
 
 /**
- * A [group] contains many [feeds] via the [FeedGroup] junction table.
+ * A [group] contains many [feeds] via many-to-many relationship through [FeedGroup] junction table.
  *
- * This represents a many-to-many relationship where feeds can belong to multiple groups.
- * The junction table ([FeedGroup]) is the source of truth for feed-group associations.
+ * This differs from [GroupWithFeed] which uses the legacy one-to-many relationship via Feed.groupId.
+ * Use this class for queries that need to support feeds belonging to multiple groups.
  */
-data class GroupWithFeed(
+data class GroupWithFeedViaJunction(
     @Embedded
     val group: Group,
     @Relation(
@@ -24,5 +24,5 @@ data class GroupWithFeed(
             entityColumn = "feedId"
         )
     )
-    val feeds: MutableList<Feed>,
+    val feeds: List<Feed>,
 )

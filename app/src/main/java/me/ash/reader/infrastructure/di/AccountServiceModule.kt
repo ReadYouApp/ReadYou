@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.domain.service.AccountService
 import me.ash.reader.domain.service.RssService
@@ -27,6 +28,7 @@ object AccountServiceModule {
         groupDao: GroupDao,
         feedDao: FeedDao,
         articleDao: ArticleDao,
+        feedGroupDao: FeedGroupDao,
         @ApplicationScope coroutineScope: CoroutineScope,
         settingsProvider: SettingsProvider,
     ): AccountService {
@@ -36,6 +38,7 @@ object AccountServiceModule {
             groupDao = groupDao,
             feedDao = feedDao,
             articleDao = articleDao,
+            feedGroupDao = feedGroupDao,
             coroutineScope = coroutineScope,
             settingsProvider = settingsProvider,
         )

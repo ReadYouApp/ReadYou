@@ -1,20 +1,9 @@
 package me.ash.reader.domain.model.feed
 
 import androidx.room.*
-import me.ash.reader.domain.model.group.Group
 
-/**
- * TODO: Add class description
- */
 @Entity(
     tableName = "feed",
-    foreignKeys = [ForeignKey(
-        entity = Group::class,
-        parentColumns = ["id"],
-        childColumns = ["groupId"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE,
-    )],
 )
 data class Feed(
     @PrimaryKey
@@ -25,8 +14,7 @@ data class Feed(
     val icon: String? = null,
     @ColumnInfo
     val url: String,
-    @ColumnInfo(index = true)
-    var groupId: String,
+    var groupId: String = "",
     @ColumnInfo(index = true)
     val accountId: Int,
     @ColumnInfo

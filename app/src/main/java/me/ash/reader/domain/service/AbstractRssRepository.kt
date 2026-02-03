@@ -18,9 +18,11 @@ import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.article.ArticleWithFeed
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.group.Group
+import me.ash.reader.domain.model.feedgroup.FeedGroup
 import me.ash.reader.domain.model.group.GroupWithFeed
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.preference.KeepArchivedPreference
@@ -33,6 +35,7 @@ abstract class AbstractRssRepository(
     private val articleDao: ArticleDao,
     private val groupDao: GroupDao,
     private val feedDao: FeedDao,
+    private val feedGroupDao: FeedGroupDao,
     private val workManager: WorkManager,
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
@@ -75,6 +78,13 @@ abstract class AbstractRssRepository(
         val articles =
             searchedFeed.entries.map { rssHelper.buildArticleFromSyndEntry(feed, accountId, it) }
         feedDao.insert(feed)
+        feedGroupDao.insert(
+            FeedGroup(
+                feedId = feed.id,
+                groupId = groupId,
+                accountId = accountId
+            )
+        )
         articleDao.insertList(articles.map { it.copy(feedId = feed.id) })
     }
 
@@ -318,6 +328,12 @@ abstract class AbstractRssRepository(
 
     open suspend fun moveFeed(originGroupId: String, feed: Feed) {
         updateFeed(feed)
+        feedGroupDao.moveFeed(
+            feedId = feed.id,
+            fromGroupId = originGroupId,
+            toGroupId = feed.groupId,
+            accountId = feed.accountId
+        )
     }
 
     open suspend fun changeFeedUrl(feed: Feed) {
@@ -338,6 +354,8 @@ abstract class AbstractRssRepository(
         }
         deleteArticles(group = group, includeStarred = true)
         feedDao.deleteByGroupId(accountId, group.id)
+        // Clean up junction table associations
+        feedGroupDao.deleteByGroupId(group.id, accountId)
         groupDao.delete(group)
     }
 
@@ -353,6 +371,7 @@ abstract class AbstractRssRepository(
             return
         }
         deleteArticles(feed = feed, includeStarred = true)
+        feedGroupDao.deleteByFeedId(feed.id, feed.accountId)
         feedDao.delete(feed)
     }
 
