@@ -25,6 +25,7 @@ import me.ash.reader.ui.ext.currentAccountId
 import me.ash.reader.ui.ext.decodeHTML
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.isFuture
+import me.ash.reader.ui.ext.isTooOld
 import me.ash.reader.ui.ext.spacerDollar
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -176,7 +177,8 @@ constructor(
             accountId = accountId,
             feedId = feed.id,
             date =
-                (syndEntry.publishedDate ?: syndEntry.updatedDate)?.takeIf { !it.isFuture(preDate) }
+                syndEntry.publishedDate?.takeIf { !it.isFuture(preDate) && !it.isTooOld() }
+                    ?: syndEntry.updatedDate?.takeIf { !it.isFuture(preDate) && !it.isTooOld() }
                     ?: preDate,
             title = syndEntry.title.decodeHTML() ?: feed.name,
             author = syndEntry.author,
