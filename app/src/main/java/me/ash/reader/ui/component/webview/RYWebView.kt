@@ -1,6 +1,5 @@
 package me.ash.reader.ui.component.webview
 
-import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -100,42 +99,44 @@ fun RYWebView(
         factory = { webView },
         update = {
             it.apply {
-                Log.i("RLog", "maxWidth: ${maxWidth}")
-                Log.i("RLog", "readingFont: ${context.filesDir.absolutePath}")
-                Log.i("RLog", "CustomWebView: ${content}")
-                settings.defaultFontSize = fontSize
-                loadDataWithBaseURL(
-                    null,
-                    WebViewHtml.HTML.format(
-                        WebViewStyle.get(
-                            fontSize = fontSize,
-                            fontPath = fontPath,
-                            lineHeight = lineHeight,
-                            letterSpacing = letterSpacing,
-                            textMargin = textMargin,
-                            textColor = textColor,
-                            textBold = textBold,
-                            textAlign = textAlign,
-                            boldTextColor = boldTextColor,
-                            subheadBold = subheadBold,
-                            subheadUpperCase = subheadUpperCase,
-                            imgMargin = imgMargin,
-                            imgBorderRadius = imgBorderRadius,
-                            linkTextColor = linkTextColor,
-                            codeTextColor = codeTextColor,
-                            codeBgColor = codeBgColor,
-                            tableMargin = textMargin,
-                            selectionTextColor = selectionTextColor,
-                            selectionBgColor = selectionBgColor,
-                        ),
-                        url,
-                        content,
-                        WebViewScript.get(boldCharacters.value),
+                val newHtml = WebViewHtml.HTML.format(
+                    WebViewStyle.get(
+                        fontSize = fontSize,
+                        fontPath = fontPath,
+                        lineHeight = lineHeight,
+                        letterSpacing = letterSpacing,
+                        textMargin = textMargin,
+                        textColor = textColor,
+                        textBold = textBold,
+                        textAlign = textAlign,
+                        boldTextColor = boldTextColor,
+                        subheadBold = subheadBold,
+                        subheadUpperCase = subheadUpperCase,
+                        imgMargin = imgMargin,
+                        imgBorderRadius = imgBorderRadius,
+                        linkTextColor = linkTextColor,
+                        codeTextColor = codeTextColor,
+                        codeBgColor = codeBgColor,
+                        tableMargin = textMargin,
+                        selectionTextColor = selectionTextColor,
+                        selectionBgColor = selectionBgColor,
                     ),
-                    "text/HTML",
-                    "UTF-8",
-                    null,
+                    url,
+                    content,
+                    WebViewScript.get(boldCharacters.value),
                 )
+                // Only reload if content/style actually changed
+                if (tag != newHtml) {
+                    settings.defaultFontSize = fontSize
+                    loadDataWithBaseURL(
+                        null,
+                        newHtml,
+                        "text/HTML",
+                        "UTF-8",
+                        null,
+                    )
+                    tag = newHtml
+                }
             }
         },
     )
