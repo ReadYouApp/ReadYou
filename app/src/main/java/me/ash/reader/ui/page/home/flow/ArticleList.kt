@@ -29,6 +29,7 @@ fun LazyListScope.ArticleList(
     onMarkAboveAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onMarkBelowAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onShare: ((ArticleWithFeed) -> Unit)? = null,
+    onOpenInBrowser: ((ArticleWithFeed) -> Unit)? = null,
 ) {
     // https://issuetracker.google.com/issues/193785330
     // FIXME: Using sticky header with paging-compose need to iterate through the entire list
@@ -57,6 +58,7 @@ fun LazyListScope.ArticleList(
                         onMarkBelowAsRead =
                             if (index == pagingItems.itemCount - 1) null else onMarkBelowAsRead,
                         onShare = onShare,
+                        onOpenInBrowser = onOpenInBrowser,
                     )
                 }
 
@@ -91,6 +93,7 @@ fun LazyListScope.ArticleList(
                             onMarkBelowAsRead =
                                 if (index == pagingItems.itemCount - 1) null else onMarkBelowAsRead,
                             onShare = onShare,
+                            onOpenInBrowser = onOpenInBrowser
                         )
                     }
                 }

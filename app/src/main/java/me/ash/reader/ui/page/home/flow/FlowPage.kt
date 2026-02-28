@@ -59,6 +59,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -131,6 +132,7 @@ fun FlowPage(
     val filterBarPadding = LocalFlowFilterBarPadding.current
     val filterBarTonalElevation = LocalFlowFilterBarTonalElevation.current
     val sharedContent = LocalSharedContent.current
+    val uriHandler = LocalUriHandler.current
     val markAsReadOnScroll = LocalMarkAsReadOnScroll.current.value
     val context = LocalContext.current
 
@@ -216,6 +218,12 @@ fun FlowPage(
     val onShare: ((ArticleWithFeed) -> Unit)? = remember {
         { articleWithFeed ->
             with(articleWithFeed.article) { sharedContent.share(context, title, link) }
+        }
+    }
+
+    val onOpenInBrowser: ((ArticleWithFeed) -> Unit)? = remember {
+        { articleWithFeed ->
+            with(articleWithFeed.article) { uriHandler.openUri(link) }
         }
     }
 
@@ -692,6 +700,7 @@ fun FlowPage(
                                 onMarkAboveAsRead = onMarkAboveAsRead,
                                 onMarkBelowAsRead = onMarkBelowAsRead,
                                 onShare = onShare,
+                                onOpenInBrowser = onOpenInBrowser,
                             )
                             item {
                                 Spacer(modifier = Modifier.height(128.dp))

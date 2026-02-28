@@ -24,6 +24,7 @@ import androidx.compose.material.icons.rounded.ArrowDownward
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.CheckCircleOutline
 import androidx.compose.material.icons.rounded.FiberManualRecord
+import androidx.compose.material.icons.rounded.OpenInBrowser
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.DropdownMenuItem
@@ -320,6 +321,7 @@ fun SwipeableArticleItem(
     onMarkAboveAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onMarkBelowAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onShare: ((ArticleWithFeed) -> Unit)? = null,
+    onOpenInBrowser: ((ArticleWithFeed) -> Unit)? = null,
 ) {
 
     var isMenuExpanded by remember { mutableStateOf(false) }
@@ -381,6 +383,7 @@ fun SwipeableArticleItem(
                             onMarkAboveAsRead = onMarkAboveAsRead,
                             onMarkBelowAsRead = onMarkBelowAsRead,
                             onShare = onShare,
+                            onOpenInBrowser = onOpenInBrowser
                         ) {
                             isMenuExpanded = false
                         }
@@ -571,6 +574,7 @@ fun ArticleItemMenuContent(
     onMarkAboveAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onMarkBelowAsRead: ((ArticleWithFeed) -> Unit)? = null,
     onShare: ((ArticleWithFeed) -> Unit)? = null,
+    onOpenInBrowser: ((ArticleWithFeed) -> Unit)? = null,
     onItemClick: (() -> Unit)? = null,
 ) {
     val starImageVector =
@@ -667,6 +671,22 @@ fun ArticleItemMenuContent(
             },
         )
     }
+    onOpenInBrowser?.let {
+        DropdownMenuItem(
+            text = { Text(text = stringResource(id = R.string.open_in_browser)) },
+            onClick = {
+                onOpenInBrowser(articleWithFeed)
+                onItemClick?.invoke()
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.OpenInBrowser,
+                    contentDescription = null,
+                    modifier = Modifier.size(iconSize)
+                )
+            },
+        )
+    }
 }
 
 @Preview
@@ -680,6 +700,7 @@ fun MenuContentPreview() {
                     onMarkBelowAsRead = {},
                     onMarkAboveAsRead = {},
                     onShare = {},
+                    onOpenInBrowser = {}
                 )
             }
         }
