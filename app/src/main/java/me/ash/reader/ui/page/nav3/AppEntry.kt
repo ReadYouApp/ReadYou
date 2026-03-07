@@ -14,6 +14,7 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -24,6 +25,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.drop
 import me.ash.reader.ui.motion.materialSharedAxisXIn
 import me.ash.reader.ui.motion.materialSharedAxisXOut
 import me.ash.reader.ui.page.adaptive.ArticleData
@@ -83,6 +85,12 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
             scaffoldDirective = scaffoldDirective,
             isDestinationHistoryAware = false,
         )
+
+    LaunchedEffect(navigator) {
+        snapshotFlow { forceSingleColumn.value }
+            .drop(1)
+            .collect { navigator.navigateTo(ListDetailPaneScaffoldRole.List) }
+    }
 
     SharedTransitionLayout {
         NavDisplay(
