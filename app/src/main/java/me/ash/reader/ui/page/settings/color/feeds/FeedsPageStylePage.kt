@@ -32,6 +32,7 @@ fun FeedsPageStylePage(
     val topBarTonalElevation = LocalFeedsTopBarTonalElevation.current
     val groupListExpand = LocalFeedsGroupListExpand.current
     val groupListTonalElevation = LocalFeedsGroupListTonalElevation.current
+    val singleColumn = LocalFlowSingleColumn.current
 
     val scope = rememberCoroutineScope()
 
@@ -82,6 +83,25 @@ fun FeedsPageStylePage(
                             filterBarPadding = filterBarPadding.dp,
                             filterBarTonalElevation = filterBarTonalElevation.value.dp,
                         )
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                // Layout
+                item {
+                    Subtitle(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.layout)
+                    )
+                    SettingItem(
+                        title = stringResource(R.string.single_column_layout),
+                        onClick = {
+                            (!singleColumn).put(context, scope)
+                        },
+                    ) {
+                        RYSwitch(activated = singleColumn.value) {
+                            (!singleColumn).put(context, scope)
+                        }
                     }
                     Spacer(modifier = Modifier.height(24.dp))
                 }

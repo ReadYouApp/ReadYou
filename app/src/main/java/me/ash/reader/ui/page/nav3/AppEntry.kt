@@ -29,6 +29,7 @@ import me.ash.reader.ui.motion.materialSharedAxisXOut
 import me.ash.reader.ui.page.adaptive.ArticleData
 import me.ash.reader.ui.page.adaptive.ArticleListReaderPage
 import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
+import me.ash.reader.infrastructure.preference.LocalFlowSingleColumn
 import me.ash.reader.ui.page.home.feeds.FeedsPage
 import me.ash.reader.ui.page.home.feeds.subscribe.SubscribeViewModel
 import me.ash.reader.ui.page.nav3.key.Route
@@ -69,7 +70,13 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
         if (backStack.size == 1) backStack[0] = Route.Feeds else backStack.removeLastOrNull()
     }
 
-    val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+    val forceSingleColumn = LocalFlowSingleColumn.current
+    val computedDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+    val scaffoldDirective = if (forceSingleColumn.value) {
+        computedDirective.copy(maxHorizontalPartitions = 1)
+    } else {
+        computedDirective
+    }
 
     val navigator =
         rememberListDetailPaneScaffoldNavigator<ArticleData>(
