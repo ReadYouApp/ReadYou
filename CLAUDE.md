@@ -72,7 +72,7 @@ Key files:
 - `AppEntry.kt` — creates the `ListDetailPaneScaffoldNavigator`, computes `scaffoldDirective`
 - `ArticleListReadingPage.kt` — derives `isTwoPane` from `navigator.scaffoldValue`
 
-**Single-column toggle** (`FlowSingleColumnPreference`): forces `maxHorizontalPartitions = 1` on the directive. A `LaunchedEffect` in `AppEntry.kt` watches the preference via `snapshotFlow` and calls `navigator.navigateTo(List)` on change — this is required because the navigator only recomputes `scaffoldValue` on navigation events, not on directive-only changes.
+**Single-column toggle** (`FlowSingleColumnPreference`): forces `maxHorizontalPartitions = 1` on the directive, but **only in portrait** (`screenWidthDp <= screenHeightDp`). In landscape the adaptive layout runs normally, allowing two panes on a tablet held sideways. A `LaunchedEffect` in `AppEntry.kt` watches the preference via `snapshotFlow` and calls `navigator.navigateTo(List)` on change — this is required because the navigator only recomputes `scaffoldValue` on navigation events, not on directive-only changes. Orientation changes recreate the Activity (no `configChanges` override in the manifest), so no extra effect is needed for rotation.
 
 ## Key Libraries
 

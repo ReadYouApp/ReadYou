@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -73,8 +74,9 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
     }
 
     val forceSingleColumn = LocalFlowSingleColumn.current
+    val isLandscape = LocalConfiguration.current.screenWidthDp > LocalConfiguration.current.screenHeightDp
     val computedDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
-    val scaffoldDirective = if (forceSingleColumn.value) {
+    val scaffoldDirective = if (forceSingleColumn.value && !isLandscape) {
         computedDirective.copy(maxHorizontalPartitions = 1)
     } else {
         computedDirective
