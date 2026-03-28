@@ -23,7 +23,7 @@
 
 <div align="center">
     <h1>Read You</h1>
-    <p><a target="_blank" href="https://m3.material.io/">Material You</a> tarzında tasarlanmış bir Android RSS okuyucusudur.</p>
+    <p><a target="_blank" href="https://m3.material.io/">Material You</a> stilinde tasarlanmış bir Android RSS okuyucusudur.</p>
     <p><a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README.md">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -85,7 +85,7 @@ F-Droid Sürümleri, [F-Droid](https://f-droid.org/docs/FAQ_-_General/) tarafın
 
 ## Gece Sürümleri
 
-Test amaçlı olarak Gece Sürümlerini sunuyoruz. Bu sürümler en son özellikleri ve iyileştirmeleri içerir ancak stabil sürümlerimiz kadar kararlı olmayabilir. Gece sürümlerinin hatalar içerebileceğini ve günlük kullanım için önerilmediğini unutmayın.
+Test amaçlı olarak Gece sürümlerini sunuyoruz. Bu sürümler en son özellikleri ve iyileştirmeleri içerir ancak stabil sürümlerimiz kadar kararlı olmayabilir. Gece sürümlerinin hatalar içerebileceğini ve günlük kullanım için önerilmediğini unutmayın.
 
 
 Aşağıda bulunan bağlantıdan Gece sürümlerini indirebilirsiniz:
