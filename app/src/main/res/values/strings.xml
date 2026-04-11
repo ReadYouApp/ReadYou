@@ -253,6 +253,8 @@
     <string name="local_desc">On this device</string>
     <string name="services">Services</string>
     <string name="feedly_desc" translatable="false">feedly.com</string>
+    <string name="feedly_access_token">Access Token</string>
+    <string name="feedly_access_token_hint">Paste your Feedly developer access token</string>
     <string name="inoreader_desc" translatable="false">inoreader.com</string>
     <string name="self_hosted">Self-hosted</string>
     <string name="fresh_rss_desc" translatable="false">freshrss.org</string>
