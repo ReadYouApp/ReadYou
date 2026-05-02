@@ -41,7 +41,8 @@ fun RYAsyncImage(
                     .apply {
                         val domain = data.toString().extractDomain()
                         if (data.toString().extractDomain() != null) {
-                            addHeader("Referer", domain!!)
+                            val safeDomain = Uri.encode(domain)
+                            addHeader("Referer", safeDomain)
                         }
                     }
                     .data(data = data)
