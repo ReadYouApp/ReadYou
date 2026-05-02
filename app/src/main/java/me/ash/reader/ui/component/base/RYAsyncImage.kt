@@ -19,6 +19,7 @@ import coil.size.Precision
 import coil.size.Scale
 import coil.size.Size
 import me.ash.reader.ui.ext.extractDomain
+import android.net.Uri 
 
 val SIZE_1000 = Size(1000, 1000)
 
