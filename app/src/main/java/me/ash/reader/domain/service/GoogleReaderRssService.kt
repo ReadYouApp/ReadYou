@@ -773,6 +773,26 @@ constructor(
     ) {
         val accountId = accountService.getCurrentAccountId()
         val googleReaderAPI = getGoogleReaderAPI()
+
+        // The server can have unread items we don't have locally yet. Marking by ID
+        // misses those, and the next sync flips them back to unread. Mark the whole
+        // stream on the server instead using markAllAsRead.
+        if (!isUnread && articleId == null) {
+            val streamTag =
+                when {
+                    groupId != null ->
+                        GoogleReaderAPI.Stream.Category(groupId.dollarLast()).tag
+                    feedId != null -> GoogleReaderAPI.Stream.Feed(feedId.dollarLast()).tag
+                    else -> GoogleReaderAPI.Stream.AllItems.tag
+                }
+            super.markAsRead(groupId, feedId, articleId, before, isUnread)
+            googleReaderAPI.markAllAsRead(
+                streamId = streamTag,
+                sinceTimestamp = before?.time?.times(1000L),
+            )
+            return
+        }
+
         val markList: List<String> =
             when {
                 groupId != null -> {
