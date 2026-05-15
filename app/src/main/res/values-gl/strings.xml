@@ -347,4 +347,8 @@
     <string name="open_in_browser_desc">Abrir artigos no navegador</string>
     <string name="enable">Habilitar</string>
     <string name="disable">Deshabilitar</string>
+    <string name="list_widget_label">Vista de lista</string>
+    <string name="card_widget_label">Vista de tarxetas</string>"
+    <string name="widget_description">Ver os últimos artigos non lidos das fontes seleccionadas</string>
+    <string name="group_configuration_description">Configurar «%1$s» para as fontes en «%2$s»</string>
 </resources>
