@@ -170,4 +170,16 @@
     <string name="general">Vispārīgie</string>
     <string name="bold">Treknraksts</string>
     <string name="subhead">Apakšvirsraksts</string>
+    <string name="synchronous">Sinhronizē</string>
+    <string name="sync_interval">Sinhronizēt</string>
+    <string name="connection">Savienojums</string>
+    <string name="open_link_specific_browser">Pārlūks</string>
+    <string name="troubleshooting">Problēmu novēršana</string>
+    <string name="toolbars">Rīkjoslas</string>
+    <string name="short_desc">Īsais</string>
+    <string name="long_desc">Detalizēts</string>
+    <string name="account">Konts</string>
+    <string name="feed">Ziņu plūsma</string>
+    <string name="folder">Mape</string>
+    <string name="theme">Motīvs</string>
 </resources>
