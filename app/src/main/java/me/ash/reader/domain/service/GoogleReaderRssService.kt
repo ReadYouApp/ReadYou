@@ -808,7 +808,7 @@ constructor(
 
                 else -> {
                     if (before == null) {
-                            articleDao.queryMetadataAll(accountId, !isUnread)
+                            articleDao.queryMetadataAll(accountId, isUnread = !isUnread)
                         } else {
                             articleDao.queryMetadataAll(accountId, !isUnread, before)
                         }
