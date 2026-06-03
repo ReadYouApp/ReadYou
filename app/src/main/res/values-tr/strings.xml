@@ -330,4 +330,27 @@
     <string name="content_renderer">İçerik Oluşturucu</string>
     <string name="only_available_on_webview">Yalnızca WebView içerik işleyicisi kullanılırken kullanılabilir</string>
     <string name="mark_as_read_on_scroll">Kaydırınca okundu olarak işaretle</string>
+    <string name="sponsor_desc">Bu ücretsiz, açık kaynaklı uygulamayı boş zamanlarımızda geliştiriyor ve bakımını yapıyoruz. Uygulamayı beğendiyseniz, lütfen küçük bir bağışla bize destek olmayı düşünün! ☕️</string>
+    <string name="toolbars">Araç çubukları</string>
+    <string name="sort_unread_articles">Okunmamış makaleleri sırala</string>
+    <string name="earliest">En erken</string>
+    <string name="pull_to_switch_feed">Bir sonraki akışı yüklemek için yukarı kaydırın</string>
+    <string name="bold_characters">Kalın karakterler</string>
+    <string name="use_bold_characters">Kalın karakterler kullan</string>
+    <string name="bold_characters_preview">Bir makaledeki kelimelerin ilk birkaç harfini kalın yaz</string>
+    <string name="load_next_feed">Sonraki akışı yükle</string>
+    <string name="mark_all_as_read_and_load_next_feed">Tümünü okundu işaretle ve sonraki akışı yükle</string>
+    <string name="pull_from_bottom">Alttan çek</string>
+    <string name="widget_settings">Widget Ayarları</string>
+    <string name="list_widget_label">Liste görünümü</string>
+    <string name="card_widget_label">Kart görünümü</string>"
+    <string name="widget_description">Seçilmiş kaynaklardan en son okunmamış makaleleri görüntüle</string>
+    <string name="group_configuration_description">“%2$s” içindeki beslemeler için “%1$s” öğesini yapılandırın</string>
+    <string name="disabled">Devre dışı</string>
+    <string name="enabled">Etkin</string>
+    <string name="notifications_desc">Yeni okunmamış makaleler yayınlandığında bildirim al</string>
+    <string name="open_in_browser_desc">Makaleleri tarayıcıda aç</string>
+    <string name="parse_full_content_desc">Web sayfalarından makalelerin tamamını çek</string>
+    <string name="enable">Etkinleştir</string>
+    <string name="disable">Devre dışı bırak</string>
 </resources>
