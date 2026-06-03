@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -21,6 +22,7 @@ fun ClipboardTextField(
     isPassword: Boolean = false,
     errorText: String = "",
     imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     onConfirm: (String) -> Unit = {},
 ) {
     Column(modifier = Modifier) {
@@ -37,7 +39,7 @@ fun ClipboardTextField(
                 if (imeAction != ImeAction.Default || imeAction != ImeAction.None) {
                     KeyboardActionHandler { onConfirm(state.text.toString()) }
                 } else null,
-            keyboardOptions = KeyboardOptions(imeAction = imeAction),
+            keyboardOptions = KeyboardOptions(imeAction = imeAction, capitalization = capitalization),
         )
         Spacer(modifier = Modifier.height(10.dp))
     }
