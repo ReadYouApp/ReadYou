@@ -457,4 +457,17 @@
     <string name="browse_bionic_reading_tips">Learn more at &lt;i&gt;&lt;u&gt;bionic-reading.com&lt;/u&gt;&lt;/i&gt;.</string>
     <string name="bionic_reading_domain" translatable="false">bionic-reading.com</string>
     <string name="bionic_reading_link" translatable="false">https://bionic-reading.com</string>
+
+    <!-- Filters -->
+    <string name="filters">Filters</string>
+    <string name="filters_desc">Keywords, smart filtering</string>
+    <string name="smart_filters">Smart Filters</string>
+    <string name="semantic_filtering">Semantic Filtering</string>
+    <string name="semantic_filtering_desc">Coming soon — AI-powered topic filtering</string>
+    <string name="keyword_filters">Keyword Filters</string>
+    <string name="add_keyword">Add keyword</string>
+    <string name="add_keyword_desc">Articles matching any keyword will be hidden</string>
+    <string name="keyword">Keyword</string>
+    <string name="keyword_filter_desc">Tap × to remove</string>
+    <string name="remove_keyword">Remove keyword</string>
 </resources>

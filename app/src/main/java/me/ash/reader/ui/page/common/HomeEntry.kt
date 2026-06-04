@@ -20,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import me.ash.reader.domain.model.general.Filter
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
+import me.ash.reader.infrastructure.preference.LocalKeywordFilters
 import me.ash.reader.infrastructure.preference.LocalReadingDarkTheme
 import me.ash.reader.ui.ext.animatedComposable
 import me.ash.reader.ui.ext.collectAsStateValue
@@ -51,6 +52,7 @@ import me.ash.reader.ui.page.settings.interaction.InteractionPage
 import me.ash.reader.ui.page.settings.languages.LanguagesPage
 import me.ash.reader.ui.page.settings.tips.LicenseListPage
 import me.ash.reader.ui.page.settings.tips.TipsAndSupportPage
+import me.ash.reader.ui.page.settings.filter.FiltersPage
 import me.ash.reader.ui.page.settings.troubleshooting.TroubleshootingPage
 import me.ash.reader.ui.page.startup.StartupPage
 import me.ash.reader.ui.theme.AppTheme
@@ -66,12 +68,17 @@ fun HomeEntry(
     val filterUiState = homeViewModel.filterUiState.collectAsStateValue()
     val subscribeUiState = subscribeViewModel.subscribeUiState.collectAsStateValue()
     val navController = rememberNavController()
+    val keywordFilters = LocalKeywordFilters.current
 
     val intent by rememberSaveable { mutableStateOf(context.findActivity()?.intent) }
     var openArticleId by rememberSaveable {
         mutableStateOf(intent?.extras?.getString(ExtraName.ARTICLE_ID) ?: "")
     }.also {
         intent?.replaceExtras(null)
+    }
+
+    LaunchedEffect(keywordFilters) {
+        homeViewModel.updateKeywordFilters(keywordFilters)
     }
 
     LaunchedEffect(Unit) {
@@ -247,6 +254,11 @@ fun HomeEntry(
             }
             animatedComposable(route = RouteName.LICENSE_LIST) {
                 LicenseListPage(navController)
+            }
+
+            // Filters
+            animatedComposable(route = RouteName.FILTERS) {
+                FiltersPage(navController)
             }
         }
     }

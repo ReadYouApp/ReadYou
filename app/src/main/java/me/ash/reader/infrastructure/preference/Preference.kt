@@ -88,5 +88,9 @@ fun Preferences.toSettings(): Settings {
 
         // Languages
         languages = LanguagesPreference.fromPreferences(this),
+
+        // Filters
+        keywordFilters = KeywordFiltersPreference.fromPreferences(this),
+        semanticFilter = SemanticFilterPreference.fromPreferences(this),
     )
 }

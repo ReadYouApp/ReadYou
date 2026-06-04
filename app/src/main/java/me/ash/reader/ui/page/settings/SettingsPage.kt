@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.Palette
@@ -129,6 +130,17 @@ fun SettingsPage(
                         icon = Icons.Outlined.TouchApp,
                     ) {
                         navController.navigate(RouteName.INTERACTION) {
+                            launchSingleTop = true
+                        }
+                    }
+                }
+                item {
+                    SelectableSettingGroupItem(
+                        title = stringResource(R.string.filters),
+                        desc = stringResource(R.string.filters_desc),
+                        icon = Icons.Outlined.FilterList,
+                    ) {
+                        navController.navigate(RouteName.FILTERS) {
                             launchSingleTop = true
                         }
                     }

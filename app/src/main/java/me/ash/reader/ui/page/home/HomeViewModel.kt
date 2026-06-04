@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -90,8 +91,18 @@ class HomeViewModel @Inject constructor(
                             isUnread = _filterUiState.value.filter.isUnread(),
                         )
                     }
-                }.flow.map {
-                    it.mapPagingFlowItem(androidStringsHelper)
+                }.flow.map { pagingData ->
+                    val keywords = _homeUiState.value.keywordFilters
+                    val filtered = if (keywords.isEmpty()) pagingData else {
+                        pagingData.filter { articleWithFeed ->
+                            keywords.none { keyword ->
+                                val k = keyword.lowercase()
+                                articleWithFeed.article.title.lowercase().contains(k) ||
+                                    articleWithFeed.article.shortDescription.lowercase().contains(k)
+                            }
+                        }
+                    }
+                    filtered.mapPagingFlowItem(androidStringsHelper)
                 }.cachedIn(applicationScope)
             )
         }
@@ -99,6 +110,11 @@ class HomeViewModel @Inject constructor(
 
     fun inputSearchContent(content: String) {
         _homeUiState.update { it.copy(searchContent = content) }
+        fetchArticles()
+    }
+
+    fun updateKeywordFilters(filters: List<String>) {
+        _homeUiState.update { it.copy(keywordFilters = filters) }
         fetchArticles()
     }
 }
@@ -112,4 +128,5 @@ data class FilterState(
 data class HomeUiState(
     val pagingData: Flow<PagingData<ArticleFlowItem>> = emptyFlow(),
     val searchContent: String = "",
+    val keywordFilters: List<String> = emptyList(),
 )

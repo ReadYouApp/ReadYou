@@ -86,6 +86,10 @@ data class Settings(
 
     // Languages
     val languages: LanguagesPreference = LanguagesPreference.default,
+
+    // Filters
+    val keywordFilters: KeywordFilters = KeywordFiltersPreference.default,
+    val semanticFilter: SemanticFilterPreference = SemanticFilterPreference.default,
 )
 
 @Composable
@@ -177,6 +181,10 @@ fun SettingsProvider(
 
         // Languages
         LocalLanguages provides settings.languages,
+
+        // Filters
+        LocalKeywordFilters provides settings.keywordFilters,
+        LocalSemanticFilter provides settings.semanticFilter,
     ) {
         content()
     }

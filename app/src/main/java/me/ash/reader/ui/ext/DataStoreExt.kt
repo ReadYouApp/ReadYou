@@ -170,6 +170,10 @@ data class DataStoreKey<T>(
         // Languages
         const val languages = "languages"
 
+        // Filters
+        const val keywordFilters = "keywordFilters"
+        const val semanticFilter = "semanticFilter"
+
         val keys: MutableMap<String, DataStoreKey<*>> = mutableMapOf(
             // Version
             isFirstLaunch to DataStoreKey(booleanPreferencesKey(isFirstLaunch), Boolean::class.java),
@@ -241,7 +245,10 @@ data class DataStoreKey<T>(
             openLinkAppSpecificBrowser to DataStoreKey(stringPreferencesKey(openLinkAppSpecificBrowser), String::class.java),
             sharedContent to DataStoreKey(intPreferencesKey(sharedContent), Int::class.java),
             // Languages
-            languages to DataStoreKey(intPreferencesKey(languages), Int::class.java)
+            languages to DataStoreKey(intPreferencesKey(languages), Int::class.java),
+            // Filters
+            keywordFilters to DataStoreKey(stringPreferencesKey(keywordFilters), String::class.java),
+            semanticFilter to DataStoreKey(booleanPreferencesKey(semanticFilter), Boolean::class.java),
         )
     }
 }
