@@ -9,6 +9,7 @@
 package me.ash.reader.ui.page.settings
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ash.reader.ui.theme.palette.LocalTonalPalettes
 import me.ash.reader.ui.theme.palette.onDark
+
+val LocalInteractionSources = compositionLocalOf<MutableInteractionSource?> { null }
 
 @Composable
 fun SettingItem(
@@ -45,10 +51,11 @@ fun SettingItem(
     action: (@Composable () -> Unit)? = null,
 ) {
     val tonalPalettes = LocalTonalPalettes.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     Surface(
         modifier = modifier
-            .clickable(enabled = enabled) { onClick() }
+            .clickable(enabled = enabled, interactionSource = interactionSource) { onClick() }
             .alpha(if (enabled) 1f else 0.5f),
         color = Color.Unspecified
     ) {
@@ -101,8 +108,10 @@ fun SettingItem(
                         color = tonalPalettes neutralVariant 80 onDark (tonalPalettes neutralVariant 30)
                     )
                 }
-                Box(Modifier.padding(start = 16.dp)) {
-                    it()
+                CompositionLocalProvider(LocalInteractionSources provides if (separatedActions) null else interactionSource) {
+                    Box(Modifier.padding(start = 16.dp)) {
+                        it()
+                    }
                 }
             }
         }

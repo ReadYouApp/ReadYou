@@ -3,7 +3,7 @@ package me.ash.reader.ui.page.settings.tips
 import android.view.HapticFeedbackConstants
 import android.view.SoundEffectConstants
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,22 +29,27 @@ import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -53,11 +58,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.graphics.shapes.Morph
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.OpenLinkPreference
-import me.ash.reader.ui.component.base.CurlyCornerShape
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
 import me.ash.reader.ui.ext.DataStoreKey
@@ -66,25 +71,68 @@ import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.ext.put
 import me.ash.reader.ui.ext.showToast
-import me.ash.reader.ui.page.common.RouteName
+import me.ash.reader.ui.graphics.MorphPolygonShape
 import me.ash.reader.ui.theme.palette.alwaysLight
 import me.ash.reader.ui.theme.palette.onLight
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+private val ShapeGacha by lazy {
+    buildList {
+        MaterialShapes.run {
+            add(Cookie12Sided)
+            add(Cookie4Sided)
+            add(Cookie6Sided)
+            add(Cookie7Sided)
+            add(Cookie9Sided)
+            add(Clover8Leaf)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TipsAndSupportPage(
-    navController: NavHostController,
     updateViewModel: UpdateViewModel = hiltViewModel(),
+    onBack: () -> Unit,
+    navigateToLicenseList: () -> Unit,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
+    val scope = rememberCoroutineScope()
     var currentVersion by remember { mutableStateOf("") }
-    var clickTime by remember { mutableStateOf(System.currentTimeMillis() - 2000) }
-    var pressAMP by remember { mutableStateOf(16f) }
-    val animatedPress by animateFloatAsState(
-        targetValue = pressAMP,
-        animationSpec = tween()
-    )
+    var showSponsorDialog by remember { mutableStateOf(false) }
+
+    val morphProgress = remember { Animatable(0f) }
+
+    val polygonShape = remember { ShapeGacha.random() }
+    val circle = MaterialShapes.Circle
+    val morph = Morph(polygonShape, circle)
+
+    val shadowShape by remember {
+        derivedStateOf {
+            MorphPolygonShape(morph, morphProgress.value)
+        }
+    }
+
+    val bgShape by remember {
+        derivedStateOf {
+            MorphPolygonShape(morph, morphProgress.value)
+        }
+    }
+
+    val morphSpec = MaterialTheme.motionScheme.slowEffectsSpec<Float>()
+    val colorScheme = MaterialTheme.colorScheme
+
+    val colorGacha = remember {
+        listOf(
+            colorScheme.primaryFixed,
+            colorScheme.secondaryFixed,
+            colorScheme.tertiaryFixed
+        )
+    }
+
+    val logoBGColor = remember { colorGacha.random() }
+
 
     LaunchedEffect(Unit) {
         currentVersion = context.getCurrentVersion().toString()
@@ -96,22 +144,18 @@ fun TipsAndSupportPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         actions = {
             FeedbackIconButton(
                 modifier = Modifier.size(20.dp),
                 imageVector = Icons.Rounded.Balance,
                 contentDescription = stringResource(R.string.open_source_licenses),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.navigate(RouteName.LICENSE_LIST) {
-                    launchSingleTop = true
-                }
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = navigateToLicenseList
+            )
         },
         content = {
             LazyColumn(
@@ -125,31 +169,29 @@ fun TipsAndSupportPage(
                             detectTapGestures(
                                 onPress = {
                                     view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                    pressAMP = 0f
+                                    scope.launch { morphProgress.animateTo(1f, morphSpec) }
                                     tryAwaitRelease()
+                                    scope.launch { morphProgress.animateTo(0f, morphSpec) }
                                     view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                                     view.playSoundEffect(SoundEffectConstants.CLICK)
-                                    pressAMP = 16f
                                 },
                                 onTap = {
-                                    if (System.currentTimeMillis() - clickTime > 2000) {
-                                        clickTime = System.currentTimeMillis()
-                                        updateViewModel.checkUpdate(
-                                            {
-                                                context.showToast(context.getString(R.string.checking_updates))
-                                                context.dataStore.put(DataStoreKey.skipVersionNumber, "")
-                                            },
-                                            {
-                                                if (!it) {
-                                                    context.showToast(
-                                                        context.getString(R.string.is_latest_version)
-                                                    )
-                                                }
+                                    updateViewModel.checkUpdate(
+                                        {
+                                            context.showToast(context.getString(R.string.checking_updates))
+                                            context.dataStore.put(
+                                                DataStoreKey.skipVersionNumber,
+                                                ""
+                                            )
+                                        },
+                                        {
+                                            if (!it) {
+                                                context.showToast(
+                                                    context.getString(R.string.is_latest_version)
+                                                )
                                             }
-                                        )
-                                    } else {
-                                        clickTime = System.currentTimeMillis()
-                                    }
+                                        }
+                                    )
                                 }
                             )
                         },
@@ -159,15 +201,15 @@ fun TipsAndSupportPage(
                         Box(
                             modifier = Modifier
                                 .size(240.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
-                                    shape = CurlyCornerShape(amp = animatedPress.toDouble()),
-                                )
-                                .shadow(
-                                    elevation = 10.dp,
-                                    shape = CurlyCornerShape(amp = animatedPress.toDouble()),
-                                    ambientColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
-                                    spotColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
+                                .background(color = logoBGColor, shape = bgShape)
+                                .dropShadow(
+                                    shape = shadowShape,
+                                    Shadow(
+                                        radius = 24.dp,
+                                        spread = 16.dp,
+                                        alpha = .1f,
+                                        color = logoBGColor
+                                    )
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -205,43 +247,56 @@ fun TipsAndSupportPage(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         // Sponsor
-                        RoundIconButton(RoundIconButtonType.Sponsor(
-                            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer alwaysLight true,
-                        ) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            context.showToast(context.getString(R.string.coming_soon))
-                        })
+                        RoundIconButton(
+                            RoundIconButtonType.Sponsor(
+                                backgroundColor = MaterialTheme.colorScheme.tertiaryContainer alwaysLight true,
+                            ) {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                showSponsorDialog = true
+                            })
                         Spacer(modifier = Modifier.width(16.dp))
 
                         // GitHub
-                        RoundIconButton(RoundIconButtonType.GitHub(
-                            backgroundColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
-                        ) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            context.openURL(context.getString(R.string.github_link), OpenLinkPreference.AutoPreferCustomTabs)
-                        })
+                        RoundIconButton(
+                            RoundIconButtonType.GitHub(
+                                backgroundColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
+                            ) {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                context.openURL(
+                                    context.getString(R.string.github_link),
+                                    OpenLinkPreference.AutoPreferCustomTabs
+                                )
+                            })
                         Spacer(modifier = Modifier.width(16.dp))
 
                         // Telegram
-                        RoundIconButton(RoundIconButtonType.Telegram(
-                            backgroundColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
-                        ) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            context.openURL(context.getString(R.string.telegram_link), OpenLinkPreference.AutoPreferCustomTabs)
-                        })
+                        RoundIconButton(
+                            RoundIconButtonType.Telegram(
+                                backgroundColor = MaterialTheme.colorScheme.primaryContainer alwaysLight true,
+                            ) {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                context.openURL(
+                                    context.getString(R.string.telegram_link),
+                                    OpenLinkPreference.AutoPreferCustomTabs
+                                )
+                            })
                         Spacer(modifier = Modifier.width(16.dp))
 
                         // Help
-                        RoundIconButton(RoundIconButtonType.Help(
-                            backgroundColor = MaterialTheme.colorScheme.secondaryContainer alwaysLight true,
-                        ) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                            view.playSoundEffect(SoundEffectConstants.CLICK)
-                            context.openURL(context.getString(R.string.wiki_link), OpenLinkPreference.AutoPreferCustomTabs)
-                        })
+                        RoundIconButton(
+                            RoundIconButtonType.Help(
+                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer alwaysLight true,
+                            ) {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                view.playSoundEffect(SoundEffectConstants.CLICK)
+                                context.openURL(
+                                    context.getString(R.string.wiki_link),
+                                    OpenLinkPreference.AutoPreferCustomTabs
+                                )
+                            })
                     }
                     Spacer(modifier = Modifier.height(48.dp))
                 }
@@ -250,6 +305,9 @@ fun TipsAndSupportPage(
     )
 
     UpdateDialog()
+    if (showSponsorDialog) {
+        SponsorDialog { showSponsorDialog = false }
+    }
 }
 
 @Immutable

@@ -1,9 +1,0 @@
-## 0.9.7
-
-Detta är en extra uppdatering.
-
-1. Slå samman c0ff8ba snabbkorrigering
-
-2. Förbättra översättningen (tack till alla)
-
-3. Uppdatera GitHub:s README-beskrivningsfiler

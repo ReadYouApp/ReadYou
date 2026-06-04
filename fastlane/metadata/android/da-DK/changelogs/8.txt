@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Separat ViewPager.
-
-2. Flet notifikationer efter feeds.
-
-3. Ikke længere downloade opdateringsfiler, men hop til udgivelsessiden.

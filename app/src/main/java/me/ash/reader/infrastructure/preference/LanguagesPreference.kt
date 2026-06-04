@@ -17,8 +17,7 @@ import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.put
 import java.util.Locale
 
-val LocalLanguages =
-    compositionLocalOf<LanguagesPreference> { LanguagesPreference.default }
+val LocalLanguages = compositionLocalOf<LanguagesPreference> { LanguagesPreference.default }
 
 sealed class LanguagesPreference(val value: Int) : Preference() {
     data object UseDeviceLanguages : LanguagesPreference(0)
@@ -57,6 +56,11 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
     data object Turkish : LanguagesPreference(33)
     data object Ukrainian : LanguagesPreference(34)
     data object Vietnamese : LanguagesPreference(35)
+    data object ArabicNorthLevantine : LanguagesPreference(36)
+    data object Estonian : LanguagesPreference(37)
+    data object Galician : LanguagesPreference(38)
+    data object Slovak : LanguagesPreference(39)
+    data object Tamil : LanguagesPreference(40)
 
 
     override fun put(context: Context, scope: CoroutineScope) {
@@ -117,6 +121,11 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
         Turkish -> Locale("tr")
         Ukrainian -> Locale("uk")
         Vietnamese -> Locale("vi")
+        ArabicNorthLevantine -> Locale.forLanguageTag("apc")
+        Estonian -> Locale("et")
+        Galician -> Locale("gl")
+        Slovak -> Locale("sk")
+        Tamil -> Locale("ta")
     }
 
     private fun toLocaleList(): LocaleListCompat =
@@ -129,6 +138,7 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
         val values = listOf(
             UseDeviceLanguages,
             Arabic,
+            ArabicNorthLevantine,
             Basque,
             Bulgarian,
             Catalan,
@@ -139,8 +149,10 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
             Dutch,
             English,
             Esperanto,
+            Estonian,
             Filipino,
             French,
+            Galician,
             German,
             Hebrew,
             Hindi,
@@ -155,10 +167,13 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
             Portuguese,
             PortugueseBrazil,
             Romanian,
+            Russian,
             Serbian,
+            Slovak,
             Slovenian,
             Spanish,
             Swedish,
+            Tamil,
             Turkish,
             Ukrainian,
             Vietnamese
@@ -205,6 +220,11 @@ sealed class LanguagesPreference(val value: Int) : Preference() {
             33 -> Turkish
             34 -> Ukrainian
             35 -> Vietnamese
+            36 -> ArabicNorthLevantine
+            37 -> Estonian
+            38 -> Galician
+            39 -> Slovak
+            40 -> Tamil
             else -> default
         }
 

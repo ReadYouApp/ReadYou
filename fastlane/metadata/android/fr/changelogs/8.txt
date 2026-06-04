@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Séparer le ViewPager.
-
-2. Fusionner les notifications par flux.
-
-3. Ne plus télécharger les fichiers de mise à jour, mais passer directement à la page de publication.

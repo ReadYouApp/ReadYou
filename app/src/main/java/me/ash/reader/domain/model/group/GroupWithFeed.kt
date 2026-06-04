@@ -9,7 +9,7 @@ import me.ash.reader.domain.model.feed.Feed
  */
 data class GroupWithFeed(
     @Embedded
-    var group: Group,
+    val group: Group,
     @Relation(parentColumn = "id", entityColumn = "groupId")
-    var feeds: MutableList<Feed>,
+    val feeds: MutableList<Feed>,
 )

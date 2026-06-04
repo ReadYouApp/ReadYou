@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.aboutlibraries) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
 }
 
 tasks.register<Delete>("clean") {

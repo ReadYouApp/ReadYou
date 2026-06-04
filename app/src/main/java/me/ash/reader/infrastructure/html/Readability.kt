@@ -23,12 +23,7 @@ object Readability {
 
     fun parseToElement(htmlContent: String?, uri: String?): Element? {
         htmlContent ?: return null
-        return try {
-            Readability4JExtended(uri, htmlContent).parse().articleContent
-        } catch (e: Exception) {
-            Log.e("RLog", "Readability.parseToElement '$uri' is error: ", e)
-            null
-        }
+        return Readability4JExtended(uri, htmlContent).parse().articleContent
     }
 
     private fun Readability4JExtended(uri: String?, html: String): Readability4JExtended {

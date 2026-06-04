@@ -2,7 +2,9 @@ package me.ash.reader.domain.repository
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.MapColumn
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.article.ArticleMeta
 import me.ash.reader.domain.model.article.ArticleWithFeed
+import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.feed.ImportantNum
 import java.util.Date
 
@@ -80,6 +83,7 @@ interface ArticleDao {
         isStarred: Boolean,
     ): Int
 
+
     @Transaction
     @Query(
         """
@@ -94,7 +98,9 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByGroupIdWhenIsUnread(
@@ -102,6 +108,7 @@ interface ArticleDao {
         text: String,
         groupId: String,
         isUnread: Boolean,
+        sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -118,7 +125,9 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByGroupIdWhenIsStarred(
@@ -126,6 +135,7 @@ interface ArticleDao {
         text: String,
         groupId: String,
         isStarred: Boolean,
+        sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -141,13 +151,13 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByGroupIdWhenAll(
-        accountId: Int,
-        text: String,
-        groupId: String,
+        accountId: Int, text: String, groupId: String, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -162,7 +172,9 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByFeedIdWhenIsUnread(
@@ -170,6 +182,7 @@ interface ArticleDao {
         text: String,
         feedId: String,
         isUnread: Boolean,
+        sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -184,7 +197,9 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByFeedIdWhenIsStarred(
@@ -192,6 +207,7 @@ interface ArticleDao {
         text: String,
         feedId: String,
         isStarred: Boolean,
+        sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -205,13 +221,13 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleByFeedIdWhenAll(
-        accountId: Int,
-        text: String,
-        feedId: String,
+        accountId: Int, text: String, feedId: String, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -225,13 +241,13 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleWhenIsUnread(
-        accountId: Int,
-        text: String,
-        isUnread: Boolean,
+        accountId: Int, text: String, isUnread: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -245,13 +261,13 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleWhenIsStarred(
-        accountId: Int,
-        text: String,
-        isStarred: Boolean,
+        accountId: Int, text: String, isStarred: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -264,13 +280,15 @@ interface ArticleDao {
             OR shortDescription LIKE '%' || :text || '%'
             OR fullContent LIKE '%' || :text || '%'
         )
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun searchArticleWhenAll(
-        accountId: Int,
-        text: String,
+        accountId: Int, text: String, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
+
 
     @Query(
         """
@@ -285,6 +303,20 @@ interface ArticleDao {
         accountId: Int,
         before: Date,
     )
+
+    @Query(
+        """
+        select * FROM article
+        WHERE accountId = :accountId
+        AND updateAt < :before
+        AND isUnread = 0
+        AND isStarred = 0
+        """
+    )
+    suspend fun queryArchivedArticleBefore(
+        accountId: Int,
+        before: Date,
+    ): List<Article>
 
     @Transaction
     @Query(
@@ -398,62 +430,63 @@ interface ArticleDao {
     )
     suspend fun deleteByAccountId(accountId: Int)
 
+
     @Transaction
     @Query(
         """
-        SELECT COUNT(*) AS important, a.feedId, b.groupId
-        FROM article AS a
-        LEFT JOIN feed AS b
-        ON a.feedId = b.id
-        WHERE a.isUnread = :isUnread
-        AND a.accountId = :accountId
-        GROUP BY a.feedId
+        SELECT feedId, COUNT(*) AS important
+        FROM article
+        WHERE isUnread = :isUnread
+        AND accountId = :accountId
+        GROUP BY feedId
         """
     )
     fun queryImportantCountWhenIsUnread(
         accountId: Int,
         isUnread: Boolean,
-    ): Flow<List<ImportantNum>>
+    ): Flow<Map<@MapColumn("feedId") String, @MapColumn("important") Int>>
 
     @Transaction
     @Query(
         """
-        SELECT COUNT(*) AS important, a.feedId, b.groupId 
-        FROM article AS a
-        LEFT JOIN feed AS b
-        ON a.feedId = b.id
-        WHERE a.isStarred = :isStarred
-        AND a.accountId = :accountId
-        GROUP BY a.feedId
+        SELECT feedId, COUNT(*) AS important
+        FROM article
+        WHERE isStarred = :isStarred
+        AND accountId = :accountId
+        GROUP BY feedId
         """
     )
     fun queryImportantCountWhenIsStarred(
         accountId: Int,
         isStarred: Boolean,
-    ): Flow<List<ImportantNum>>
+    ): Flow<Map<@MapColumn("feedId") String, @MapColumn("important") Int>>
 
     @Transaction
     @Query(
         """
-        SELECT COUNT(*) AS important, a.feedId, b.groupId 
-        FROM article AS a
-        LEFT JOIN feed AS b
-        ON a.feedId = b.id
-        WHERE a.accountId = :accountId
-        GROUP BY a.feedId
+        SELECT feedId, COUNT(*) AS important
+        FROM article
+        WHERE accountId = :accountId
+        GROUP BY feedId
         """
     )
-    fun queryImportantCountWhenIsAll(accountId: Int): Flow<List<ImportantNum>>
+    fun queryImportantCountWhenIsAll(accountId: Int):
+            Flow<Map<@MapColumn("feedId") String, @MapColumn("important") Int>>
+
 
     @Transaction
     @Query(
         """
         SELECT * FROM article 
         WHERE accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryArticleWithFeedWhenIsAll(accountId: Int): PagingSource<Int, ArticleWithFeed>
+    fun queryArticleWithFeedWhenIsAll(
+        accountId: Int, sortAscending: Boolean = false
+    ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
     @Query(
@@ -461,12 +494,13 @@ interface ArticleDao {
         SELECT * FROM article
         WHERE isStarred = :isStarred 
         AND accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun queryArticleWithFeedWhenIsStarred(
-        accountId: Int,
-        isStarred: Boolean,
+        accountId: Int, isStarred: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -475,12 +509,13 @@ interface ArticleDao {
         SELECT * FROM article 
         WHERE isUnread = :isUnread 
         AND accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun queryArticleWithFeedWhenIsUnread(
-        accountId: Int,
-        isUnread: Boolean,
+        accountId: Int, isUnread: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -495,12 +530,13 @@ interface ArticleDao {
         LEFT JOIN `group` AS c ON c.id = b.groupId
         WHERE c.id = :groupId
         AND a.accountId = :accountId
-        ORDER BY a.date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByGroupIdWhenIsAll(
-        accountId: Int,
-        groupId: String,
+        accountId: Int, groupId: String, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -516,13 +552,13 @@ interface ArticleDao {
         WHERE c.id = :groupId
         AND a.isStarred = :isStarred
         AND a.accountId = :accountId
-        ORDER BY a.date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByGroupIdWhenIsStarred(
-        accountId: Int,
-        groupId: String,
-        isStarred: Boolean,
+        accountId: Int, groupId: String, isStarred: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -538,13 +574,13 @@ interface ArticleDao {
         WHERE c.id = :groupId
         AND a.isUnread = :isUnread
         AND a.accountId = :accountId
-        ORDER BY a.date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByGroupIdWhenIsUnread(
-        accountId: Int,
-        groupId: String,
-        isUnread: Boolean,
+        accountId: Int, groupId: String, isUnread: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -553,12 +589,13 @@ interface ArticleDao {
         SELECT * FROM article
         WHERE feedId = :feedId
         AND accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun queryArticleWithFeedByFeedIdWhenIsAll(
-        accountId: Int,
-        feedId: String,
+        accountId: Int, feedId: String, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -568,13 +605,13 @@ interface ArticleDao {
         WHERE feedId = :feedId 
         AND isStarred = :isStarred
         AND accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun queryArticleWithFeedByFeedIdWhenIsStarred(
-        accountId: Int,
-        feedId: String,
-        isStarred: Boolean,
+        accountId: Int, feedId: String, isStarred: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -584,14 +621,15 @@ interface ArticleDao {
         WHERE feedId = :feedId 
         AND isUnread = :isUnread
         AND accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
     fun queryArticleWithFeedByFeedIdWhenIsUnread(
-        accountId: Int,
-        feedId: String,
-        isUnread: Boolean,
+        accountId: Int, feedId: String, isUnread: Boolean, sortAscending: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
+
 
     @RewriteQueriesToDropUnusedColumns
     @Query(
@@ -608,19 +646,34 @@ interface ArticleDao {
     )
     suspend fun queryLatestByFeedId(accountId: Int, feedId: String): Article?
 
+
     @Query(
         """
         SELECT * from article 
-        WHERE link = :link
+        WHERE link in (:linkList)
         AND feedId = :feedId
         AND accountId = :accountId
         """
     )
-    suspend fun queryArticleByLink(
-        link: String,
+    suspend fun queryArticlesByLinks(
+        linkList: List<String>,
         feedId: String,
         accountId: Int,
-    ): Article?
+    ): List<Article>
+
+    @Query(
+        """
+        SELECT a.*
+        FROM article AS a
+        LEFT JOIN feed AS f ON a.feedId = f.id
+        WHERE f.accountId = :accountId
+        AND f.isFullContent = 1
+        AND a.isUnread = 1
+        """
+    )
+    suspend fun queryUnreadFullContentArticles(
+        accountId: Int,
+    ): List<Article>
 
     @Transaction
     @Query(
@@ -631,15 +684,20 @@ interface ArticleDao {
     )
     suspend fun queryById(id: String): ArticleWithFeed?
 
+
     @Transaction
     @Query(
         """
         SELECT id, isUnread, isStarred FROM article
         WHERE accountId = :accountId
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataAll(accountId: Int): List<ArticleMeta>
+    fun queryMetadataAll(
+        accountId: Int, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -647,10 +705,14 @@ interface ArticleDao {
         SELECT id, isUnread, isStarred FROM article
         WHERE accountId = :accountId
         AND isUnread = :isUnread
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataAll(accountId: Int, isUnread: Boolean): List<ArticleMeta>
+    fun queryMetadataAll(
+        accountId: Int, isUnread: Boolean, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -658,10 +720,14 @@ interface ArticleDao {
         SELECT id, isUnread, isStarred FROM article
         WHERE accountId = :accountId
         AND date < :before
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataAll(accountId: Int, before: Date): List<ArticleMeta>
+    fun queryMetadataAll(
+        accountId: Int, before: Date, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -670,10 +736,14 @@ interface ArticleDao {
         WHERE accountId = :accountId
         AND isUnread = :isUnread
         AND date < :before
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataAll(accountId: Int, isUnread: Boolean, before: Date): List<ArticleMeta>
+    fun queryMetadataAll(
+        accountId: Int, isUnread: Boolean, before: Date, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -682,10 +752,14 @@ interface ArticleDao {
         WHERE accountId = :accountId
         AND feedId = :feedId
         AND isUnread = :isUnread
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataByFeedId(accountId: Int, feedId: String, isUnread: Boolean): List<ArticleMeta>
+    fun queryMetadataByFeedId(
+        accountId: Int, feedId: String, isUnread: Boolean, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -695,10 +769,18 @@ interface ArticleDao {
         AND feedId = :feedId
         AND isUnread = :isUnread
         AND date < :before
-        ORDER BY date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN date END ASC,
+            CASE WHEN :sortAscending = 0 THEN date END DESC
         """
     )
-    fun queryMetadataByFeedId(accountId: Int, feedId: String, isUnread: Boolean, before: Date): List<ArticleMeta>
+    fun queryMetadataByFeedId(
+        accountId: Int,
+        feedId: String,
+        isUnread: Boolean,
+        before: Date,
+        sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -710,10 +792,14 @@ interface ArticleDao {
         WHERE c.id = :groupId
         AND a.accountId = :accountId
         AND a.isUnread = :isUnread
-        ORDER BY a.date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
-    fun queryMetadataByGroupIdWhenIsUnread(accountId: Int, groupId: String, isUnread: Boolean): List<ArticleMeta>
+    fun queryMetadataByGroupIdWhenIsUnread(
+        accountId: Int, groupId: String, isUnread: Boolean, sortAscending: Boolean = false
+    ): List<ArticleMeta>
 
     @Transaction
     @Query(
@@ -726,10 +812,83 @@ interface ArticleDao {
         AND a.accountId = :accountId
         AND a.isUnread = :isUnread
         AND a.date < :before
-        ORDER BY a.date DESC
+        ORDER BY
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
-    fun queryMetadataByGroupIdWhenIsUnread(accountId: Int, groupId: String, isUnread: Boolean, before: Date): List<ArticleMeta>
+    fun queryMetadataByGroupIdWhenIsUnread(
+        accountId: Int,
+        groupId: String,
+        isUnread: Boolean,
+        before: Date,
+        sortAscending: Boolean = false
+    ): List<ArticleMeta>
+
+
+    /**
+     * query the latest unread articles from account with id, limit count
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM article
+        WHERE accountId = :accountId
+        AND isUnread = 1
+        ORDER BY date desc
+        LIMIT :limit
+        """
+    )
+    fun queryLatestUnreadArticles(accountId: Int, limit: Int = 15): Flow<List<ArticleWithFeed>>
+
+
+    /**
+     * query the latest unread articles from feed with id, limit count
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM article
+        WHERE feedId = :feedId
+        AND isUnread = 1
+        ORDER BY date desc
+        LIMIT :limit
+        """
+    )
+    fun queryLatestUnreadArticlesFromFeed(feedId: String, limit: Int = 15): Flow<List<ArticleWithFeed>>
+
+
+    /**
+     * query the latest unread articles from group with id, limit count
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT a.* FROM article AS a
+        LEFT JOIN feed AS f ON a.feedId = f.id
+        WHERE f.groupId = :groupId
+        AND a.isUnread = 1
+        ORDER BY a.date DESC
+        LIMIT :limit
+        """
+    )
+    fun queryLatestUnreadArticlesFromGroup(groupId: String, limit: Int = 15): Flow<List<ArticleWithFeed>>
+
+
+    /**
+     * query the latest unread articles from account with id, limit count
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM article
+        WHERE accountId = :accountId
+        AND isUnread = 1
+        ORDER BY date desc
+        LIMIT :limit
+        """
+    )
+    fun queryLatestUnreadArticleFlow(accountId: Int, limit: Int): Flow<List<ArticleWithFeed>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg article: Article)
@@ -740,20 +899,22 @@ interface ArticleDao {
     @Insert
     suspend fun insertList(articles: List<Article>)
 
+    @Delete
+    suspend fun delete(vararg article: Article)
+
     @Update
     suspend fun update(vararg article: Article)
 
     @Transaction
-    suspend fun insertListIfNotExist(articles: List<Article>): List<Article> {
-        return articles.mapNotNull {
-            if (queryArticleByLink(
-                    link = it.link,
-                    feedId = it.feedId,
-                    accountId = it.accountId
-                ) == null
-            ) it else null
-        }.also {
-            insertList(it)
-        }
+    suspend fun insertListIfNotExist(articles: List<Article>, feed: Feed): List<Article> {
+        if (articles.isEmpty()) return articles
+
+        val existingArticles = queryArticlesByLinks(
+            linkList = articles.map { it.link },
+            feedId = feed.id,
+            accountId = feed.accountId
+        ).associateBy { it.link }
+
+        return articles.filterNot { existingArticles.containsKey(it.link) }.also { insertList(it) }
     }
 }

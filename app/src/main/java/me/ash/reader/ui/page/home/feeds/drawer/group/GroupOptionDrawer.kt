@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.OpenInBrowser
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -38,6 +39,7 @@ import me.ash.reader.ui.component.base.BottomDrawer
 import me.ash.reader.ui.component.base.RYSelectionChip
 import me.ash.reader.ui.component.base.Subtitle
 import me.ash.reader.ui.ext.*
+import me.ash.reader.ui.interaction.alphaIndicationClickable
 
 @Composable
 fun GroupOptionDrawer(
@@ -73,7 +75,7 @@ fun GroupOptionDrawer(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        modifier = Modifier.roundClick {
+                        modifier = Modifier.alphaIndicationClickable() {
                             if (viewModel.rssService.get().updateSubscription) {
                                 viewModel.showRenameDialog()
                             }
@@ -139,6 +141,9 @@ fun GroupOptionDrawer(
     AllParseFullContentDialog(
         groupName = group?.name ?: "",
         onConfirm = { scope.launch { drawerState.hide() } })
+    AllOpenInBrowserDialog(
+        groupName = group?.name ?: "",
+        onConfirm = { scope.launch { drawerState.hide() } })
     AllMoveToGroupDialog(
         groupName = group?.name ?: "",
         onConfirm = { scope.launch { drawerState.hide() } })
@@ -171,7 +176,7 @@ private fun Preset(
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
     ) {
         RYSelectionChip(
-            modifier = Modifier.animateContentSize(),
+            modifier = Modifier,
             content = stringResource(R.string.allow_notification),
             selected = false,
             selectedIcon = {
@@ -187,7 +192,7 @@ private fun Preset(
             viewModel.showAllAllowNotificationDialog()
         }
         RYSelectionChip(
-            modifier = Modifier.animateContentSize(),
+            modifier = Modifier,
             content = stringResource(R.string.parse_full_content),
             selected = false,
             selectedIcon = {
@@ -203,7 +208,23 @@ private fun Preset(
             viewModel.showAllParseFullContentDialog()
         }
         RYSelectionChip(
-            modifier = Modifier.animateContentSize(),
+            modifier = Modifier,
+            content = stringResource(R.string.open_in_browser),
+            selected = false,
+            selectedIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.OpenInBrowser,
+                    contentDescription = stringResource(R.string.open_in_browser),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(20.dp),
+                )
+            },
+        ) {
+            viewModel.showAllOpenInBrowserDialog()
+        }
+        RYSelectionChip(
+            modifier = Modifier,
             content = stringResource(R.string.clear_articles),
             selected = false,
         ) {
@@ -211,7 +232,7 @@ private fun Preset(
         }
         if (viewModel.rssService.get().deleteSubscription && group?.id != context.currentAccountId.getDefaultGroupId()) {
             RYSelectionChip(
-                modifier = Modifier.animateContentSize(),
+                modifier = Modifier,
                 content = stringResource(R.string.delete_group),
                 selected = false,
             ) {
@@ -235,7 +256,7 @@ private fun FlowRowGroups(
         groupOptionUiState.groups.forEach {
             if (it.id != group?.id) {
                 RYSelectionChip(
-                    modifier = Modifier.animateContentSize(),
+                    modifier = Modifier,
                     content = it.name,
                     selected = false,
                 ) {
@@ -256,7 +277,7 @@ private fun LazyRowGroups(
         items(groupOptionUiState.groups) {
             if (it.id != group?.id) {
                 RYSelectionChip(
-                    modifier = Modifier.animateContentSize(),
+                    modifier = Modifier,
                     content = it.name,
                     selected = false,
                 ) {

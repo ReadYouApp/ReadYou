@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. ViewPager è stato separato.
-
-2. Sono state unite le notifiche per feed.
-
-3. Non vengono più scaricati i file di aggiornamento ma si viene reindirizzati alla pagina di pubblicazione.

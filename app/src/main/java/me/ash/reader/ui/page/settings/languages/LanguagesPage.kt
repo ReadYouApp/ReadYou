@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LanguagesPreference
 import me.ash.reader.infrastructure.preference.LocalLanguages
@@ -34,7 +33,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanguagesPage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val currentLocale = Locale.getDefault()
@@ -52,10 +51,9 @@ fun LanguagesPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {

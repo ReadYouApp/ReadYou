@@ -15,20 +15,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.ash.reader.R
 import me.ash.reader.ui.component.base.*
 import me.ash.reader.ui.ext.collectAsStateValue
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun AccountsPage(
-    navController: NavHostController = rememberNavController(),
     viewModel: AccountViewModel = hiltViewModel(),
+    onBack: () -> Unit,
+    navigateToAddAccount: () -> Unit,
+    navigateToAccountDetails: (Int) -> Unit,
 ) {
     val context = LocalContext.current
     val uiState = viewModel.accountUiState.collectAsStateValue()
@@ -40,10 +39,9 @@ fun AccountsPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -62,11 +60,7 @@ fun AccountsPage(
                             desc = it.type.toDesc(context),
                             icon = it.type.toIcon().takeIf { it is ImageVector }?.let { it as ImageVector },
                             iconPainter = it.type.toIcon().takeIf { it is Painter }?.let { it as Painter },
-                            onClick = {
-                                navController.navigate("${RouteName.ACCOUNT_DETAILS}/${it.id}") {
-                                    launchSingleTop = true
-                                }
-                            },
+                            onClick = { navigateToAccountDetails(it.id!!) },
                         ) {}
                     }
                 }
@@ -83,11 +77,7 @@ fun AccountsPage(
                         title = stringResource(R.string.add_accounts),
                         desc = stringResource(R.string.add_accounts_desc),
                         icon = Icons.Outlined.PersonAdd,
-                        onClick = {
-                            navController.navigate(RouteName.ADD_ACCOUNTS) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToAddAccount,
                     ) {}
                 }
                 item {
@@ -102,5 +92,9 @@ fun AccountsPage(
 @Preview
 @Composable
 fun AccountsPreview() {
-    AccountsPage()
+    AccountsPage(
+        onBack = {},
+        navigateToAddAccount = {},
+        navigateToAccountDetails = {}
+    )
 }

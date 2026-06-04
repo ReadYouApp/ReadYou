@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Oddelený ViewPager.
-
-2. Zlúčenie oznámení podľa kanálov.
-
-3. Už nesťahuje aktualizačné súbory, ale prejde na stránku vydania.

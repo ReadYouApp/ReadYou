@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Aparte ViewPager.
-
-2. Meldingen per feeds samenvoegen.
-
-3. Niet langer updatebestanden downloaden, maar naar releasepagina springen.

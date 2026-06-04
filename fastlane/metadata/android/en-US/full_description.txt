@@ -2,15 +2,15 @@
 
 <b>Features:</b>
 
-* Subscribe to Feed Links
+* Subscribe to feed links
 * Import from OPML
-* Article Sync
-* Article Update Notification
-* Parse Full Content
-* Filter Unread and Starred
-* Feed Grouping
+* Article sync
+* Article update notification
+* Parse full content
+* Filter unread and starred
+* Feed grouping
 * Localization
 * Export as OPML
-* Search for Articles
+* Search for articles
 
 More to come…

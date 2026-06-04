@@ -7,11 +7,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.MoreHoriz
@@ -54,17 +56,16 @@ data class ImageData(val imageUrl: String = "", val altText: String = "")
 
 @Composable
 fun ReaderImageViewer(
-    imageData: ImageData, onDownloadImage: (String) -> Unit, onDismissRequest: () -> Unit = {}
+    imageData: ImageData,
+    onDownloadImage: (String) -> Unit,
+    onDismissRequest: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties =
+            DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             val view = LocalView.current
             val context = LocalContext.current
 
@@ -73,11 +74,13 @@ fun ReaderImageViewer(
 
             val zoomableState = rememberZoomableState(zoomSpec = ZoomSpec(maxZoomFactor = 4f))
 
-            val painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(LocalContext.current).addHeader(
-                    "Referer", imageData.imageUrl.extractDomain() ?: ""
-                ).data(data = imageData.imageUrl).build()
-            )
+            val painter =
+                rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .addHeader("Referer", imageData.imageUrl.extractDomain() ?: "")
+                        .data(data = imageData.imageUrl)
+                        .build()
+                )
 
             var expanded by remember { mutableStateOf(false) }
 
@@ -90,80 +93,90 @@ fun ReaderImageViewer(
             Image(
                 painter = painter,
                 contentDescription = imageData.altText,
-                modifier = Modifier
-                    .zoomable(state = zoomableState, clipToBounds = true,
-                        onClick = {
-                            onDismissRequest()
-                        },
-                        onLongClick = {
-                            expanded = true
-                        })
-                    .fillMaxSize(),
+                modifier =
+                    Modifier.zoomable(
+                            state = zoomableState,
+                            clipToBounds = true,
+                            onClick = { onDismissRequest() },
+                            onLongClick = { expanded = true },
+                        )
+                        .fillMaxSize(),
                 alignment = Alignment.Center,
-                contentScale = ContentScale.Inside
+                contentScale = ContentScale.Inside,
             )
 
-            IconButton(
-                onClick = {
-                    view.performHapticFeedback(HapticFeedbackConstantsCompat.KEYBOARD_TAP)
-                    onDismissRequest()
-                }, colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color.Black.copy(alpha = 0.5f), contentColor = Color.White
-                ), modifier = Modifier
-                    .padding(4.dp)
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(id = R.string.close),
-                )
-            }
-
-            IconButton(
-                onClick = { expanded = true }, colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color.Black.copy(alpha = 0.5f), contentColor = Color.White
-                ), modifier = Modifier
-                    .padding(4.dp)
-                    .align(Alignment.TopEnd)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.MoreHoriz,
-                    contentDescription = stringResource(id = R.string.more),
-                )
-            }
-
             val launcher =
-                rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(),
+                rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
                     onResult = { result ->
                         if (result) {
                             onDownloadImage(imageData.imageUrl)
                         } else {
                             context.showToast(context.getString(R.string.permission_denied))
                         }
-                    })
+                    },
+                )
 
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth().safeDrawingPadding().align(Alignment.TopCenter),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    DropdownMenuItem(text = { Text(text = stringResource(id = R.string.save)) },
-                        onClick = {
-                            val isStoragePermissionGranted = ContextCompat.checkSelfPermission(
-                                context, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ) == PackageManager.PERMISSION_GRANTED
+                IconButton(
+                    onClick = {
+                        view.performHapticFeedback(HapticFeedbackConstantsCompat.KEYBOARD_TAP)
+                        onDismissRequest()
+                    },
+                    colors =
+                        IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.Black.copy(alpha = 0.5f),
+                            contentColor = Color.White,
+                        ),
+                    modifier = Modifier.padding(4.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = stringResource(id = R.string.close),
+                    )
+                }
 
-                            if (Build.VERSION.SDK_INT > 28 || isStoragePermissionGranted) {
-                                onDownloadImage(imageData.imageUrl)
-                            } else {
-                                launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            }
-                            expanded = false
-                        })
+                Spacer(Modifier.weight(1f))
+
+                Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.save)) },
+                            onClick = {
+                                val isStoragePermissionGranted =
+                                    ContextCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    ) == PackageManager.PERMISSION_GRANTED
+
+                                if (Build.VERSION.SDK_INT > 28 || isStoragePermissionGranted) {
+                                    onDownloadImage(imageData.imageUrl)
+                                } else {
+                                    launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                }
+                                expanded = false
+                            },
+                        )
+                    }
+                    IconButton(
+                        onClick = { expanded = true },
+                        colors =
+                            IconButtonDefaults.iconButtonColors(
+                                containerColor = Color.Black.copy(alpha = 0.5f),
+                                contentColor = Color.White,
+                            ),
+                        modifier = Modifier.padding(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreHoriz,
+                            contentDescription = stringResource(id = R.string.more),
+                        )
+                    }
                 }
             }
-
         }
     }
 }

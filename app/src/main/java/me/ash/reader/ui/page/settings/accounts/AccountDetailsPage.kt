@@ -18,18 +18,20 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.PersonOff
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,14 +39,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import java.util.Date
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.KeepArchivedPreference
 import me.ash.reader.infrastructure.preference.SyncBlockListPreference
@@ -67,17 +69,16 @@ import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.showToast
 import me.ash.reader.ui.ext.showToastLong
 import me.ash.reader.ui.ext.toString
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.page.settings.accounts.connection.AccountConnection
 import me.ash.reader.ui.theme.palette.onLight
-import java.util.Date
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AccountDetailsPage(
-    navController: NavHostController = rememberNavController(),
-    viewModel: AccountViewModel = hiltViewModel(),
+    viewModel: AccountViewModel,
+    onBack: () -> Unit,
+    navigateToFeeds: () -> Unit,
 ) {
     val uiState = viewModel.accountUiState.collectAsStateValue()
     val context = LocalContext.current
@@ -87,54 +88,56 @@ fun AccountDetailsPage(
     var nameValue by remember { mutableStateOf(selectedAccount?.name) }
     var nameDialogVisible by remember { mutableStateOf(false) }
     var blockListValue by remember {
-        mutableStateOf(SyncBlockListPreference.toString(selectedAccount?.syncBlockList
-            ?: SyncBlockListPreference.default))
+        mutableStateOf(
+            SyncBlockListPreference.toString(
+                selectedAccount?.syncBlockList ?: SyncBlockListPreference.default
+            )
+        )
     }
     var blockListDialogVisible by remember { mutableStateOf(false) }
     var syncIntervalDialogVisible by remember { mutableStateOf(false) }
     var keepArchivedDialogVisible by remember { mutableStateOf(false) }
     var exportOPMLModeDialogVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        navController.currentBackStackEntryFlow.collect {
-            it.arguments?.getString("accountId")?.let {
-                viewModel.initData(it.toInt())
-            }
-        }
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument(MimeType.ANY)
-    ) { result ->
-        viewModel.exportAsOPML(selectedAccount!!.id!!) { string ->
-            result?.let { uri ->
-                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    outputStream.write(string.toByteArray())
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(MimeType.ANY)) {
+            result ->
+            viewModel.exportAsOPML(selectedAccount!!.id!!) { string ->
+                result?.let { uri ->
+                    context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(string.toByteArray())
+                    }
                 }
             }
         }
-    }
 
     RYScaffold(
-        containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
+        containerColor =
+            MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack,
+            )
         },
         actions = {
-            FeedbackIconButton(
-                imageVector = Icons.Rounded.Close,
-                contentDescription = stringResource(R.string.close),
-                tint = MaterialTheme.colorScheme.onSurface
+            val haptic = LocalHapticFeedback.current
+            Button(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                    navigateToFeeds()
+                },
+                shapes = ButtonDefaults.shapes(),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryFixedDim,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryFixedVariant,
+                    ),
             ) {
-                navController.navigate(RouteName.FEEDS) {
-                    launchSingleTop = true
-                }
+                Text(stringResource(R.string.done))
             }
         },
         content = {
@@ -159,15 +162,22 @@ fun AccountDetailsPage(
                     Spacer(modifier = Modifier.height(24.dp))
                 }
                 if (selectedAccount != null) {
-                    item {
-                        AccountConnection(account = selectedAccount)
-                    }
+                    item { AccountConnection(account = selectedAccount) }
                 }
                 item {
                     Subtitle(
                         modifier = Modifier.padding(horizontal = 24.dp),
                         text = stringResource(R.string.synchronous),
                     )
+                    selectedAccount?.let {
+                        SettingItem(
+                            title = stringResource(R.string.last_updated),
+                            desc = selectedAccount.updateAt.toString(),
+                            onClick = {},
+                            enabled = false,
+                        ) {}
+                    }
+
                     SettingItem(
                         title = stringResource(R.string.sync_interval),
                         desc = selectedAccount?.syncInterval?.toDesc(context),
@@ -224,7 +234,12 @@ fun AccountDetailsPage(
                     //     title = stringResource(R.string.block_list),
                     //     onClick = { blockListDialogVisible = true },
                     // ) {}
-                    Tips(text = stringResource(R.string.synchronous_tips) + "\n\n" + stringResource(R.string.keep_archived_tips))
+                    Tips(
+                        text =
+                            stringResource(R.string.synchronous_tips) +
+                                "\n\n" +
+                                stringResource(R.string.keep_archived_tips)
+                    )
                     Spacer(modifier = Modifier.height(24.dp))
                 }
                 item {
@@ -234,9 +249,7 @@ fun AccountDetailsPage(
                     )
                     SettingItem(
                         title = stringResource(R.string.export_as_opml),
-                        onClick = {
-                           exportOPMLModeDialogVisible = true
-                        },
+                        onClick = { exportOPMLModeDialogVisible = true },
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.clear_all_articles),
@@ -250,48 +263,43 @@ fun AccountDetailsPage(
                 }
                 item {
                     Spacer(modifier = Modifier.height(24.dp))
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+                    Spacer(
+                        modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars)
+                    )
                 }
             }
-        }
+        },
     )
 
-    TextFieldDialog(
-        visible = nameDialogVisible,
-        title = stringResource(R.string.name),
-        value = nameValue ?: "",
-        placeholder = stringResource(R.string.value),
-        onValueChange = {
-            nameValue = it
-        },
-        onDismissRequest = {
-            nameDialogVisible = false
-        },
-        onConfirm = {
-            if (nameValue?.isNotBlank() == true) {
-                selectedAccount?.id?.let {
-                    viewModel.update(it) {
-                        name = nameValue ?: ""
+    if (nameDialogVisible) {
+        val textFieldState = rememberTextFieldState(nameValue ?: "")
+        TextFieldDialog(
+            title = stringResource(R.string.name),
+            textFieldState = textFieldState,
+            onDismissRequest = { nameDialogVisible = false },
+            onConfirm = {
+                if (textFieldState.text.isNotBlank() == true) {
+                    selectedAccount?.id?.let {
+                        viewModel.update(it) { copy(name = textFieldState.text.toString()) }
                     }
+                    nameDialogVisible = false
                 }
-                nameDialogVisible = false
-            }
-        }
-    )
+            },
+        )
+    }
 
     RadioDialog(
         visible = syncIntervalDialogVisible,
         title = stringResource(R.string.sync_interval),
-        options = SyncIntervalPreference.values.map {
-            RadioDialogOption(
-                text = it.toDesc(context),
-                selected = it == selectedAccount?.syncInterval,
-            ) {
-                selectedAccount?.id?.let { accountId ->
-                    it.put(accountId, viewModel)
+        options =
+            SyncIntervalPreference.values.map {
+                RadioDialogOption(
+                    text = it.toDesc(context),
+                    selected = it == selectedAccount?.syncInterval,
+                ) {
+                    selectedAccount?.id?.let { accountId -> it.put(accountId, viewModel) }
                 }
-            }
-        }
+            },
     ) {
         syncIntervalDialogVisible = false
     }
@@ -299,16 +307,15 @@ fun AccountDetailsPage(
     RadioDialog(
         visible = keepArchivedDialogVisible,
         title = stringResource(R.string.keep_archived_articles),
-        options = KeepArchivedPreference.values.map {
-            RadioDialogOption(
-                text = it.toDesc(context),
-                selected = it == selectedAccount?.keepArchived,
-            ) {
-                selectedAccount?.id?.let { accountId ->
-                    it.put(accountId, viewModel)
+        options =
+            KeepArchivedPreference.values.map {
+                RadioDialogOption(
+                    text = it.toDesc(context),
+                    selected = it == selectedAccount?.keepArchived,
+                ) {
+                    selectedAccount?.id?.let { accountId -> it.put(accountId, viewModel) }
                 }
-            }
-        }
+            },
     ) {
         keepArchivedDialogVisible = false
     }
@@ -318,110 +325,79 @@ fun AccountDetailsPage(
         title = stringResource(R.string.block_list),
         value = blockListValue,
         singleLine = false,
-        placeholder = stringResource(R.string.value),
-        onValueChange = {
-            blockListValue = it
-        },
-        onDismissRequest = {
-            blockListDialogVisible = false
-        },
+        onValueChange = { blockListValue = it },
+        onDismissRequest = { blockListDialogVisible = false },
         onConfirm = {
             selectedAccount?.id?.let {
                 SyncBlockListPreference.put(it, viewModel, selectedAccount.syncBlockList)
                 blockListDialogVisible = false
                 context.showToast(selectedAccount.syncBlockList.toString())
             }
-        }
+        },
     )
 
     RYDialog(
         visible = uiState.clearDialogVisible,
-        onDismissRequest = {
-            viewModel.hideClearDialog()
-        },
+        onDismissRequest = { viewModel.hideClearDialog() },
         icon = {
             Icon(
                 imageVector = Icons.Outlined.DeleteSweep,
                 contentDescription = stringResource(R.string.clear_all_articles),
             )
         },
-        title = {
-            Text(text = stringResource(R.string.clear_all_articles))
-        },
-        text = {
-            Text(text = stringResource(R.string.clear_all_articles_tips))
-        },
+        title = { Text(text = stringResource(R.string.clear_all_articles)) },
+        text = { Text(text = stringResource(R.string.clear_all_articles_tips)) },
         confirmButton = {
             TextButton(
                 onClick = {
                     selectedAccount?.let {
                         viewModel.clear(it) {
                             viewModel.hideClearDialog()
-                            context.showToastLong(context.getString(R.string.clear_all_articles_toast))
+                            context.showToastLong(
+                                context.getString(R.string.clear_all_articles_toast)
+                            )
                         }
                     }
                 }
             ) {
-                Text(
-                    text = stringResource(R.string.clear),
-                )
+                Text(text = stringResource(R.string.clear))
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = {
-                    viewModel.hideClearDialog()
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.cancel),
-                )
+            TextButton(onClick = { viewModel.hideClearDialog() }) {
+                Text(text = stringResource(R.string.cancel))
             }
         },
     )
 
     RYDialog(
         visible = uiState.deleteDialogVisible,
-        onDismissRequest = {
-            viewModel.hideDeleteDialog()
-        },
+        onDismissRequest = { viewModel.hideDeleteDialog() },
         icon = {
             Icon(
                 imageVector = Icons.Outlined.PersonOff,
                 contentDescription = stringResource(R.string.delete_account),
             )
         },
-        title = {
-            Text(text = stringResource(R.string.delete_account))
-        },
-        text = {
-            Text(text = stringResource(R.string.delete_account_tips))
-        },
+        title = { Text(text = stringResource(R.string.delete_account)) },
+        text = { Text(text = stringResource(R.string.delete_account_tips)) },
         confirmButton = {
             TextButton(
                 onClick = {
                     selectedAccount?.id?.let {
                         viewModel.delete(it) {
-                            navController.popBackStack()
+                            onBack()
                             context.showToastLong(context.getString(R.string.delete_account_toast))
                         }
                     }
                 }
             ) {
-                Text(
-                    text = stringResource(R.string.delete),
-                )
+                Text(text = stringResource(R.string.delete))
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = {
-                    viewModel.hideDeleteDialog()
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.cancel),
-                )
+            TextButton(onClick = { viewModel.hideDeleteDialog() }) {
+                Text(text = stringResource(R.string.cancel))
             }
         },
     )
@@ -442,38 +418,37 @@ fun AccountDetailsPage(
                     Text(text = stringResource(R.string.additional_info_desc))
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                items(listOf(
-                    RadioDialogOption(
-                        text = context.getString(R.string.include_additional_info),
-                        selected = uiState.exportOPMLMode == ExportOPMLMode.ATTACH_INFO,
-                    ) {
-                        viewModel.changeExportOPMLMode(ExportOPMLMode.ATTACH_INFO)
-                    },
-                    RadioDialogOption(
-                        text = context.getString(R.string.exclude),
-                        selected = uiState.exportOPMLMode == ExportOPMLMode.NO_ATTACH,
-                    ) {
-                        viewModel.changeExportOPMLMode(ExportOPMLMode.NO_ATTACH)
-                    }
-                )) { option ->
+                items(
+                    listOf(
+                        RadioDialogOption(
+                            text = context.getString(R.string.include_additional_info),
+                            selected = uiState.exportOPMLMode == ExportOPMLMode.ATTACH_INFO,
+                        ) {
+                            viewModel.changeExportOPMLMode(ExportOPMLMode.ATTACH_INFO)
+                        },
+                        RadioDialogOption(
+                            text = context.getString(R.string.exclude),
+                            selected = uiState.exportOPMLMode == ExportOPMLMode.NO_ATTACH,
+                        ) {
+                            viewModel.changeExportOPMLMode(ExportOPMLMode.NO_ATTACH)
+                        },
+                    )
+                ) { option ->
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(CircleShape)
-                            .clickable {
+                        modifier =
+                            Modifier.fillMaxWidth().clip(CircleShape).clickable {
                                 option.onClick()
                             },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RadioButton(selected = option.selected, onClick = {
-                            option.onClick()
-                        })
+                        RadioButton(selected = option.selected, onClick = { option.onClick() })
                         Text(
                             modifier = Modifier.padding(start = 6.dp),
                             text = option.text,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                baselineShift = BaselineShift.None
-                            ).merge(other = option.style),
+                            style =
+                                MaterialTheme.typography.bodyLarge
+                                    .copy(baselineShift = BaselineShift.None)
+                                    .merge(other = option.style),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
@@ -491,15 +466,11 @@ fun AccountDetailsPage(
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = { exportOPMLModeDialogVisible = false }
-            ) {
+            TextButton(onClick = { exportOPMLModeDialogVisible = false }) {
                 Text(stringResource(R.string.cancel))
             }
         },
-        onDismissRequest = {
-            exportOPMLModeDialogVisible = false
-        }
+        onDismissRequest = { exportOPMLModeDialogVisible = false },
     )
 }
 
@@ -507,7 +478,9 @@ private fun subscriptionOPMLFileLauncher(
     context: Context,
     launcher: ManagedActivityResultLauncher<String, Uri?>,
 ) {
-    launcher.launch("Read-You-" +
+    launcher.launch(
+        "Read-You-" +
             "${context.getCurrentVersion()}-subscription-" +
-            "${Date().toString(DateFormat.YYYY_MM_DD_DASH_HH_MM_SS_DASH)}.opml")
+            "${Date().toString(DateFormat.YYYY_MM_DD_DASH_HH_MM_SS_DASH)}.opml"
+    )
 }

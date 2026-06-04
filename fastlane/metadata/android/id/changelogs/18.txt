@@ -1,9 +1,0 @@
-## 0.9.7
-
-Ini adalah pembaruan tambahan.
-
-1. Gabungkan hotfix c0ff8ba
-
-2. Tingkatkan terjemahan (terima kasih untuk semuanya)
-
-3. Perbarui file deskripsi README GitHub

@@ -4,16 +4,19 @@
     <string name="all">Tot</string>
     <plurals name="all_desc">
         <item quantity="one">%1$d Article arxivat</item>
+        <item quantity="many">%1$d Articles arxivats</item>
         <item quantity="other">%1$d Articles arxivats</item>
     </plurals>
     <string name="unread">Sense llegir</string>
     <plurals name="unread_desc">
         <item quantity="one">%1$d Article sense llegir</item>
+        <item quantity="many">%1$d Articles sense llegir</item>
         <item quantity="other">%1$d Articles sense llegir</item>
     </plurals>
     <string name="starred">Destacat</string>
     <plurals name="starred_desc">
         <item quantity="one">%1$d Article destacat</item>
+        <item quantity="many">%1$d Articles destacats</item>
         <item quantity="other">%1$d Articles destacats</item>
     </plurals>
     <string name="feeds">Fonts</string>
@@ -68,9 +71,9 @@
     <string name="all_deny_parse_full_content_toast">Aturar el processament del contingut de tots els articles del grup \"%1$s\"</string>
     <string name="clear_articles_in_group_toast">S\'han buidat tots els articles arxivats de la font \"%1$s\"</string>
     <string name="tos_tips">Si us plau llegeix i accepta els termes de servei i la política de privacitat de Read You per continuar.</string>
-    <string name="tos_content"><h5> Política de privacitat </h5> <br/> <p> Ens prenem la teva privadesa molt seriosament. </p> <br/> <p> <b>Read You</b> no recull cap dada d\'usuari i tota la informació sensible (contrasenyes i altra informació del compte) s\'emmagatzema de manera segura a la base de dades local d\'aplicacions del vostre dispositiu. </p> <br/> <p> <b>Read You</b> utilitzarà els permisos següents per oferir-vos el servei. </p> <br/> <p> - Permís d\'accés a la xarxa (per accedir al contingut en línia tal com especifiqueu) </p> <p> - Obtenir permís d\'estat de la xarxa (per determinar si el dispositiu té condicions de xarxa disponibles actualment) </p> <p> - Permís de servei de fons (per sincronitzar automàticament els teus preferits de manera regular) </p> <br/> <br/> <h5> Serveis de tercers </h5> <br/> <p> Aquesta política no s\'aplica als serveis de tercers que utilitzeu amb <b>Read You</b>. Podeu revisar les polítiques de privadesa dels serveis de tercers que feu servir als seus llocs web </p> <br/> <br/> <h5> Exempcions de responsabilitat </h5> <br/> <p> <b>Read You</b> només és una eina de recollida de contingut. El vostre ús de <b>Read You</b> està subjecte a les lleis i regulacions del vostre país i regió, i qualsevol responsabilitat derivada de les vostres accions anirà a càrrec vostre personalment. </p> <br/> <br/> <h5> Llicència de codi obert </h5> <br/> <p> <b>Read You</b> és un projecte de codi obert sota el codi obert GNU GPL 3.0 Llicència[1], que us permet utilitzar, fer referència i modificar el codi font de <b>Read You</b> de manera gratuïta, però no permet distribuir i vendre el codi modificat i derivat com a codi tancat. programari comercial. Per obtenir més informació, consulteu la Llicència de codi obert GNU GPL 3.0 completa[2]. </p> <br/> <br/> <h5> Apèndix </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Política de privacitat </h5> <br/> <p> Ens prenem la teva privadesa molt seriosament. </p> <br/> <p> <b>Read You</b> no recull cap dada d\'usuari i tota la informació sensible (contrasenyes i altra informació del compte) s\'emmagatzema de manera segura a la base de dades local d\'aplicacions del vostre dispositiu. </p> <br/> <p> <b>Read You</b> utilitzarà els permisos següents per oferir-vos el servei. </p> <br/> <p> - Permís d\'accés a la xarxa (per accedir al contingut en línia tal com especifiqueu) </p> <p> - Obtenir permís d\'estat de la xarxa (per determinar si el dispositiu té condicions de xarxa disponibles actualment) </p> <p> - Permís de servei de fons (per sincronitzar automàticament els teus preferits de manera regular) </p> <br/> <br/> <h5> Serveis de tercers </h5> <br/> <p> Aquesta política no s\'aplica als serveis de tercers que utilitzeu amb <b>Read You</b>. Podeu revisar les polítiques de privadesa dels serveis de tercers que feu servir als seus llocs web </p> <br/> <br/> <h5> Exempcions de responsabilitat </h5> <br/> <p> <b>Read You</b> només és una eina de recollida de contingut. El vostre ús de <b>Read You</b> està subjecte a les lleis i regulacions del vostre país i regió, i qualsevol responsabilitat derivada de les vostres accions anirà a càrrec vostre personalment. </p> <br/> <br/> <h5> Llicència de codi obert </h5> <br/> <p> <b>Read You</b> és un projecte de codi obert sota el codi obert GNU GPL 3.0 Llicència[1], que us permet utilitzar, fer referència i modificar el codi font de <b>Read You</b> de manera gratuïta, però no permet distribuir i vendre el codi modificat i derivat com a codi tancat. programari comercial. Per obtenir més informació, consulteu la Llicència de codi obert GNU GPL 3.0 completa[2]. </p> <br/> <br/> <h5> Apèndix </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="primary_color">Colors primaris</string>
-    <string name="amoled_dark_theme">Tema fosc AMOLED</string>
+    <string name="amoled_dark_theme">Tema fosc negre</string>
     <string name="open_source_licenses">Llicències de codi obert</string>
     <string name="change_log">Log de canvis</string>
     <string name="checking_updates">Cercant actualitzacions…</string>
@@ -243,12 +246,11 @@
     <string name="password">Paraula clau</string>
     <string name="connection">Connexió</string>
     <string name="system_default">Sistema</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="preview_article_desc">El Boig és el vuitè i últim volum de la sèrie Senyor dels Misteris escrita per Sípia a la qual li encanta el busseig.</string>
     <string name="alignment">Alineament</string>
     <string name="general">General</string>
     <string name="rearrange_buttons">Reordenar botons</string>
-    <string name="bionic_reading">Lectura Bionic</string>
     <string name="images">Imatges</string>
     <string name="clear_all_articles_tips">Estàs segur que vols esborrar la llista d\'articles d\'aquest compte\?</string>
     <string name="initial_open_app">Aplicació quan es fa clic a l\'enllaç</string>
@@ -267,9 +269,7 @@
     <string name="external_links">Enllaços externs</string>
     <string name="unexpected_error_title">Vaja! Alguna cosa ha anat malament…</string>
     <string name="submit_bug_report">envia un informe d\'error a GitHub</string>
-    <string name="unexpected_error_msg">L\'aplicació ha trobat un error inesperat i s\'ha hagut de tancar.
-\n
-\nPer ajudar-nos a identificar i solucionar aquest problema ràpidament, podeu %1$s amb el seguiment de la pila d\'errors a continuació.</string>
+    <string name="unexpected_error_msg">L\'aplicació ha trobat un error inesperat i s\'ha hagut de tancar. \n \nPer ajudar-nos a identificar i solucionar aquest problema ràpidament, podeu %1$s amb el seguiment de la pila d\'errors a continuació.</string>
     <string name="next_article">Article següent</string>
     <string name="include_additional_info">Incloeu informació addicional</string>
     <string name="exclude">Excluir</string>
@@ -282,4 +282,8 @@
     <string name="open_link_specific_browser">Navegador</string>
     <string name="copy_error_report">Copia l\'informe d\'error</string>
     <string name="open_link_specific_browser_not_selected">Cap</string>
+    <string name="unfold_more">Expandir</string>
+    <string name="unfold_less">Col·lapsar</string>
+    <string name="open_in_browser">Obrir al navegador</string>
+    <string name="all_open_in_browser_tips">Obrir tots els articles del grup \"%1$s\" amb el navegador predeterminat</string>
 </resources>

@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import me.ash.reader.ui.page.home.reading.PullToLoadState.Status.Idle
 import me.ash.reader.ui.page.home.reading.PullToLoadState.Status.PulledDown
@@ -36,6 +37,7 @@ import kotlin.math.abs
 
 @Composable
 fun BoxScope.PullToLoadIndicator(
+    modifier: Modifier = Modifier,
     state: PullToLoadState,
     canLoadPrevious: Boolean = true,
     canLoadNext: Boolean = true
@@ -46,11 +48,11 @@ fun BoxScope.PullToLoadIndicator(
     LaunchedEffect(status) {
         when {
             canLoadPrevious && status == PulledDown -> {
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
             }
 
             canLoadNext && status == PulledUp -> {
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
             }
 
             else -> {}
@@ -61,8 +63,8 @@ fun BoxScope.PullToLoadIndicator(
     val absFraction = abs(fraction)
 
     val imageVector = when (status) {
-        PulledDown -> Icons.Outlined.KeyboardArrowUp
-        PulledUp -> Icons.Outlined.KeyboardArrowDown
+        PulledDown -> Icons.Rounded.KeyboardArrowUp
+        PulledUp -> Icons.Rounded.KeyboardArrowDown
         else -> null
     }
 
@@ -88,14 +90,19 @@ fun BoxScope.PullToLoadIndicator(
         }
     }
 
-    if (visible) {
+    if (visible && !state.isSettled) {
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .align(alignment)
                 .padding(vertical = 80.dp)
-                .offset(y = (fraction * 48).dp)
+                .offset {
+                    IntOffset(
+                        x = 0,
+                        y = (fraction * PullToLoadDefaults.ContentOffsetMultiple * .5f).dp.roundToPx()
+                    )
+                }
                 .width(36.dp),
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primaryFixed,
             shape = MaterialTheme.shapes.extraLarge
         ) {
             Column(
@@ -108,13 +115,14 @@ fun BoxScope.PullToLoadIndicator(
                     ), transitionSpec = {
                         (fadeIn(animationSpec = tween(220, delayMillis = 0)))
                             .togetherWith(fadeOut(animationSpec = tween(90)))
-                    }, label = ""
+                    }, label = "",
+                    contentAlignment = Alignment.Center
                 ) {
                     if (it != null) {
                         Icon(
                             imageVector = it,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = MaterialTheme.colorScheme.onPrimaryFixedVariant,
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)
                                 .padding(vertical = (2 * absFraction).dp)

@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Avskiljd ViewPager.
-
-2. Sammanslagna aviseringar för flöden.
-
-3. Inga nedladdningsfiler för uppdateringar, men hoppa till sida för utgåvor.

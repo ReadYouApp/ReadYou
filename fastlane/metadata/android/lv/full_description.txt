@@ -1,16 +1,16 @@
-<i>Read You</i> Mūsdienīgs un elegants RSS lasītājs ar <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You </a> dizainu
+<i>Read You</i> — mūsdienīgs un elegants RSS lasītājs ar <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You </a> dizainu
 
-<b>Funkcijas:</b>
+<b>Funkcionalitāte:</b>
 
 * Abonēt (pierakstīties) ziņu plūsmām
-* Importēt ziņu plūsmas no OPML faila
+* Ievietot ziņu plūsmas no OPML datnes
 * Rakstu sinhronizācija
 * Paziņojums par rakstu atjauninājumiem
 * Notiek visa raksta satura parsēšana
 * Nelasīto un atzīmēto rakstu filtrs
 * Plūsmu grupēšana
 * Lokalizācija
-* Eksportēt ziņu plūsmas OPML failā
+* Izgūt ziņu plūsmas OPML datnē
 * Meklēt rakstus
 
 un pārējās tuvākajā laikā…

@@ -55,7 +55,7 @@ fun TitleAndTextPreview() {
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontFamily = LocalReadingFonts.current.asFontFamily(context),
-                fontWeight = if (titleBold.value) FontWeight.SemiBold else FontWeight.Normal,
+                fontWeight = if (titleBold.value) FontWeight.Bold else FontWeight.Medium,
             ),
             textAlign = titleAlign.toTextAlign(),
         )

@@ -29,8 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalNewVersionNumber
 import me.ash.reader.infrastructure.preference.LocalSkipVersionNumber
@@ -40,7 +39,6 @@ import me.ash.reader.ui.component.base.DisplayText
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
 import me.ash.reader.ui.ext.getCurrentVersion
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.tips.UpdateDialog
 import me.ash.reader.ui.page.settings.tips.UpdateViewModel
 import me.ash.reader.ui.theme.palette.onLight
@@ -48,8 +46,15 @@ import java.util.Locale
 
 @Composable
 fun SettingsPage(
-    navController: NavHostController,
     updateViewModel: UpdateViewModel = hiltViewModel(),
+    onBack: () -> Unit,
+    navigateToAccounts: () -> Unit,
+    navigateToColorAndStyle: () -> Unit,
+    navigateToInteraction: () -> Unit,
+    navigateToFilters: () -> Unit,
+    navigateToLanguages: () -> Unit,
+    navigateToTroubleshooting: () -> Unit,
+    navigateToTipsAndSupport: () -> Unit,
 ) {
     val context = LocalContext.current
     val newVersion = LocalNewVersionNumber.current
@@ -62,10 +67,9 @@ fun SettingsPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -106,77 +110,56 @@ fun SettingsPage(
                         title = stringResource(R.string.accounts),
                         desc = stringResource(R.string.accounts_desc),
                         icon = Icons.Outlined.AccountCircle,
-                    ) {
-                        navController.navigate(RouteName.ACCOUNTS) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToAccounts
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.color_and_style),
                         desc = stringResource(R.string.color_and_style_desc),
                         icon = Icons.Outlined.Palette,
-                    ) {
-                        navController.navigate(RouteName.COLOR_AND_STYLE) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToColorAndStyle
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.interaction),
                         desc = stringResource(R.string.interaction_desc),
                         icon = Icons.Outlined.TouchApp,
-                    ) {
-                        navController.navigate(RouteName.INTERACTION) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToInteraction
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.filters),
                         desc = stringResource(R.string.filters_desc),
                         icon = Icons.Outlined.FilterList,
-                    ) {
-                        navController.navigate(RouteName.FILTERS) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToFilters,
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.languages),
                         desc = Locale.getDefault().toDisplayName(),
                         icon = Icons.Outlined.Language,
-                    ) {
-                        navController.navigate(RouteName.LANGUAGES) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToLanguages
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.troubleshooting),
                         desc = stringResource(R.string.troubleshooting_desc),
                         icon = Icons.Outlined.BugReport,
-                    ) {
-                        navController.navigate(RouteName.TROUBLESHOOTING) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToTroubleshooting
+                    )
                 }
                 item {
                     SelectableSettingGroupItem(
                         title = stringResource(R.string.tips_and_support),
                         desc = stringResource(R.string.tips_and_support_desc),
                         icon = Icons.Outlined.TipsAndUpdates,
-                    ) {
-                        navController.navigate(RouteName.TIPS_AND_SUPPORT) {
-                            launchSingleTop = true
-                        }
-                    }
+                        onClick = navigateToTipsAndSupport
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.height(24.dp))

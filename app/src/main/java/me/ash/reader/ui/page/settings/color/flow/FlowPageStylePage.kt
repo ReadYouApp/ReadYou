@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.ui.component.base.*
@@ -24,11 +23,10 @@ import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun FlowPageStylePage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val filterBarStyle = LocalFlowFilterBarStyle.current
-    val filterBarFilled = LocalFlowFilterBarFilled.current
     val filterBarPadding = LocalFlowFilterBarPadding.current
     val filterBarTonalElevation = LocalFlowFilterBarTonalElevation.current
     val topBarTonalElevation = LocalFlowTopBarTonalElevation.current
@@ -40,6 +38,10 @@ fun FlowPageStylePage(
     val articleListStickyDate = LocalFlowArticleListDateStickyHeader.current
     val articleListTonalElevation = LocalFlowArticleListTonalElevation.current
     val articleListReadIndicator = LocalFlowArticleListReadIndicator.current
+    val sortUnreadArticles = LocalSortUnreadArticles.current
+
+    val settings = LocalSettings.current
+    val pullToSwitchFeed = settings.pullToSwitchFeed
 
     val scope = rememberCoroutineScope()
 
@@ -49,6 +51,10 @@ fun FlowPageStylePage(
     var topBarTonalElevationDialogVisible by remember { mutableStateOf(false) }
     var articleListTonalElevationDialogVisible by remember { mutableStateOf(false) }
     var articleListReadIndicatorDialogVisible by remember { mutableStateOf(false) }
+    var showArticleListDescDialog by remember { mutableStateOf(false) }
+    var showPullToLoadDialog by remember { mutableStateOf(false) }
+
+    var showSortUnreadArticlesDialog by remember { mutableStateOf(false) }
 
     var filterBarPaddingValue: Int? by remember { mutableStateOf(filterBarPadding) }
 
@@ -58,10 +64,9 @@ fun FlowPageStylePage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -88,7 +93,7 @@ fun FlowPageStylePage(
                             topBarTonalElevation = topBarTonalElevation,
                             articleListTonalElevation = articleListTonalElevation,
                             filterBarStyle = filterBarStyle.value,
-                            filterBarFilled = filterBarFilled.value,
+                            filterBarFilled = true,
                             filterBarPadding = filterBarPadding.dp,
                             filterBarTonalElevation = filterBarTonalElevation.value.dp,
                         )
@@ -115,7 +120,7 @@ fun FlowPageStylePage(
                             topBarTonalElevationDialogVisible = true
                         },
                     ) {}
-//                    Tips(text = stringResource(R.string.tips_top_bar_tonal_elevation))
+                    Tips(text = stringResource(R.string.tips_top_bar_tonal_elevation))
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
@@ -157,14 +162,11 @@ fun FlowPageStylePage(
                     }
                     SettingItem(
                         title = stringResource(R.string.article_desc),
+                        desc = articleListDesc.description(),
                         onClick = {
-                            (!articleListDesc).put(context, scope)
+                            showArticleListDescDialog = true
                         },
-                    ) {
-                        RYSwitch(activated = articleListDesc.value) {
-                            (!articleListDesc).put(context, scope)
-                        }
-                    }
+                    )
                     SettingItem(
                         title = stringResource(R.string.article_date),
                         onClick = {
@@ -193,6 +195,23 @@ fun FlowPageStylePage(
                         }
                     )
                     SettingItem(
+                        title = stringResource(R.string.sort_unread_articles),
+                        onClick = {
+                            showSortUnreadArticlesDialog = true
+                        },
+                        desc = sortUnreadArticles.description()
+                    ) {
+                    }
+
+                    SettingItem(
+                        title = stringResource(R.string.pull_from_bottom),
+                        desc = pullToSwitchFeed.description(),
+                        onClick = {
+                            showPullToLoadDialog = true
+                        },
+                    )
+
+                    SettingItem(
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${articleListTonalElevation.value}dp",
                         onClick = {
@@ -216,16 +235,6 @@ fun FlowPageStylePage(
                             filterBarStyleDialogVisible = true
                         },
                     ) {}
-                    SettingItem(
-                        title = stringResource(R.string.fill_selected_icon),
-                        onClick = {
-                            (!filterBarFilled).put(context, scope)
-                        },
-                    ) {
-                        RYSwitch(activated = filterBarFilled.value) {
-                            (!filterBarFilled).put(context, scope)
-                        }
-                    }
                     SettingItem(
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${filterBarPadding}dp",
@@ -328,6 +337,22 @@ fun FlowPageStylePage(
     }
 
     RadioDialog(
+        visible = showArticleListDescDialog,
+        title = stringResource(R.string.article_desc),
+        options = FlowArticleListDescPreference.values.map {
+            RadioDialogOption(
+                text = it.description(),
+                selected = it == articleListDesc,
+            ) {
+                it.put(context, scope)
+            }
+        },
+        onDismissRequest = {
+            showArticleListDescDialog = false
+        }
+    )
+
+    RadioDialog(
         visible = articleListReadIndicatorDialogVisible,
         title = stringResource(id = R.string.grey_out_articles),
         options = FlowArticleReadIndicatorPreference.values.map {
@@ -341,4 +366,36 @@ fun FlowPageStylePage(
     ) {
         articleListReadIndicatorDialogVisible = false
     }
+
+    RadioDialog(
+        visible = showSortUnreadArticlesDialog,
+        title = stringResource(R.string.sort_unread_articles),
+        options = SortUnreadArticlesPreference.values.map {
+            RadioDialogOption(
+                text = it.description(),
+                selected = it == sortUnreadArticles,
+            ) {
+                it.put(context, scope)
+            }
+        },
+        onDismissRequest = {
+            showSortUnreadArticlesDialog = false
+        }
+    )
+
+    RadioDialog(
+        visible = showPullToLoadDialog,
+        title = stringResource(R.string.pull_from_bottom),
+        options = PullToLoadNextFeedPreference.values.map {
+            RadioDialogOption(
+                text = it.description(),
+                selected = it == pullToSwitchFeed,
+            ) {
+                it.put(context, scope)
+            }
+        },
+        onDismissRequest = {
+            showPullToLoadDialog = false
+        }
+    )
 }

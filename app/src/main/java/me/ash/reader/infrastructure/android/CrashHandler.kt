@@ -26,9 +26,10 @@ class CrashHandler(private val context: Context) : UncaughtExceptionHandler {
 
         when (p1) {
             is BusinessException -> {
-                Looper.myLooper() ?: Looper.prepare()
-                context.showToastLong(causeMessage)
-                Looper.loop()
+                context.startActivity(Intent(context, CrashReportActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    putExtra(CrashReportActivity.ERROR_REPORT_KEY, p1.stackTraceToString())
+                })
             }
 
             else -> {

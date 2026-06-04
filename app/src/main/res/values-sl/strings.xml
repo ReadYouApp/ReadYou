@@ -65,7 +65,7 @@
     <string name="no_palettes">Brez palet</string>
     <string name="use_device_theme">Uporabi temo naprave</string>
     <string name="other">Drugo</string>
-    <string name="amoled_dark_theme">Temna tema za AMOLED</string>
+    <string name="amoled_dark_theme">Črna temna tema</string>
     <string name="tonal_elevation">Povišanje barvnih tonov</string>
     <string name="reading_fonts">Pisave za branje</string>
     <string name="basic_fonts">Osnovne pisave</string>
@@ -103,7 +103,6 @@
     <string name="line_spacing">Razmik med vrsticami</string>
     <string name="general">Splošno</string>
     <string name="rearrange_buttons">Preureditev gumbov</string>
-    <string name="bionic_reading">Bionično branje</string>
     <string name="images">Slike</string>
     <string name="rounded_corners">Zaobljeni vogali</string>
     <string name="videos">Videoposnetki</string>
@@ -180,7 +179,7 @@
     <string name="color_and_style_desc">Tema, barvni slog, velikost pisave</string>
     <string name="tips_and_support">Nasveti in podpora</string>
     <string name="help_translate">Pomoč pri prevajanju</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="update">Posodobitev</string>
     <string name="checking_updates">Preverjanje posodobitev…</string>
     <string name="is_latest_version">To je najnovejša različica</string>
@@ -205,7 +204,7 @@
     <string name="videos_desc">Zaobljeni vogali, vodoravno oblazinjenje</string>
     <string name="maximize">Povečaj</string>
     <string name="images_desc">Zaobljeni vogali, vodoravno oblazinjenje</string>
-    <string name="tos_content"><h5> Pravilnik o zasebnosti </h5> <br/> <p> Vašo zasebnost jemljem zelo resno. </p> <br/> <p> <b>Read You</b> ne zbira nobenih uporabniških podatkov, vsi občutljivi podatki (gesla in drugi podatki o računu) pa so varno shranjeni v lokalni zbirki podatkov aplikacije v vaši napravi. </p> <br/> <p> <b>Read You</b> bo za zagotavljanje storitve uporabljala naslednja dovoljenja. </p> <br/> <p> - Dovoljenje za dostop do omrežja (za dostop do spletnih vsebin, ki jih določite) </p> <p> - Dovoljenje za pridobitev statusa omrežja (za ugotavljanje, ali so v napravi trenutno na voljo pogoji omrežja) </p> <p> - dovoljenje za storitev v ozadju (za redno samodejno sinhronizacijo vaših priljubljenih) </p> <br/> <br/> <h5> Storitve tretjih oseb </h5> <br/> <p> Ta pravilnik ne velja za storitve tretjih oseb, ki jih uporabljate z <b>Read You</b>. Pravilnike o zasebnosti storitev tretjih oseb, ki jih uporabljate, lahko pregledate na njihovih spletnih mestih </p> <br/> <br/> <h5> Izjave o omejitvi odgovornosti </h5> <br/> <p> <b>Read You</b> je samo orodje za zbiranje vsebine. Za uporabo <b>Read You</b> veljajo zakoni in predpisi vaše države in regije, vso odgovornost, ki izhaja iz vaših dejanj, pa nosite vi osebno. </p> <br/> <br/> <h5> Odprtokodna licenca </h5> <br/> <p> <b>Read You</b> je odprtokodni projekt, licenciran pod odprtokodno licenco GNU GPL 3.0[1], ki omogoča brezplačno uporabo, sklicevanje in spreminjanje izvorne kode aplikacije <b>Read You</b>, vendar ne dovoljuje distribucije in prodaje spremenjene ter izpeljane kode kot zaprtokodne komercialne programske opreme. Za podrobnosti glejte celotno odprtokodno licenco GNU GPL 3.0[2]. </p> <br/> <br/> <h5> Priloga </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Pravilnik o zasebnosti </h5> <br/> <p> Vašo zasebnost jemljem zelo resno. </p> <br/> <p> <b>Read You</b> ne zbira nobenih uporabniških podatkov, vsi občutljivi podatki (gesla in drugi podatki o računu) pa so varno shranjeni v lokalni zbirki podatkov aplikacije v vaši napravi. </p> <br/> <p> <b>Read You</b> bo za zagotavljanje storitve uporabljala naslednja dovoljenja. </p> <br/> <p> - Dovoljenje za dostop do omrežja (za dostop do spletnih vsebin, ki jih določite) </p> <p> - Dovoljenje za pridobitev statusa omrežja (za ugotavljanje, ali so v napravi trenutno na voljo pogoji omrežja) </p> <p> - dovoljenje za storitev v ozadju (za redno samodejno sinhronizacijo vaših priljubljenih) </p> <br/> <br/> <h5> Storitve tretjih oseb </h5> <br/> <p> Ta pravilnik ne velja za storitve tretjih oseb, ki jih uporabljate z <b>Read You</b>. Pravilnike o zasebnosti storitev tretjih oseb, ki jih uporabljate, lahko pregledate na njihovih spletnih mestih </p> <br/> <br/> <h5> Izjave o omejitvi odgovornosti </h5> <br/> <p> <b>Read You</b> je samo orodje za zbiranje vsebine. Za uporabo <b>Read You</b> veljajo zakoni in predpisi vaše države in regije, vso odgovornost, ki izhaja iz vaših dejanj, pa nosite vi osebno. </p> <br/> <br/> <h5> Odprtokodna licenca </h5> <br/> <p> <b>Read You</b> je odprtokodni projekt, licenciran pod odprtokodno licenco GNU GPL 3.0[1], ki omogoča brezplačno uporabo, sklicevanje in spreminjanje izvorne kode aplikacije <b>Read You</b>, vendar ne dovoljuje distribucije in prodaje spremenjene ter izpeljane kode kot zaprtokodne komercialne programske opreme. Za podrobnosti glejte celotno odprtokodno licenco GNU GPL 3.0[2]. </p> <br/> <br/> <h5> Priloga </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="every_15_minutes">Vsakih 15 minut</string>
     <string name="every_3_hours">Vsake 3 ure</string>
     <string name="every_2_hours">Vsaki 2 uri</string>

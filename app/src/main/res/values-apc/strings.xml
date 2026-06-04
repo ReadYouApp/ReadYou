@@ -134,12 +134,11 @@
     <string name="general">عام</string>
     <string name="auto_hide_toolbars">خبي مينو الأدوات أوتوماتيكيًا</string>
     <string name="rearrange_buttons">غير ترتيب الكبسات</string>
-    <string name="bionic_reading">القراية البايونيك</string>
     <string name="images">الصور</string>
     <string name="rounded_corners">الزوايا المبرومة</string>
     <string name="videos">ڤيديوات</string>
-    <string name="align_start">كتوب من الشمال</string>
-    <string name="align_end">كتوب من اليمين</string>
+    <string name="align_start">جهة الكتابة أوتوماتيكية</string>
+    <string name="align_end">جهة كتابة عكسية</string>
     <string name="center_text">كتوب من النُص</string>
     <string name="justify">مغط</string>
     <string name="external_fonts">فونتات مسيڤة ع جهازك</string>
@@ -223,7 +222,7 @@
     <string name="upper_case">كاپيتل</string>
     <string name="reading_fonts">فونتات القراية</string>
     <string name="open_source_licenses">ترخيصات الپروگرامات المفتوحة المصدر</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="always_expand">دايمًا كبر</string>
     <string name="top">الأعلى</string>
     <string name="icons_and_labels">الأيكونات وال عناوين</string>
@@ -251,7 +250,7 @@
     <string name="export_as_opml">صدّر ك \"أو پي إم إل\"</string>
     <string name="clear_all_articles_tips">متأكد إنو بدك تمسح ليستة المقالات ل هيديا الأكونت؟</string>
     <string name="delete_account_tips">متأكد إنو بدك تمحي الأكونت؟</string>
-    <string name="tos_content">"&lt;h5&gt; سياسة الخصوصية &lt;/h5&gt; &lt;br/&gt; &lt;p&gt;خصوصيتك كتير مهمي عندي. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt; م بجمع \"ريد يو\"&lt;/b&gt; ولا داتا من اليوزرات، و بتتخزن كل المعلومات الحساسة (پاس-ورد و معلومات تانية عن الأكونتات) بشكل آمن على جهازك محليًا. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; رح يستعمل الأدوات التالية حتى يمشي.&lt;/p&gt; &lt;br/&gt; &lt;p&gt; - \"إذن الوصول إلى الشبكة\" (حتى يجيب المحتوى اللي يدم ياه من الإنترنت) &lt;/p&gt; &lt;p&gt; -\" الحصول على إذن حالة الشبكة\" (ليحدد إذا كان الجهاز عنده اتصال بال إنترنت) &lt;/p&gt; &lt;p&gt; - \"إذن خدمة الخلفية\" (حتى يجيب مقلات قبل ما تفتح الآپ) &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; \"خدمات الجهات الخارجية\" &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; سياسة الخصوصية هيدي م بتطبق على خدمات الجهات الخارجية اللي  بيستعمله &lt;b&gt;\"ريد يو\"&lt;/b&gt;. فيك تشوف سياسات الخصوصية تبع خدمات الجهات الخارجية اللي بت عوزها على ويب-سيتن&lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; إخلاء المسؤولية &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; هي بس أداة جمع محتوى. استعملك ل &lt;b&gt;\"ريد يو\"&lt;/b&gt; لازم يتبع قوانين دولتك و بلدك، و كل مسؤولية بتنشأ عن أفعالك ح تتحملها إنت شخصيًا. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; الترخيص المفتوح المصدر تبع &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; هو GNU GPL 3.0 مفتوحة المصدر[1]، واللي بيسمح لك تستعمل الكود تبع الآپ &lt;b&gt; و تستعمله ك مرجع و تعديل فيه ب بلاش، بس م فيك توزع الكود المعدل و المشتق و تبيعه ك برنامج تجاري مصدره مسكر.إزا بدك تفاصيل اكتر، پليز شوف الرخصة الكاملة تبع \"گٍنو \'جي پي إل\' 3.0\"[2]. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; الملحق &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; - [1] https://github.com/Ashinch/ReadYou &lt;/p&gt; &lt;p&gt; - [2] https://www.gnu.org/licenses/gpl-3.0.html &lt;/p&gt;"</string>
+    <string name="tos_content">"&lt;h5&gt; سياسة الخصوصية &lt;/h5&gt; &lt;br/&gt; &lt;p&gt;خصوصيتك كتير مهمي عندي. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt; م بجمع \"ريد يو\"&lt;/b&gt; ولا داتا من اليوزرات، و بتتخزن كل المعلومات الحساسة (پاس-ورد و معلومات تانية عن الأكونتات) بشكل آمن على جهازك محليًا. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; رح يستعمل الأدوات التالية حتى يمشي.&lt;/p&gt; &lt;br/&gt; &lt;p&gt; - \"إذن الوصول إلى الشبكة\" (حتى يجيب المحتوى اللي يدم ياه من الإنترنت) &lt;/p&gt; &lt;p&gt; -\" الحصول على إذن حالة الشبكة\" (ليحدد إذا كان الجهاز عنده اتصال بال إنترنت) &lt;/p&gt; &lt;p&gt; - \"إذن خدمة الخلفية\" (حتى يجيب مقلات قبل ما تفتح الآپ) &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; \"خدمات الجهات الخارجية\" &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; سياسة الخصوصية هيدي م بتطبق على خدمات الجهات الخارجية اللي  بيستعمله &lt;b&gt;\"ريد يو\"&lt;/b&gt;. فيك تشوف سياسات الخصوصية تبع خدمات الجهات الخارجية اللي بت عوزها على ويب-سيتن&lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; إخلاء المسؤولية &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; هي بس أداة جمع محتوى. استعملك ل &lt;b&gt;\"ريد يو\"&lt;/b&gt; لازم يتبع قوانين دولتك و بلدك، و كل مسؤولية بتنشأ عن أفعالك ح تتحملها إنت شخصيًا. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; الترخيص المفتوح المصدر تبع &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;\"ريد يو\"&lt;/b&gt; هو GNU GPL 3.0 مفتوحة المصدر[1]، واللي بيسمح لك تستعمل الكود تبع الآپ &lt;b&gt; و تستعمله ك مرجع و تعديل فيه ب بلاش، بس م فيك توزع الكود المعدل و المشتق و تبيعه ك برنامج تجاري مصدره مسكر.إزا بدك تفاصيل اكتر، پليز شوف الرخصة الكاملة تبع \"گٍنو \'جي پي إل\' 3.0\"[2]. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; الملحق &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; - [1] https://github.com/ReadYouApp/ReadYou &lt;/p&gt; &lt;p&gt; - [2] https://www.gnu.org/licenses/gpl-3.0.html &lt;/p&gt;"</string>
     <string name="tips_top_bar_tonal_elevation">علو المينو اللي بأعلى الشاشة بس موجود إنت و عم تسحب</string>
     <string name="tips_group_list_tonal_elevation">علو المينو ل ليستة الگروپات بس موجودة بال لآيت مود</string>
     <string name="tips_article_list_tonal_elevation">علو المينو ل ليستة المقلات بس موجودة بال لآيت مود</string>
@@ -276,9 +275,7 @@
     <string name="unexpected_error_title">أوپسي! صار فيه مشكلة…</string>
     <string name="copy_error_report">عمول كوپل لتقرير الأرور</string>
     <string name="submit_bug_report">قدم تقرير عن الأرور ع \"گِت-هب\"</string>
-    <string name="unexpected_error_msg">واجه الآپ أرور مش مُتوقع و اضطرّ يسكر.
-\n
-\nت تساعدنا نحدد المشكلة و نصححها ب سرعة، فيك %1$s و تعمل پايست ل مسار اللي أدى ل الأرور يللي محطوط تحت.</string>
+    <string name="unexpected_error_msg">واجه الآپ أرور مش مُتوقع و اضطرّ يسكر. \n \nت تساعدنا نحدد المشكلة و نصححها ب سرعة، فيك %1$s و تعمل پايست ل مسار اللي أدى ل الأرور يللي محطوط تحت.</string>
     <string name="next_article">اللي بعدها</string>
     <string name="swipe_to_start">سحاب ل الشمال</string>
     <string name="swipe_to_end">سحاب ل اليمين</string>
@@ -306,4 +303,13 @@
     <string name="import_from_json">ستورد من فايل JSON</string>
     <string name="export_as_json">صدر ك فايل JSON</string>
     <string name="invalid_protobuf_file_warning">شكله هيدا فايل الـprotobuf مش صالح. استرادها يمكن يئدي ل كوراپشن و نزع معلومات الآپ وال تفضيلاتك اللي فيه. متأكد إنو بدك تكفي؟</string>
+    <string name="read_aloud">قرا عال عالي</string>
+    <string name="only_available_on_webview">بس موجود بال \"واب-ڤيو\"</string>
+    <string name="native_component">مكون محلي</string>
+    <string name="content_renderer">مقدم المحتوى</string>
+    <string name="about">عن</string>
+    <string name="toolbars">شريط الأدوات</string>
+    <string name="mark_as_read_on_scroll">علّم إنه منرقرا عال تمرير</string>
+    <string name="become_a_sponsor">صير سپانسر</string>
+    <string name="sponsor_desc">نحن منعمل و من جدد هيدا الآپ المجاني و مفتوح المصدر برات سعات العمل تبعنا.إذا بيعجبك الآپ، پليز فكر ب دعمنا ب تبرع زغير! ☕️</string>
 </resources>

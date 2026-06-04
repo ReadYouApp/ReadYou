@@ -1,9 +1,0 @@
-## 0.9.7
-
-Toto je dodatočná aktualizácia.
-
-1. Zlúčená oprava c0ff8ba
-
-2. Vylepšený preklad (vďaka všetkým)
-
-3. Aktualizácia súborov s popisom README na GitHub

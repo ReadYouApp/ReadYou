@@ -104,7 +104,7 @@
     <string name="tos_tips">請詳閱並同意 Read You 的服務條款與隱私權政策以繼續使用。</string>
     <string name="browse_tos_tips">瀏覽<i><u>服務條款與隱私權政策</u></i></string>
     <string name="terms_of_service">服務條款</string>
-    <string name="tos_content"><h5> 隱私權政策 </h5> <br/> <p> 我非常重視您的隱私。 </p> <br/> <p> <b>Read You</b> 不收集任何使用者資料，所有敏感資訊（密碼和其他帳戶資訊）都被安全地儲存在您裝置上的本機應用程式資料庫中。 </p> <br/> <p> <b>Read You</b> 將使用以下權限為您提供服務： </p> <br/> <p> - 存取網路權限（用於存取您所指定的線上內容） </p> <p> - 讀取網路狀態權限（用於判斷目前裝置是否擁有可供使用的網路條件） </p> <p> - 背景服務權限（用於定時自動地為您同步已收藏的內容） </p> <br/> <br/> <h5> 第三方服務 </h5> <br/> <p> 本政策不適用於您與 <b>Read You</b> 一起使用的第三方服務。您可以在所使用的第三方服務的網站上查閱相關的隱私權政策。 </p> <br/> <br/> <h5> 免責聲明 </h5> <br/> <p> <b>Read You</b> 僅是一款內容收藏工具。您在使用 <b>Read You</b> 的過程中，應遵守所在國家和地區的法律規範，因您的行為所產生的一切責任將由您個人承擔。 </p> <br/> <br/> <h5> 開放原始碼授權 </h5> <br/> <p> <b>Read You</b> 是一個使用 GNU GPL 3.0 開放原始碼授權條款的開源專案[1]，允許您免費使用、引用、修改 <b>Read You</b> 的原始碼，但不允許將修改後及其衍生的程式碼作為專有商業軟體進行發布和銷售。具體細節請查看完整的 GNU GPL 3.0 開放原始碼授權條款 [2]。 </p> <br/> <br/> <h5> 附錄 </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> 隱私權政策 </h5> <br/> <p> 我非常重視您的隱私。 </p> <br/> <p> <b>Read You</b> 不收集任何使用者資料，所有敏感資訊（密碼和其他帳戶資訊）都被安全地儲存在您裝置上的本機應用程式資料庫中。 </p> <br/> <p> <b>Read You</b> 將使用以下權限為您提供服務： </p> <br/> <p> - 存取網路權限（用於存取您所指定的線上內容） </p> <p> - 讀取網路狀態權限（用於判斷目前裝置是否擁有可供使用的網路條件） </p> <p> - 背景服務權限（用於定時自動地為您同步已收藏的內容） </p> <br/> <br/> <h5> 第三方服務 </h5> <br/> <p> 本政策不適用於您與 <b>Read You</b> 一起使用的第三方服務。您可以在所使用的第三方服務的網站上查閱相關的隱私權政策。 </p> <br/> <br/> <h5> 免責聲明 </h5> <br/> <p> <b>Read You</b> 僅是一款內容收藏工具。您在使用 <b>Read You</b> 的過程中，應遵守所在國家和地區的法律規範，因您的行為所產生的一切責任將由您個人承擔。 </p> <br/> <br/> <h5> 開放原始碼授權 </h5> <br/> <p> <b>Read You</b> 是一個使用 GNU GPL 3.0 開放原始碼授權條款的開源專案[1]，允許您免費使用、引用、修改 <b>Read You</b> 的原始碼，但不允許將修改後及其衍生的程式碼作為專有商業軟體進行發布和銷售。具體細節請查看完整的 GNU GPL 3.0 開放原始碼授權條款 [2]。 </p> <br/> <br/> <h5> 附錄 </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="agree">同意</string>
     <string name="wallpaper_colors">桌布顏色</string>
     <string name="no_palettes">暫無調色板</string>
@@ -118,7 +118,7 @@
     <string name="use_device_theme">使用裝置主題</string>
     <string name="on">開啟</string>
     <string name="off">關閉</string>
-    <string name="amoled_dark_theme">AMOLED 深色主題</string>
+    <string name="amoled_dark_theme">黑色暗色主題</string>
     <string name="other">其他</string>
     <string name="tonal_elevation">色調海拔</string>
     <string name="reading_fonts">閱讀字型</string>
@@ -128,7 +128,7 @@
     <string name="reading_page">閱讀頁面</string>
     <string name="sponsor">贊助</string>
     <string name="open_source_licenses">開放原始碼授權</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="change_log">更新日誌</string>
     <string name="update">更新</string>
     <string name="skip_this_version">略過此版本</string>
@@ -176,12 +176,11 @@
     <string name="general">一般</string>
     <string name="auto_hide_toolbars">自動隱藏工具列</string>
     <string name="rearrange_buttons">重新排列按鈕</string>
-    <string name="bionic_reading">仿生閱讀</string>
     <string name="images">圖片</string>
     <string name="rounded_corners">圓角</string>
     <string name="videos">影片</string>
-    <string name="align_start">靠左</string>
-    <string name="align_end">靠右</string>
+    <string name="align_start">對齊開端</string>
+    <string name="align_end">對齊末端</string>
     <string name="center_text">置中</string>
     <string name="justify">左右</string>
     <string name="external_fonts">外部字型</string>
@@ -270,9 +269,7 @@
     <string name="external_links">外部連結</string>
     <string name="unexpected_error_title">糟糕！發生錯誤…</string>
     <string name="copy_error_report">複製偵錯資訊</string>
-    <string name="unexpected_error_msg">由於發生未預期的錯誤，本應用程式必須關閉。
-\n
-\n如要協助我們儘速調查並修正此問題，請%1$s，並附上以下偵錯資訊。</string>
+    <string name="unexpected_error_msg">由於發生未預期的錯誤，本應用程式必須關閉。 \n \n如要協助我們儘速調查並修正此問題，請%1$s，並附上以下偵錯資訊。</string>
     <string name="swipe_to_start">向左滑動</string>
     <string name="swipe_to_end">向右滑動</string>
     <string name="none">無</string>
@@ -301,4 +298,24 @@
     <string name="import_from_json">從 JSON 匯入</string>
     <string name="export_as_json">匯出為 JSON</string>
     <string name="invalid_json_file_warning">此檔案可能不是有效的 JSON 檔案。匯入它可能會損壞應用程式並導致目前的偏好設定遺失。你確定要繼續嗎？</string>
+    <string name="unfold_more">全部展開</string>
+    <string name="unfold_less">全部收合</string>
+    <string name="native_component">原生元件</string>
+    <string name="content_renderer">內容繪製器</string>
+    <string name="read_aloud">朗讀</string>
+    <string name="only_available_on_webview">僅限於 WebView</string>
+    <string name="about">關於</string>
+    <string name="toolbars">工具列</string>
+    <string name="mark_as_read_on_scroll">捲動時標記為已讀</string>
+    <string name="become_a_sponsor">成為贊助者</string>
+    <string name="sponsor_desc">我們在空閒時間建立並維護這個免費的開源應用程式。如果您喜歡它，請考慮給予我們一點小額捐款支持！☕️</string>
+    <string name="open_in_browser">在瀏覽器中打開</string>
+    <string name="client_certificate">用戶端憑證（可選）</string>
+    <string name="hide_empty_groups">隱藏空群組</string>
+    <string name="sort_unread_articles">排序未讀文章</string>
+    <string name="latest">最新</string>
+    <string name="earliest">最早</string>
+    <string name="short_desc">短</string>
+    <string name="long_desc">長</string>
+    <string name="none_desc">无</string>
 </resources>

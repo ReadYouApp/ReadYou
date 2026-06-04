@@ -46,11 +46,11 @@ class AccountViewModel @Inject constructor(
 
     fun initData(accountId: Int) {
         viewModelScope.launch(ioDispatcher) {
-            _accountUiState.update { it.copy(selectedAccount = accountService.getAccountById(accountId)) }
+            _accountUiState.update { it.copy(selectedAccount = accountService.getAccountFlowById(accountId)) }
         }
     }
 
-    fun update(accountId: Int, block: Account.() -> Unit) {
+    fun update(accountId: Int, block: Account.() -> Account) {
         applicationScope.launch(ioDispatcher) {
             accountService.update(accountId, block)
             rssService.get(accountId).clearAuthorization()
@@ -113,7 +113,7 @@ class AccountViewModel @Inject constructor(
                     throw Exception("Unauthorized")
                 }
             } catch (e: Exception) {
-                accountService.delete(account.id!!)
+                accountService.delete(addAccount.id!!)
                 withContext(mainDispatcher) {
                     callback(null, e)
                 }

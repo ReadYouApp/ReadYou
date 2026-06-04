@@ -130,13 +130,13 @@
     <string name="use_device_theme">Giống như thiết bị</string>
     <string name="on">Bật</string>
     <string name="other">Nâng cao</string>
-    <string name="amoled_dark_theme">Chủ đề Tối AMOLED</string>
+    <string name="amoled_dark_theme">Chủ đề đen tối</string>
     <string name="reading_fonts">Phông chữ bài viết</string>
     <string name="feeds_page">Bảng tin</string>
     <string name="tonal_elevation">Tông màu</string>
     <string name="sponsor">Tài trợ</string>
     <string name="open_source_licenses">Giấy phép mã nguồn mở</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="reading_page">Bài viết</string>
     <string name="flow_page">Danh sách bài viết</string>
     <string name="change_log">Có gì mới</string>
@@ -181,7 +181,6 @@
     <string name="align_end">Căn phải</string>
     <string name="center_text">Căn giữa</string>
     <string name="rounded_corners">Viền tròn góc</string>
-    <string name="bionic_reading">Đọc sinh học</string>
     <string name="justify">Căn đều</string>
     <string name="external_fonts">Phông chữ tùy chỉnh</string>
     <string name="always_expand">Luôn xổ xuống</string>
@@ -195,7 +194,7 @@
     <string name="auto_hide_toolbars">Tự động ẩn thanh công cụ</string>
     <string name="alignment">Căn</string>
     <string name="rearrange_buttons">Xếp lại các nút</string>
-    <string name="tos_content"><h5> Chính sách Bảo mật </h5> <br/> <p> Tôi rất coi trọng quyền riêng tư của bạn. </p> <br/> <p> <b>Read You</b> không thu thập bất kỳ dữ liệu người dùng nào và tất cả thông tin nhạy cảm (mật khẩu và thông tin tài khoản khác) được lưu trữ an toàn trong cơ sở dữ liệu ứng dụng cục bộ trên thiết bị của bạn. </p> <br/> <p> <b>Read You</b> sẽ sử dụng các quyền sau để cung cấp dịch vụ cho bạn. </p> <br/> <p> - Quyền truy cập Mạng (để truy cập nội dung trực tuyến như bạn chỉ định) </p> <p> - Quyền xem trạng thái Mạng (để biết thiết bị hiện có các điều kiện mạng khả dụng hay không) </p> <p> - Quyền dịch vụ nền (để tự động đồng bộ hóa các mục yêu thích cho bạn một cách thường xuyên) </p> <br/> <br/> <h5> Dịch vụ của bên thứ ba </h5> <br/> <p> Chính sách này không áp dụng cho các dịch vụ của bên thứ ba mà bạn sử dụng với <b>Read You</b>. Bạn có thể xem lại chính sách bảo mật của các dịch vụ của bên thứ ba mà bạn sử dụng trên trang web của họ </p> <br/> <br/> <h5> Tuyên bố từ chối trách nhiệm </h5> <br/> <p> <b>Read You</b> chỉ là một công cụ thu thập nội dung. Việc bạn sử dụng <b>Read You</b> tuân theo luật pháp và quy định của quốc gia và khu vực của bạn, và mọi trách nhiệm pháp lý phát sinh từ hành động của bạn sẽ do cá nhân bạn chịu. </p> <br/> <br/> <h5> Giấy phép mã nguồn mở </h5> <br/> <p> <b>Read You</b> là một dự án nguồn mở theo Giấy phép Nguồn mở GNU GPL 3.0[1], cho phép bạn sử dụng, tham khảo và sửa đổi mã nguồn của <b>Read You</b> tự do, nhưng không cho phép phân phối và bán mã nguồn đã sửa đổi và bán dưới dạng phần mềm thương mại mã nguồn đóng. Để biết chi tiết, vui lòng xem Toàn bộ Giấy phép Nguồn mở GNU GPL 3.0 [2]. </p> <br/> <br/> <h5> Phụ lục </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Chính sách Bảo mật </h5> <br/> <p> Tôi rất coi trọng quyền riêng tư của bạn. </p> <br/> <p> <b>Read You</b> không thu thập bất kỳ dữ liệu người dùng nào và tất cả thông tin nhạy cảm (mật khẩu và thông tin tài khoản khác) được lưu trữ an toàn trong cơ sở dữ liệu ứng dụng cục bộ trên thiết bị của bạn. </p> <br/> <p> <b>Read You</b> sẽ sử dụng các quyền sau để cung cấp dịch vụ cho bạn. </p> <br/> <p> - Quyền truy cập Mạng (để truy cập nội dung trực tuyến như bạn chỉ định) </p> <p> - Quyền xem trạng thái Mạng (để biết thiết bị hiện có các điều kiện mạng khả dụng hay không) </p> <p> - Quyền dịch vụ nền (để tự động đồng bộ hóa các mục yêu thích cho bạn một cách thường xuyên) </p> <br/> <br/> <h5> Dịch vụ của bên thứ ba </h5> <br/> <p> Chính sách này không áp dụng cho các dịch vụ của bên thứ ba mà bạn sử dụng với <b>Read You</b>. Bạn có thể xem lại chính sách bảo mật của các dịch vụ của bên thứ ba mà bạn sử dụng trên trang web của họ </p> <br/> <br/> <h5> Tuyên bố từ chối trách nhiệm </h5> <br/> <p> <b>Read You</b> chỉ là một công cụ thu thập nội dung. Việc bạn sử dụng <b>Read You</b> tuân theo luật pháp và quy định của quốc gia và khu vực của bạn, và mọi trách nhiệm pháp lý phát sinh từ hành động của bạn sẽ do cá nhân bạn chịu. </p> <br/> <br/> <h5> Giấy phép mã nguồn mở </h5> <br/> <p> <b>Read You</b> là một dự án nguồn mở theo Giấy phép Nguồn mở GNU GPL 3.0[1], cho phép bạn sử dụng, tham khảo và sửa đổi mã nguồn của <b>Read You</b> tự do, nhưng không cho phép phân phối và bán mã nguồn đã sửa đổi và bán dưới dạng phần mềm thương mại mã nguồn đóng. Để biết chi tiết, vui lòng xem Toàn bộ Giấy phép Nguồn mở GNU GPL 3.0 [2]. </p> <br/> <br/> <h5> Phụ lục </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="filter_bar">Thanh dưới</string>
     <string name="switch_account">Chuyển đổi</string>
     <string name="add">Thêm</string>
@@ -268,9 +267,7 @@
     <string name="read_excluding_starred">Đã đọc, trừ yêu thích</string>
     <string name="external_links">Liên kết</string>
     <string name="unexpected_error_title">Oops! Chuyện gì đó đã xảy ra…</string>
-    <string name="unexpected_error_msg">Ứng dụng phải đóng vì một vấn đề.
-\n
-\nĐể giúp chúng tôi tìm và sửa vấn đề này, bạn có thể %1$s với dòng lỗi bên dưới.</string>
+    <string name="unexpected_error_msg">Ứng dụng phải đóng vì một vấn đề. \n \nĐể giúp chúng tôi tìm và sửa vấn đề này, bạn có thể %1$s với dòng lỗi bên dưới.</string>
     <string name="next_article">Bài tiếp theo</string>
     <string name="shared_content">Nội dung chia sẻ</string>
     <string name="only_link">Chỉ liên kết</string>
@@ -303,4 +300,9 @@
     <string name="invalid_json_file_warning">Đây không phải là một tập tin JSON hợp lệ. Nhập nó có thể làm hỏng ứng dụng và dẫn đến việc mất các cài đặt hiện tại. Bạn có chắc muốn tiếp tục?</string>
     <string name="unfold_less">Thu gọn</string>
     <string name="unfold_more">Mở rộng toàn bộ</string>
+    <string name="content_renderer">Content renderer</string>
+    <string name="read_aloud">Đọc</string>
+    <string name="only_available_on_webview">Chỉ có trên WebView</string>
+    <string name="about">Giới thiệu</string>
+    <string name="native_component">Native Component</string>
 </resources>

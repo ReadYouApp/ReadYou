@@ -10,7 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.feed.Feed
-import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.di.IODispatcher
@@ -29,7 +28,7 @@ class OpmlService @Inject constructor(
     private val context: Context,
     private val groupDao: GroupDao,
     private val feedDao: FeedDao,
-    private val accountDao: AccountDao,
+    private val accountService: AccountService,
     private val rssService: RssService,
     private val OPMLDataSource: OPMLDataSource,
     @IODispatcher
@@ -73,7 +72,7 @@ class OpmlService @Inject constructor(
             Opml(
                 "2.0",
                 Head(
-                    accountDao.queryById(accountId)?.name,
+                    accountService.getCurrentAccount().name,
                     Date().toString(), null, null, null,
                     null, null, null, null,
                     null, null, null, null,
@@ -99,6 +98,7 @@ class OpmlService @Inject constructor(
                                     if (attachInfo) {
                                         put("isNotification", feed.isNotification.toString())
                                         put("isFullContent", feed.isFullContent.toString())
+                                        put("isBrowser", feed.isBrowser.toString())
                                     }
                                 },
                                 listOf()

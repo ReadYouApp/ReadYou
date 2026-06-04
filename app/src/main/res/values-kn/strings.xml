@@ -79,7 +79,7 @@
     <string name="mark_as_read">ಓದಿದಂತೆ ಗುರುತಿಸಿ</string>
     <string name="welcome">ಸ್ವಾಗತ</string>
     <string name="open_source_licenses">ಮುಕ್ತ ಮೂಲ ಪರವಾನಗಿಗಳು</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="update">ಅಪ್‌ಡೇಟ್ ಮಾಡಿ</string>
     <string name="checking_updates">ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…</string>
     <string name="search_for_in">\"%2$s\" ನಲ್ಲಿ %1$s ಐಟಂಗಳನ್ನು ಹುಡುಕಿ</string>
@@ -98,7 +98,7 @@
     <string name="tos_tips">ಮುಂದುವರಿಯಲು ದಯವಿಟ್ಟು Read You ನ ಸೇವಾ ನಿಯಮಗಳು ಮತ್ತು ಗೌಪ್ಯತೆ ನೀತಿಯನ್ನು ಓದಿ ಮತ್ತು ಸಮ್ಮತಿಸಿ.</string>
     <string name="only_android_8.1_plus">ಆಂಡ್ರಾಯ್ಡ್ 8.1+ ಮಾತ್ರ</string>
     <string name="dark_theme">ಡಾರ್ಕ್ ಥೀಮ್</string>
-    <string name="amoled_dark_theme">AMOLED ಡಾರ್ಕ್ ಥೀಮ್</string>
+    <string name="amoled_dark_theme">ಕಪ್ಪು ಗಾಢ ಥೀಮ್</string>
     <string name="tonal_elevation">ಟೋನಲ್ ಎಲಿವೇಶನ್</string>
     <string name="reading_page">ಓದುವ ಪುಟ</string>
     <string name="sponsor">ಪ್ರಾಯೋಜಕರು</string>
@@ -202,7 +202,7 @@
     <string name="one_day">1 ದಿನ</string>
     <string name="three_days">3 ದಿನ</string>
     <string name="seven_days">7 ದಿನ</string>
-    <string name="tos_content">&lt;h5&gt; ಗೌಪ್ಯತಾ ನೀತಿ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; ನಾನು ನಿಮ್ಮ ಗೌಪ್ಯತೆಯನ್ನು ಬಹಳ ಗಂಭೀರವಾಗಿ ಪರಿಗಣಿಸುತ್ತೇನೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ಯಾವುದೇ ಬಳಕೆದಾರ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ, ಮತ್ತು ಎಲ್ಲಾ ಸೂಕ್ಷ್ಮ ಮಾಹಿತಿಯನ್ನು (ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಇತರ ಖಾತೆ ಮಾಹಿತಿ) ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿನ ಸ್ಥಳೀಯ ಅಪ್ಲಿಕೇಶನ್ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ನಿಮಗೆ ಸೇವೆಯನ್ನು ಒದಗಿಸಲು ಈ ಕೆಳಗಿನ ಅನುಮತಿಗಳನ್ನು ಬಳಸುತ್ತದೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; - ನೆಟ್‌ವರ್ಕ್ ಅನುಮತಿಯನ್ನು ಪ್ರವೇಶಿಸಿ (ನೀವು ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಂತೆ ಆನ್‌ಲೈನ್ ವಿಷಯವನ್ನು ಪ್ರವೇಶಿಸಲು) &lt;/p&gt; &lt;p&gt; - ನೆಟ್‌ವರ್ಕ್ ಸ್ಥಿತಿ ಅನುಮತಿಯನ್ನು ಪಡೆಯಿರಿ (ಸಾಧನವು ಪ್ರಸ್ತುತ ಲಭ್ಯವಿರುವ ನೆಟ್‌ವರ್ಕ್ ಪರಿಸ್ಥಿತಿಗಳನ್ನು ಹೊಂದಿದೆಯೇ ಎಂದು ನಿರ್ಧರಿಸಲು) &lt;/ p&gt; &lt;p&gt; - ಹಿನ್ನೆಲೆ ಸೇವಾ ಅನುಮತಿ (ನಿಮಗಾಗಿ ನಿಯಮಿತವಾಗಿ ನಿಮ್ಮ ಮೆಚ್ಚಿನವುಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಿಂಕ್ ಮಾಡಲು) &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳು &lt;/h5&gt; &lt;br/&gt; &lt;p &gt; &lt;b&gt;Read You&lt;/b&gt; ಜೊತೆಗೆ ನೀವು ಬಳಸುವ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳಿಗೆ ಈ ನೀತಿಯು ಅನ್ವಯಿಸುವುದಿಲ್ಲ. ನೀವು ಅವರ ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಬಳಸುವ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳ ಗೌಪ್ಯತೆ ನೀತಿಗಳನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬಹುದು &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಹಕ್ಕು ನಿರಾಕರಣೆಗಳು &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt; /b&gt; ವಿಷಯ ಸಂಗ್ರಹಣೆಯ ಸಾಧನ ಮಾತ್ರ. &lt;b&gt;Read You&lt;/b&gt; ನಿಮ್ಮ ಬಳಕೆಯು ನಿಮ್ಮ ದೇಶ ಮತ್ತು ಪ್ರದೇಶದ ಕಾನೂನುಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಕ್ರಿಯೆಗಳಿಂದ ಉಂಟಾಗುವ ಯಾವುದೇ ಹೊಣೆಗಾರಿಕೆಯನ್ನು ನೀವು ವೈಯಕ್ತಿಕವಾಗಿ ಭರಿಸುತ್ತೀರಿ. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಓಪನ್ ಸೋರ್ಸ್ ಲೈಸೆನ್ಸ್ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ಎಂಬುದು GNU GPL 3.0 ಓಪನ್ ಸೋರ್ಸ್ ಅಡಿಯಲ್ಲಿ ತೆರೆದ ಮೂಲ ಯೋಜನೆಯಾಗಿದೆ ಪರವಾನಗಿ[1], ಇದು &lt;b&gt;Read You&lt;/b&gt; ನ ಮೂಲ ಕೋಡ್ ಅನ್ನು ಉಚಿತವಾಗಿ ಬಳಸಲು, ಉಲ್ಲೇಖಿಸಲು ಮತ್ತು ಮಾರ್ಪಡಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ, ಆದರೆ ಮಾರ್ಪಡಿಸಿದ ಮತ್ತು ಪಡೆದ ಕೋಡ್ ಅನ್ನು ಕ್ಲೋಸ್ಡ್-ಸೋರ್ಸ್‌ನಂತೆ ವಿತರಿಸಲು ಮತ್ತು ಮಾರಾಟ ಮಾಡಲು ಅನುಮತಿಸುವುದಿಲ್ಲ ವಾಣಿಜ್ಯ ತಂತ್ರಾಂಶ. ವಿವರಗಳಿಗಾಗಿ, ದಯವಿಟ್ಟು ಪೂರ್ಣ GNU GPL 3.0 ಓಪನ್ ಸೋರ್ಸ್ ಪರವಾನಗಿ[2] ಅನ್ನು ನೋಡಿ. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಅನುಬಂಧ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; - [1] https://github.com/Ashinch/ReadYou &lt;/p&gt; &lt;p&gt; - [2] https://www.gnu.org/licenses/gpl-3.0.html &lt;/p&gt;</string>
+    <string name="tos_content">&lt;h5&gt; ಗೌಪ್ಯತಾ ನೀತಿ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; ನಾನು ನಿಮ್ಮ ಗೌಪ್ಯತೆಯನ್ನು ಬಹಳ ಗಂಭೀರವಾಗಿ ಪರಿಗಣಿಸುತ್ತೇನೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ಯಾವುದೇ ಬಳಕೆದಾರ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ, ಮತ್ತು ಎಲ್ಲಾ ಸೂಕ್ಷ್ಮ ಮಾಹಿತಿಯನ್ನು (ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಇತರ ಖಾತೆ ಮಾಹಿತಿ) ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿನ ಸ್ಥಳೀಯ ಅಪ್ಲಿಕೇಶನ್ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ನಿಮಗೆ ಸೇವೆಯನ್ನು ಒದಗಿಸಲು ಈ ಕೆಳಗಿನ ಅನುಮತಿಗಳನ್ನು ಬಳಸುತ್ತದೆ. &lt;/p&gt; &lt;br/&gt; &lt;p&gt; - ನೆಟ್‌ವರ್ಕ್ ಅನುಮತಿಯನ್ನು ಪ್ರವೇಶಿಸಿ (ನೀವು ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಂತೆ ಆನ್‌ಲೈನ್ ವಿಷಯವನ್ನು ಪ್ರವೇಶಿಸಲು) &lt;/p&gt; &lt;p&gt; - ನೆಟ್‌ವರ್ಕ್ ಸ್ಥಿತಿ ಅನುಮತಿಯನ್ನು ಪಡೆಯಿರಿ (ಸಾಧನವು ಪ್ರಸ್ತುತ ಲಭ್ಯವಿರುವ ನೆಟ್‌ವರ್ಕ್ ಪರಿಸ್ಥಿತಿಗಳನ್ನು ಹೊಂದಿದೆಯೇ ಎಂದು ನಿರ್ಧರಿಸಲು) &lt;/ p&gt; &lt;p&gt; - ಹಿನ್ನೆಲೆ ಸೇವಾ ಅನುಮತಿ (ನಿಮಗಾಗಿ ನಿಯಮಿತವಾಗಿ ನಿಮ್ಮ ಮೆಚ್ಚಿನವುಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಿಂಕ್ ಮಾಡಲು) &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳು &lt;/h5&gt; &lt;br/&gt; &lt;p &gt; &lt;b&gt;Read You&lt;/b&gt; ಜೊತೆಗೆ ನೀವು ಬಳಸುವ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳಿಗೆ ಈ ನೀತಿಯು ಅನ್ವಯಿಸುವುದಿಲ್ಲ. ನೀವು ಅವರ ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಬಳಸುವ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆಗಳ ಗೌಪ್ಯತೆ ನೀತಿಗಳನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬಹುದು &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಹಕ್ಕು ನಿರಾಕರಣೆಗಳು &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt; /b&gt; ವಿಷಯ ಸಂಗ್ರಹಣೆಯ ಸಾಧನ ಮಾತ್ರ. &lt;b&gt;Read You&lt;/b&gt; ನಿಮ್ಮ ಬಳಕೆಯು ನಿಮ್ಮ ದೇಶ ಮತ್ತು ಪ್ರದೇಶದ ಕಾನೂನುಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಕ್ರಿಯೆಗಳಿಂದ ಉಂಟಾಗುವ ಯಾವುದೇ ಹೊಣೆಗಾರಿಕೆಯನ್ನು ನೀವು ವೈಯಕ್ತಿಕವಾಗಿ ಭರಿಸುತ್ತೀರಿ. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಓಪನ್ ಸೋರ್ಸ್ ಲೈಸೆನ್ಸ್ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; &lt;b&gt;Read You&lt;/b&gt; ಎಂಬುದು GNU GPL 3.0 ಓಪನ್ ಸೋರ್ಸ್ ಅಡಿಯಲ್ಲಿ ತೆರೆದ ಮೂಲ ಯೋಜನೆಯಾಗಿದೆ ಪರವಾನಗಿ[1], ಇದು &lt;b&gt;Read You&lt;/b&gt; ನ ಮೂಲ ಕೋಡ್ ಅನ್ನು ಉಚಿತವಾಗಿ ಬಳಸಲು, ಉಲ್ಲೇಖಿಸಲು ಮತ್ತು ಮಾರ್ಪಡಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ, ಆದರೆ ಮಾರ್ಪಡಿಸಿದ ಮತ್ತು ಪಡೆದ ಕೋಡ್ ಅನ್ನು ಕ್ಲೋಸ್ಡ್-ಸೋರ್ಸ್‌ನಂತೆ ವಿತರಿಸಲು ಮತ್ತು ಮಾರಾಟ ಮಾಡಲು ಅನುಮತಿಸುವುದಿಲ್ಲ ವಾಣಿಜ್ಯ ತಂತ್ರಾಂಶ. ವಿವರಗಳಿಗಾಗಿ, ದಯವಿಟ್ಟು ಪೂರ್ಣ GNU GPL 3.0 ಓಪನ್ ಸೋರ್ಸ್ ಪರವಾನಗಿ[2] ಅನ್ನು ನೋಡಿ. &lt;/p&gt; &lt;br/&gt; &lt;br/&gt; &lt;h5&gt; ಅನುಬಂಧ &lt;/h5&gt; &lt;br/&gt; &lt;p&gt; - [1] https://github.com/ReadYouApp/ReadYou &lt;/p&gt; &lt;p&gt; - [2] https://www.gnu.org/licenses/gpl-3.0.html &lt;/p&gt;</string>
     <string name="top_bar">ಮೇಲಿನ ಪಟ್ಟಿ</string>
     <string name="fill_selected_icon">ಪ್ರಸ್ತುತ ಫಿಲ್ಟರ್ ಐಕಾನ್ ಅನ್ನು ಭರ್ತಿ ಮಾಡಿ</string>
     <string name="filter_bar">ಫಿಲ್ಟರ್ ಬಾರ್</string>
@@ -220,7 +220,6 @@
     <string name="alignment">ಜೋಡಣೆ</string>
     <string name="general">ಸಾಮಾನ್ಯ</string>
     <string name="rearrange_buttons">ಬಟನ್ಗಳನ್ನು ಮರುಹೊಂದಿಸಿ</string>
-    <string name="bionic_reading">ಬಯೋನಿಕ್ ರೀಡಿಂಗ್</string>
     <string name="images">ಚಿತ್ರಗಳು</string>
     <string name="rounded_corners">ದುಂಡಾದ ಮೂಲೆಗಳು</string>
     <string name="videos">ವೀಡಿಯೊಗಳು</string>
@@ -275,9 +274,7 @@
     <string name="toggle_read">ಈಗಾಗಲೇ ಓದಿದ ಲೇಖನಗಳನ್ನು ತೋರಿಸಿ</string>
     <string name="additional_info_desc">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿಯು ಪ್ರತಿ ಫೀಡ್‌ಗೆ ಕಾನ್ಫಿಗರೇಶನ್ ಆಯ್ಕೆಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, ಉದಾಹರಣೆಗೆ ಅಧಿಸೂಚನೆಯನ್ನು ಅನುಮತಿಸಬೇಕೆ, ಪೂರ್ಣ ವಿಷಯವನ್ನು ಪಾರ್ಸ್ ಮಾಡುವುದು ಇತ್ಯಾದಿ. ನೀವು ರಫ್ತು ಮಾಡಲಾದ OPML ಫೈಲ್ ಅನ್ನು ಇತರ ರೀಡರ್ ಅಪ್ಲಿಕೇಶನ್‌ಗಳೊಂದಿಗೆ ಬಳಸಲು ಬಯಸಿದಾಗ, ದಯವಿಟ್ಟು \"ಹೊರತುಪಡಿಸಿ\" ಆಯ್ಕೆಮಾಡಿ.</string>
     <string name="swipe_to_start">ಎಡಕ್ಕೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
-    <string name="unexpected_error_msg">ಅಪ್ಲಿಕೇಶನ್ ಅನಿರೀಕ್ಷಿತ ದೋಷವನ್ನು ಎದುರಿಸಿದೆ ಮತ್ತು ಮುಚ್ಚಬೇಕಾಯಿತು.
-\n
-\nಈ ಸಮಸ್ಯೆಯನ್ನು ತ್ವರಿತವಾಗಿ ಗುರುತಿಸಲು ಮತ್ತು ಸರಿಪಡಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಲು, ಕೆಳಗಿನ ದೋಷ ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್‌ನೊಂದಿಗೆ ನೀವು %1$s ಮಾಡಬಹುದು.</string>
+    <string name="unexpected_error_msg">ಅಪ್ಲಿಕೇಶನ್ ಅನಿರೀಕ್ಷಿತ ದೋಷವನ್ನು ಎದುರಿಸಿದೆ ಮತ್ತು ಮುಚ್ಚಬೇಕಾಯಿತು. \n \nಈ ಸಮಸ್ಯೆಯನ್ನು ತ್ವರಿತವಾಗಿ ಗುರುತಿಸಲು ಮತ್ತು ಸರಿಪಡಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಲು, ಕೆಳಗಿನ ದೋಷ ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್‌ನೊಂದಿಗೆ ನೀವು %1$s ಮಾಡಬಹುದು.</string>
     <string name="next_article">ಮುಂದಿನ ಲೇಖನ</string>
     <string name="swipe_to_end">ಬಲಕ್ಕೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
     <string name="none">ಯಾವುದೂ ಇಲ್ಲ</string>

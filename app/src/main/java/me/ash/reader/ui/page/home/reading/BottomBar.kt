@@ -2,10 +2,8 @@ package me.ash.reader.ui.page.home.reading
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -33,16 +31,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalReadingPageTonalElevation
 import me.ash.reader.infrastructure.preference.LocalReadingRenderer
+import me.ash.reader.infrastructure.preference.ReadingPageTonalElevationPreference
 import me.ash.reader.infrastructure.preference.ReadingRendererPreference
 import me.ash.reader.ui.component.base.CanBeDisabledIconButton
-import me.ash.reader.ui.component.base.RYExtensibleVisibility
-import me.ash.reader.ui.component.webview.BionicReadingIcon
+import me.ash.reader.ui.component.webview.BoldCharactersIcon
+
+private val sizeSpec = spring<IntSize>(stiffness = 700f)
 
 @Composable
 fun BottomBar(
@@ -51,15 +51,17 @@ fun BottomBar(
     isStarred: Boolean,
     isNextArticleAvailable: Boolean,
     isFullContent: Boolean,
-    isBionicReading: Boolean,
+    isBoldCharacters: Boolean,
+    ttsButton: @Composable () -> Unit,
     onUnread: (isUnread: Boolean) -> Unit = {},
     onStarred: (isStarred: Boolean) -> Unit = {},
     onNextArticle: () -> Unit = {},
     onFullContent: (isFullContent: Boolean) -> Unit = {},
-    onBionicReading: () -> Unit = {},
+    onBoldCharacters: () -> Unit = {},
     onReadAloud: () -> Unit = {},
 ) {
     val tonalElevation = LocalReadingPageTonalElevation.current
+    val isOutlined = tonalElevation == ReadingPageTonalElevationPreference.Outlined
     val renderer = LocalReadingRenderer.current
 
     Box(
@@ -70,16 +72,20 @@ fun BottomBar(
     ) {
         AnimatedVisibility(
             visible = isShow,
-            enter = expandVertically(),
-            exit = shrinkVertically()
+            enter = expandVertically(expandFrom = Alignment.Top, animationSpec = sizeSpec),
+            exit = shrinkVertically(shrinkTowards = Alignment.Top, animationSpec = sizeSpec)
         ) {
             val view = LocalView.current
             Column {
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    thickness = 0.5f.dp
-                )
-                Surface() {
+                if (isOutlined) {
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        thickness = 0.5f.dp
+                    )
+                }
+                Surface(
+                    color = MaterialTheme.colorScheme.run { if (isOutlined) surface else surfaceContainer }
+                ) {
                     // TODO: Component styles await refactoring
                     Row(
                         modifier = Modifier
@@ -135,35 +141,7 @@ fun BottomBar(
                             view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                             onNextArticle()
                         }
-                        CanBeDisabledIconButton(
-                            modifier = Modifier.size(36.dp),
-                            disabled = false,
-                            imageVector = if (renderer == ReadingRendererPreference.WebView) null else Icons.Outlined.Headphones,
-                            contentDescription = if (renderer == ReadingRendererPreference.WebView) {
-                                stringResource(R.string.bionic_reading)
-                            } else {
-                                stringResource(R.string.read_aloud)
-                            },
-                            tint = MaterialTheme.colorScheme.outline,
-                            icon = {
-                                BionicReadingIcon(
-                                    filled = isBionicReading,
-                                    size = 24.dp,
-                                    tint = if (renderer == ReadingRendererPreference.WebView) {
-                                        MaterialTheme.colorScheme.onSecondaryContainer
-                                    } else {
-                                        MaterialTheme.colorScheme.outline
-                                    }
-                                )
-                            },
-                        ) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                            if (renderer == ReadingRendererPreference.WebView) {
-                                onBionicReading()
-                            } else {
-                                onReadAloud()
-                            }
-                        }
+                        ttsButton()
                         CanBeDisabledIconButton(
                             disabled = false,
                             modifier = Modifier.size(40.dp),

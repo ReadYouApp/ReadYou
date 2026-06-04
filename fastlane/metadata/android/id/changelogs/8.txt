@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Pisahkan ViewPager.
-
-2. Gabungkan notifikasi berdasarkan umpan.
-
-3. Tidak lagi mengunduh file pembaruan, tetapi melompat ke halaman rilis.

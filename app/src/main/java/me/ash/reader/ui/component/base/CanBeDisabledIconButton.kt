@@ -3,6 +3,8 @@ package me.ash.reader.ui.component.base
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,22 +27,19 @@ fun CanBeDisabledIconButton(
     onClick: () -> Unit = {},
 ) {
     IconButton(
-        modifier = modifier.alpha(
-            if (disabled) {
-                0.5f
-            } else {
-                1f
-            }
-        ),
+        modifier = modifier,
         enabled = !disabled,
         onClick = onClick,
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = tint,
+            disabledContentColor = MaterialTheme.colorScheme.outline
+        )
     ) {
         if (imageVector != null) {
             Icon(
                 modifier = Modifier.size(size),
                 imageVector = imageVector,
                 contentDescription = contentDescription,
-                tint = if (disabled) MaterialTheme.colorScheme.outline else tint,
             )
         } else {
             icon()

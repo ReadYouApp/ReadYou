@@ -8,7 +8,7 @@
     <string name="use_device_theme">Brug enhedens tema</string>
     <string name="on">Til</string>
     <string name="other">Andre</string>
-    <string name="amoled_dark_theme">AMOLED mørkt tema</string>
+    <string name="amoled_dark_theme">Sort mørkt tema</string>
     <string name="tonal_elevation">Tonal højde</string>
     <string name="reading_fonts">Læseskrifttyper</string>
     <string name="basic_fonts">Grundskrifttyper</string>
@@ -118,7 +118,7 @@
     <string name="basic_colors">Grundfarver</string>
     <string name="open_source_licenses">Frie licenser</string>
     <string name="change_log">Ændringshistorik</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="reading_page">Læseside</string>
     <string name="update">Opdater</string>
     <string name="sponsor">Sponsor</string>
@@ -143,7 +143,7 @@
         <item quantity="other">%1$d Stjernemarkeret elementer</item>
     </plurals>
     <string name="article_images">Artikel billeder</string>
-    <string name="tos_content"><h5> Fortrolighedspolitik </h5> <br/> <p> Jeg tager dit privatliv meget alvorligt. </p> <br/> <p> <b>Read You</b> indsamler ingen brugerdata, og alle følsomme oplysninger (adgangskoder og andre kontooplysninger) gemmes sikkert i den lokale programdatabase på din enhed. </p> <br/> <p> <b>Read You</b> bruger følgende tilladelser til at levere tjenesten til dig. </p> <br/> <p> - Tilladelse til netværksadgang (for adgang til onlineindhold, som du angiver) </p> <p> - Tilladelse til at få netværksstatus (for at få oplyst, om enheden i øjeblikket har tilgængelige netværk) </p> <p> - Tilladelse til baggrundstjeneste (for automatisk at kunne synkronisere dine favoritter for dig regelmæssigt) </p> <br/> <br/> <h5> Tjenester fra tredjeparter </h5> <br/> <p> Denne politik gælder ikke for tjenester fra tredjeparter, som du bruger sammen med <b>Read You</b>. Du kan læse fortrolighedspolitikkerne for de tredjepartstjenester, du bruger, på deres websider</p> <br/> <br/> <h5> Ansvarsfraskrivelse </h5> <br/> <p> <b> Read You</b> er udelukkende et værktøj til indsamling af indhold. Din brug af <b>Read You</b> er underlagt de love og bestemmelser, der gælder i dit land og din region, og ethvert ansvar, der opstår som følge af dine handlinger, vil blive båret af dig personligt. </p> <br/> <br/> <h5> Open Source-licens </h5> <br/> <p> <b> Read You</b> er et open source-projekt under GNU GPL 3.0 Open Source-licensen[1], som tillader dig at bruge, referere til og ændre kildekoden til <b>Read You</b> gratis, men som ikke tillader, at den modificerede og afledte kode distribueres og sælges som kommerciel software med lukket kildekode. For nærmere oplysninger henvises til den fulde GNU GPL 3.0 Open Source License[2]. </p> <br/> <br/> <h5> Tillæg </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Fortrolighedspolitik </h5> <br/> <p> Jeg tager dit privatliv meget alvorligt. </p> <br/> <p> <b>Read You</b> indsamler ingen brugerdata, og alle følsomme oplysninger (adgangskoder og andre kontooplysninger) gemmes sikkert i den lokale programdatabase på din enhed. </p> <br/> <p> <b>Read You</b> bruger følgende tilladelser til at levere tjenesten til dig. </p> <br/> <p> - Tilladelse til netværksadgang (for adgang til onlineindhold, som du angiver) </p> <p> - Tilladelse til at få netværksstatus (for at få oplyst, om enheden i øjeblikket har tilgængelige netværk) </p> <p> - Tilladelse til baggrundstjeneste (for automatisk at kunne synkronisere dine favoritter for dig regelmæssigt) </p> <br/> <br/> <h5> Tjenester fra tredjeparter </h5> <br/> <p> Denne politik gælder ikke for tjenester fra tredjeparter, som du bruger sammen med <b>Read You</b>. Du kan læse fortrolighedspolitikkerne for de tredjepartstjenester, du bruger, på deres websider</p> <br/> <br/> <h5> Ansvarsfraskrivelse </h5> <br/> <p> <b> Read You</b> er udelukkende et værktøj til indsamling af indhold. Din brug af <b>Read You</b> er underlagt de love og bestemmelser, der gælder i dit land og din region, og ethvert ansvar, der opstår som følge af dine handlinger, vil blive båret af dig personligt. </p> <br/> <br/> <h5> Open Source-licens </h5> <br/> <p> <b> Read You</b> er et open source-projekt under GNU GPL 3.0 Open Source-licensen[1], som tillader dig at bruge, referere til og ændre kildekoden til <b>Read You</b> gratis, men som ikke tillader, at den modificerede og afledte kode distribueres og sælges som kommerciel software med lukket kildekode. For nærmere oplysninger henvises til den fulde GNU GPL 3.0 Open Source License[2]. </p> <br/> <br/> <h5> Tillæg </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="preview_article_title">Romanen Mysteriernes Herre er endelig kommet til en ende</string>
     <string name="preview_article_desc">The Fool er det ottende og sidste bind i Lord of the Mysteries-serien skrevet af Cuttlefish som elsker at dykke.</string>
     <string name="article_desc">Artikelbeskrivelser</string>
@@ -188,7 +188,6 @@
     <string name="advanced">Avanceret</string>
     <string name="maximize">Maximer</string>
     <string name="tips_group_list_tonal_elevation">Tonal højde for gruppelisten er kun tilgængelig i det lyse tema</string>
-    <string name="bionic_reading">Bionisk læsning</string>
     <string name="images">Billeder</string>
     <string name="align_start">Venstrejuster</string>
     <string name="rearrange_buttons">Omarranger knapper</string>
@@ -280,9 +279,7 @@
     <string name="shared_content">Delt indhold</string>
     <string name="only_link">Kun link</string>
     <string name="title_and_link">Titel og link</string>
-    <string name="unexpected_error_msg">Appen stødte på en uventet fejl og måtte lukke.
-\n
-\nFor at hjælpe os identificere og fikse denne fejl hurtigt, kan du %1$s med fejlstackstracen nedenfor.</string>
+    <string name="unexpected_error_msg">Appen stødte på en uventet fejl og måtte lukke. \n \nFor at hjælpe os identificere og fikse denne fejl hurtigt, kan du %1$s med fejlstackstracen nedenfor.</string>
     <string name="specific_browser_name">Browser: %1$s</string>
     <string name="default_browser">Tving standardbrowser</string>
     <string name="open_link_specific_browser">Browser</string>

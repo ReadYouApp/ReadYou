@@ -11,6 +11,7 @@ import me.ash.reader.ui.ext.DataStoreKey.Companion.openLink
 import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.put
 
+@Deprecated("Use LocalUriHandler instead")
 val LocalOpenLink =
     compositionLocalOf<OpenLinkPreference> { OpenLinkPreference.default }
 

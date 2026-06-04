@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.OpenLinkPreference
@@ -27,7 +26,7 @@ import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun LicenseListPage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -37,10 +36,9 @@ fun LicenseListPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         actions = {
             FeedbackIconButton(

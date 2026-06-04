@@ -1,8 +1,9 @@
 package me.ash.reader.domain.repository
 
-import android.util.Log
 import androidx.room.*
+import me.ash.reader.domain.model.article.ArchivedArticle
 import me.ash.reader.domain.model.feed.Feed
+import timber.log.Timber
 
 @Dao
 interface FeedDao {
@@ -14,11 +15,7 @@ interface FeedDao {
         AND accountId = :accountId
         """
     )
-    suspend fun updateTargetGroupIdByGroupId(
-        accountId: Int,
-        groupId: String,
-        targetGroupId: String,
-    )
+    suspend fun updateTargetGroupIdByGroupId(accountId: Int, groupId: String, targetGroupId: String)
 
     @Query(
         """
@@ -27,11 +24,52 @@ interface FeedDao {
         AND groupId = :groupId
         """
     )
-    suspend fun updateIsFullContentByGroupId(
+    suspend fun updateIsFullContentByGroupIdInternal(
         accountId: Int,
         groupId: String,
         isFullContent: Boolean,
     )
+
+    @Transaction
+    suspend fun updateIsFullContentByGroupId(
+        accountId: Int,
+        groupId: String,
+        isFullContent: Boolean,
+    ) {
+        updateIsFullContentByGroupIdInternal(accountId, groupId, isFullContent)
+        if (isFullContent) {
+            updateIsBrowserByGroupIdInternal(
+                accountId = accountId,
+                groupId = groupId,
+                isBrowser = false,
+            )
+        }
+    }
+
+    @Query(
+        """
+        UPDATE feed SET isBrowser = :isBrowser
+        WHERE accountId = :accountId
+        AND groupId = :groupId
+        """
+    )
+    suspend fun updateIsBrowserByGroupIdInternal(
+        accountId: Int,
+        groupId: String,
+        isBrowser: Boolean,
+    )
+
+    @Transaction
+    suspend fun updateIsBrowserByGroupId(accountId: Int, groupId: String, isBrowser: Boolean) {
+        updateIsBrowserByGroupIdInternal(accountId, groupId, isBrowser)
+        if (isBrowser) {
+            updateIsFullContentByGroupIdInternal(
+                accountId = accountId,
+                groupId = groupId,
+                isFullContent = false,
+            )
+        }
+    }
 
     @Query(
         """
@@ -83,6 +121,14 @@ interface FeedDao {
     @Query(
         """
         SELECT * FROM feed
+        WHERE id in (:idList)
+        """
+    )
+    suspend fun queryByIds(idList: List<String>): List<Feed>
+
+    @Query(
+        """
+        SELECT * FROM feed
         WHERE accountId = :accountId
         """
     )
@@ -101,37 +147,66 @@ interface FeedDao {
         """
         SELECT * FROM feed
         WHERE accountId = :accountId
+        AND isNotification = 1
+        """
+    )
+    suspend fun queryNotificationEnabled(accountId: Int): List<Feed>
+
+    @Query(
+        """
+        SELECT * FROM feed
+        WHERE accountId = :accountId
         AND url = :url
         """
     )
     suspend fun queryByLink(accountId: Int, url: String): List<Feed>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg feed: Feed)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(vararg feed: Feed)
 
-    @Insert
-    suspend fun insertList(feeds: List<Feed>): List<Long>
+    @Insert suspend fun insertList(feeds: List<Feed>): List<Long>
 
-    @Update
-    suspend fun update(vararg feed: Feed)
+    @Update suspend fun update(vararg feed: Feed)
 
-    @Delete
-    suspend fun delete(vararg feed: Feed)
+    @Delete suspend fun delete(vararg feed: Feed)
 
+    @Insert suspend fun insertAll(feeds: List<Feed>)
+
+    @Update suspend fun updateAll(feeds: List<Feed>)
+
+    @Transaction
     suspend fun insertOrUpdate(feeds: List<Feed>) {
-        feeds.forEach {
-            val feed = queryById(it.id)
-            if (feed == null) {
-                insert(it)
-            } else {
-                Log.i("RLog", "insertOrUpdate it: $it")
-                Log.i("RLog", "insertOrUpdate feed: $feed")
-                if (it.icon.isNullOrEmpty()) it.icon = feed.icon
-                // TODO: Consider migrating the fields to be nullable.
-                it.isNotification = feed.isNotification
-                it.isFullContent = feed.isFullContent
-                update(it)
+        val localFeeds = queryByIds(feeds.map { it.id }).associateBy { it.id }
+        val (newFeeds, feedsToUpdate) = feeds.partition { !localFeeds.contains(it.id) }
+
+        if (newFeeds.isNotEmpty()) insertAll(newFeeds)
+
+        feedsToUpdate
+            .mapNotNull { new ->
+                val existing = localFeeds[new.id] ?: return@mapNotNull null
+                val updated =
+                    new.copy(
+                        icon = if (new.icon.isNullOrEmpty()) existing.icon else new.icon,
+                        isNotification = existing.isNotification,
+                        isFullContent = existing.isFullContent,
+                        isBrowser = existing.isBrowser,
+                    )
+                if (updated == existing) {
+                    null
+                } else {
+                    Timber.d("Update ${new.name}")
+                    updated
+                }
             }
-        }
+            .let { updateAll(it) }
     }
+
+    @Insert suspend fun insertArchivedArticles(links: List<ArchivedArticle>)
+
+    @Query(
+        """
+        SELECT * FROM archived_article
+        WHERE feedId = :feedId
+        """
+    )
+    suspend fun queryArchivedArticles(feedId: String): List<ArchivedArticle>
 }

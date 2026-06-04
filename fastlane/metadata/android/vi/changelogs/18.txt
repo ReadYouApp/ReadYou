@@ -1,9 +1,0 @@
-## 0.9.7
-
-Bản bổ sung.
-
-1. Ghép c0ff8ba hotfix
-
-2. Cải thiện dịch
-
-3. Cập nhật GitHub's README

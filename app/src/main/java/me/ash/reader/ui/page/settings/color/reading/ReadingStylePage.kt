@@ -38,12 +38,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalPullToSwitchArticle
 import me.ash.reader.infrastructure.preference.LocalReadingAutoHideToolbar
-import me.ash.reader.infrastructure.preference.LocalReadingBionicReading
-import me.ash.reader.infrastructure.preference.LocalReadingDarkTheme
+import me.ash.reader.infrastructure.preference.LocalReadingBoldCharacters
 import me.ash.reader.infrastructure.preference.LocalReadingFonts
 import me.ash.reader.infrastructure.preference.LocalReadingPageTonalElevation
 import me.ash.reader.infrastructure.preference.LocalReadingRenderer
@@ -64,37 +62,44 @@ import me.ash.reader.ui.component.base.Subtitle
 import me.ash.reader.ui.ext.ExternalFonts
 import me.ash.reader.ui.ext.MimeType
 import me.ash.reader.ui.ext.showToast
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun ReadingStylePage(
-    navController: NavHostController,
+    onBack: () -> Unit,
+    navigateToReadingBoldCharacters: () -> Unit,
+    navigateToReadingPageTitle: () -> Unit,
+    navigateToReadingPageText: () -> Unit,
+    navigateToReadingPageImage: () -> Unit,
+    navigateToReadingPageVideo: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val readingTheme = LocalReadingTheme.current
-    val darkTheme = LocalReadingDarkTheme.current
-    val darkThemeNot = !darkTheme
     val tonalElevation = LocalReadingPageTonalElevation.current
     val fonts = LocalReadingFonts.current
     val autoHideToolbar = LocalReadingAutoHideToolbar.current
     val pullToSwitchArticle = LocalPullToSwitchArticle.current
     val renderer = LocalReadingRenderer.current
-    val bionicReading = LocalReadingBionicReading.current
+    val boldCharacters = LocalReadingBoldCharacters.current
 
     var tonalElevationDialogVisible by remember { mutableStateOf(false) }
     var rendererDialogVisible by remember { mutableStateOf(false) }
     var fontsDialogVisible by remember { mutableStateOf(false) }
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        uri?.let {
-            ExternalFonts(context, it, ExternalFonts.FontType.ReadingFont).copyToInternalStorage()
-            ReadingFontsPreference.External.put(context, scope)
-        } ?: context.showToast("Cannot get activity result with launcher")
-    }
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            uri?.let {
+                ExternalFonts(
+                    context,
+                    it,
+                    ExternalFonts.FontType.ReadingFont
+                ).copyToInternalStorage()
+                ReadingFontsPreference.External.put(context, scope)
+            } ?: context.showToast("Cannot get activity result with launcher")
+        }
 
     RYScaffold(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
@@ -102,10 +107,9 @@ fun ReadingStylePage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -115,7 +119,8 @@ fun ReadingStylePage(
 
                 // Preview
                 item {
-                    Row(modifier = Modifier.horizontalScroll(rememberScrollState())
+                    Row(
+                        modifier = Modifier.horizontalScroll(rememberScrollState())
                     ) {
                         Spacer(modifier = Modifier.width(24.dp))
                         ReadingThemePreference.values.map {
@@ -162,23 +167,19 @@ fun ReadingStylePage(
                         onClick = { rendererDialogVisible = true },
                     ) {}
                     SettingItem(
-                        title = stringResource(R.string.bionic_reading),
+                        title = stringResource(R.string.bold_characters),
                         separatedActions = renderer == ReadingRendererPreference.WebView,
                         enabled = renderer == ReadingRendererPreference.WebView,
-                        desc = if (renderer == ReadingRendererPreference.WebView) stringResource(R.string.bionic_reading_domain)
+                        desc = if (renderer == ReadingRendererPreference.WebView) null
                         else stringResource(R.string.only_available_on_webview),
-                        onClick = {
-                            navController.navigate(RouteName.READING_BIONIC_READING) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToReadingBoldCharacters,
                     ) {
                         if (renderer == ReadingRendererPreference.WebView) {
                             RYSwitch(
                                 enable = renderer == ReadingRendererPreference.WebView,
-                                activated = bionicReading.value,
+                                activated = boldCharacters.value,
                             ) {
-                                (!bionicReading).put(context, scope)
+                                (!boldCharacters).put(context, scope)
                             }
                         }
                     }
@@ -187,22 +188,6 @@ fun ReadingStylePage(
                         desc = fonts.toDesc(context),
                         onClick = { fontsDialogVisible = true },
                     ) {}
-                    SettingItem(
-                        title = stringResource(R.string.dark_reading_theme),
-                        desc = darkTheme.toDesc(context),
-                        separatedActions = true,
-                        onClick = {
-                            navController.navigate(RouteName.READING_DARK_THEME) {
-                                launchSingleTop = true
-                            }
-                        },
-                    ) {
-                        RYSwitch(
-                            activated = darkTheme.isDarkTheme()
-                        ) {
-                            darkThemeNot.put(context, scope)
-                        }
-                    }
                     SettingItem(
                         title = stringResource(R.string.auto_hide_toolbars),
                         onClick = {
@@ -222,8 +207,14 @@ fun ReadingStylePage(
                     SettingItem(
                         title = stringResource(id = R.string.pull_to_switch_article),
                         onClick = { pullToSwitchArticle.toggle(context, scope) }) {
-                        RYSwitch(activated = pullToSwitchArticle.value)
+                        RYSwitch(activated = pullToSwitchArticle.value, onClick = {
+                            pullToSwitchArticle.toggle(context, scope)
+                        })
                     }
+                    Subtitle(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.toolbars)
+                    )
                     SettingItem(
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${tonalElevation.value}dp",
@@ -231,6 +222,7 @@ fun ReadingStylePage(
                             tonalElevationDialogVisible = true
                         },
                     ) {}
+
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
@@ -244,42 +236,26 @@ fun ReadingStylePage(
                         title = stringResource(R.string.title),
                         desc = stringResource(R.string.title_desc),
                         icon = Icons.Rounded.Title,
-                        onClick = {
-                            navController.navigate(RouteName.READING_PAGE_TITLE) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToReadingPageTitle,
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.text),
                         desc = stringResource(R.string.text_desc),
                         icon = Icons.AutoMirrored.Rounded.Segment,
-                        onClick = {
-                            navController.navigate(RouteName.READING_PAGE_TEXT) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToReadingPageText,
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.images),
                         desc = stringResource(R.string.images_desc),
                         icon = Icons.Outlined.Image,
-                        onClick = {
-                            navController.navigate(RouteName.READING_PAGE_IMAGE) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToReadingPageImage,
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.videos),
                         desc = stringResource(R.string.videos_desc),
                         icon = Icons.Outlined.Movie,
                         enabled = false,
-                        onClick = {
-//                            navController.navigate(RouteName.READING_PAGE_VIDEO) {
-//                                launchSingleTop = true
-//                            }
-                        },
+                        onClick = navigateToReadingPageVideo,
                     ) {}
                 }
 

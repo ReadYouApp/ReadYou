@@ -1,0 +1,16 @@
+<i>Read You</i> on moodne ja elegantne RSS-uudistevoo lugeja, mis kasutab <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You </a> kujunduskeelt
+
+<b>Funktsionaalsused:</b>
+
+* uudisvoo tellimine
+* import OPML-failist
+* artiklite sünkroniseerimine
+* artiklite uuendusest teavitamine
+* artikli tervikliku sisu töötlemine
+* lugemata ja lemmikuks märgitud artiklite näitamine
+* uudisvoogude rühmitamine
+* tõlked
+* eksport OPML-failina
+* artiklite otsing
+
+Ja uusi võimalusi lisandub peagi…

@@ -2,79 +2,80 @@ package me.ash.reader.ui.component.webview
 
 object WebViewScript {
 
-    fun get(bionicReading: Boolean) = """
-function bionicRead() {
-    let div = document.body;
+    fun get(boldCharacters: Boolean) = """
+const BR_WORD_STEM_PERCENTAGE = 0.7;
+const MAX_FIXATION_PARTS = 4;
+const FIXATION_LOWER_BOUND = 0
+function highlightText(sentenceText) {
+	return sentenceText.replace(/\p{L}+/gu, (word) => {
+		const { length } = word;
 
-    // Check if the input is empty
-    if (!div) {
-        alert("The element with id 'readability-page-1' does not exist.");
-        return;
-    }
+		const brWordStemWidth = length > 3 ? Math.round(length * BR_WORD_STEM_PERCENTAGE) : length;
 
-    // Remove all existing <strong> tags
-    let strongTags = div.querySelectorAll('strong');
-    strongTags.forEach(tag => {
-        let parent = tag.parentNode;
-        while (tag.firstChild) {
-            parent.insertBefore(tag.firstChild, tag);
+		const firstHalf = word.slice(0, brWordStemWidth);
+		const secondHalf = word.slice(brWordStemWidth);
+		var htmlWord = "<br-bold>";
+        htmlWord += makeFixations(firstHalf);
+        htmlWord += "</br-bold>";
+        if (secondHalf.length) {
+            htmlWord += "<br-edge>";
+            htmlWord += makeFixations(secondHalf);
+            htmlWord += "</br-edge>";
         }
-        parent.removeChild(tag);
-    });
-
-    // Get all text nodes within the div, ignoring <code> elements and their children
-    let walker = document.createTreeWalker(div, NodeFilter.SHOW_TEXT, {
-        acceptNode: function(node) {
-            let parent = node.parentNode;
-            while (parent) {
-                if (parent.nodeName === 'CODE') {
-                    return NodeFilter.FILTER_REJECT;
-                }
-                parent = parent.parentNode;
-            }
-            return NodeFilter.FILTER_ACCEPT;
-        }
-    });
-
-    let textNodes = [];
-    while (walker.nextNode()) {
-        textNodes.push(walker.currentNode);
-    }
-
-    // Regex to match emoji characters
-    const emojiRegex = /[\u{1F600}-\u{1F6FF}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{1F700}-\u{1F77F}|\u{1F780}-\u{1F7FF}|\u{1F800}-\u{1F8FF}|\u{1F900}-\u{1F9FF}|\u{1FA00}-\u{1FA6F}|\u{1FA70}-\u{1FAFF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}|\u{1F1E0}-\u{1F1FF}]/u;
-
-    // Process each text node
-    textNodes.forEach(node => {
-        let text = node.textContent;
-
-        // Split text into words and process each word
-        let words = text.split(/(\s+)/); // Keep spaces in the split
-        let formattedText = "";
-        words.forEach(word => {
-            if (word.trim() && !emojiRegex.test(word)) {
-                let halfIndex = Math.round(word.length / 2);
-                let half = word.substr(0, halfIndex);
-                let remHalf = word.substr(halfIndex);
-                formattedText += "<strong>" + half + "</strong>" + remHalf;
-            } else {
-                formattedText += word; // Preserve spaces and skip emoji
-            }
-        });
-
-        // Create a temporary div to parse HTML
-        let tempDiv = document.createElement('div');
-        tempDiv.innerHTML = formattedText;
-
-        // Replace original text node with new HTML content
-        while (tempDiv.firstChild) {
-            node.parentNode.insertBefore(tempDiv.firstChild, node);
-        }
-        node.parentNode.removeChild(node);
-    });
+		return htmlWord;
+	});
 }
 
-${if (bionicReading) "bionicRead()" else ""}
+function makeFixations(textContent) {
+	const COMPUTED_MAX_FIXATION_PARTS = textContent.length >= MAX_FIXATION_PARTS ? MAX_FIXATION_PARTS : textContent.length;
+
+	const fixationWidth = Math.ceil(textContent.length * (1 / COMPUTED_MAX_FIXATION_PARTS));
+
+	if (fixationWidth === FIXATION_LOWER_BOUND) {
+		return '<br-fixation fixation-strength="1">' + textContent + '</br-fixation>';
+	}
+
+	const fixationsSplits = new Array(COMPUTED_MAX_FIXATION_PARTS).fill(null).map((item, index) => {
+		const wordStartBoundary = index * fixationWidth;
+		const wordEndBoundary = wordStartBoundary + fixationWidth > textContent.length ? textContent.length : wordStartBoundary + fixationWidth;
+
+		return `<br-fixation fixation-strength="` + (index + 1) + `">` + textContent.slice(wordStartBoundary, wordEndBoundary) + `</br-fixation>`;
+	});
+
+	return fixationsSplits.join('');
+}
+
+const IGNORE_NODE_TAGS = ['STYLE', 'SCRIPT', 'BR-SPAN', 'BR-FIXATION', 'BR-BOLD', 'BR-EDGE', 'SVG', 'INPUT', 'TEXTAREA'];
+function parseNode(node) {
+    if (!node?.parentElement?.tagName || IGNORE_NODE_TAGS.includes(node.parentElement.tagName)) {
+        return;
+    }
+    
+    if (node.nodeType === Node.TEXT_NODE && node.nodeValue.length) {
+        try {
+            const brSpan = document.createElement('br-span');
+            brSpan.innerHTML = highlightText(node.nodeValue);
+            if (brSpan.childElementCount === 0) return;
+            node.parentElement.replaceChild(brSpan, node); // JiffyReader keeps the old element around, but we don't need it
+        } catch (e) {
+            console.error('Error parsing text node:', e);
+        }
+        return;
+    }
+    
+    if (node.hasChildNodes()) [...node.childNodes].forEach(parseNode);
+}
+
+function setBold(enabled) {
+    if (enabled) {
+        document.body.setAttribute("br-mode", "on");
+        [...document.body.childNodes].forEach(parseNode);
+    } else {
+        document.body.setAttribute("br-mode", "off");
+    }
+}
+
+${if (boldCharacters) "setBold(true);" else ""}
 
 var images = document.querySelectorAll("img");
 

@@ -22,9 +22,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.ash.reader.R
 import me.ash.reader.domain.model.group.Group
+import me.ash.reader.domain.model.group.GroupWithFeed
 import me.ash.reader.ui.page.home.feeds.drawer.group.GroupOptionViewModel
 import me.ash.reader.ui.theme.Shape32
 import me.ash.reader.ui.theme.ShapeTop32
@@ -33,9 +34,6 @@ import me.ash.reader.ui.theme.ShapeTop32
 @Composable
 fun GroupItem(
     group: Group,
-    alpha: Float = 1f,
-    indicatorAlpha: Float = 1f,
-    roundedBottomCorner: () -> Boolean,
     isExpanded: () -> Boolean,
     groupOptionViewModel: GroupOptionViewModel = hiltViewModel(),
     onExpanded: () -> Unit = {},
@@ -43,21 +41,15 @@ fun GroupItem(
     groupOnClick: () -> Unit = {},
 ) {
     val view = LocalView.current
-    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
-            .animateContentSize()
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(if (isExpanded() && !roundedBottomCorner()) ShapeTop32 else Shape32)
-            .background(MaterialTheme.colorScheme.secondary.copy(alpha = alpha))
             .combinedClickable(
                 onClick = {
                     groupOnClick()
                 },
                 onLongClick = {
-                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                     groupOptionViewModel.fetchGroup(groupId = group.id)
                     onLongClick()
                 }
@@ -84,7 +76,7 @@ fun GroupItem(
                     .padding(end = 20.dp)
                     .size(24.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = indicatorAlpha))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                     .clickable { onExpanded() },
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
@@ -98,4 +90,16 @@ fun GroupItem(
         }
         Spacer(modifier = Modifier.height(22.dp))
     }
+}
+
+@Composable
+inline fun GroupWithFeedsContainer(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Column(
+        modifier = modifier
+            .padding(top = 16.dp)
+            .padding(horizontal = 16.dp)
+            .clip(Shape32)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow),
+        content = { content() }
+    )
 }

@@ -26,59 +26,44 @@ import androidx.compose.ui.unit.dp
 import me.ash.reader.R
 import me.ash.reader.domain.model.general.MarkAsReadConditions
 import me.ash.reader.ui.component.base.AnimatedPopup
+import me.ash.reader.ui.component.base.RYExtensibleVisibility
 import me.ash.reader.ui.theme.palette.alwaysLight
 
 @Composable
 fun MarkAsReadBar(
-    visible: Boolean = false,
-    absoluteY: Dp = Dp.Hairline,
-    onDismissRequest: () -> Unit = {},
     onItemClick: (MarkAsReadConditions) -> Unit = {},
 ) {
-    val animated = remember { Animatable(absoluteY.value) }
-
-    LaunchedEffect(absoluteY) {
-        snapshotFlow { absoluteY }.collect {
-            animated.animateTo(it.value, spring(stiffness = Spring.StiffnessMediumLow))
-        }
-    }
-
-    AnimatedPopup(
-        visible = visible,
-        absoluteY = animated.value.dp,
-        onDismissRequest = onDismissRequest,
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 24.dp)
+            .padding(vertical = 12.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+        MarkAsReadBarItem(
+            modifier = Modifier.width(56.dp),
+            text = stringResource(R.string.seven_days),
         ) {
-            MarkAsReadBarItem(
-                modifier = Modifier.width(56.dp),
-                text = stringResource(R.string.seven_days),
-            ) {
-                onItemClick(MarkAsReadConditions.SevenDays)
-            }
-            MarkAsReadBarItem(
-                modifier = Modifier.width(56.dp),
-                text = stringResource(R.string.three_days),
-            ) {
-                onItemClick(MarkAsReadConditions.ThreeDays)
-            }
-            MarkAsReadBarItem(
-                modifier = Modifier.width(56.dp),
-                text = stringResource(R.string.one_day),
-            ) {
-                onItemClick(MarkAsReadConditions.OneDay)
-            }
-            MarkAsReadBarItem(
-                modifier = Modifier.weight(1f),
-                text = stringResource(R.string.mark_all_as_read),
-                isPrimary = true,
-            ) {
-                onItemClick(MarkAsReadConditions.All)
-            }
+            onItemClick(MarkAsReadConditions.SevenDays)
+        }
+        MarkAsReadBarItem(
+            modifier = Modifier.width(56.dp),
+            text = stringResource(R.string.three_days),
+        ) {
+            onItemClick(MarkAsReadConditions.ThreeDays)
+        }
+        MarkAsReadBarItem(
+            modifier = Modifier.width(56.dp),
+            text = stringResource(R.string.one_day),
+        ) {
+            onItemClick(MarkAsReadConditions.OneDay)
+        }
+        MarkAsReadBarItem(
+            modifier = Modifier.weight(1f),
+            text = stringResource(R.string.mark_all_as_read),
+            isPrimary = true,
+        ) {
+            onItemClick(MarkAsReadConditions.All)
         }
     }
 }
@@ -110,7 +95,9 @@ fun MarkAsReadBarItem(
         }
     ) {
         Box(
-            modifier = Modifier.fillMaxHeight().padding(horizontal = 5.dp),
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(horizontal = 5.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(

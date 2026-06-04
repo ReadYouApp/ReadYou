@@ -18,55 +18,45 @@ import me.ash.reader.domain.model.group.Group
 )
 data class Feed(
     @PrimaryKey
-    var id: String,
+    val id: String,
     @ColumnInfo
-    var name: String,
+    val name: String,
     @ColumnInfo
-    var icon: String? = null,
+    val icon: String? = null,
     @ColumnInfo
-    var url: String,
+    val url: String,
     @ColumnInfo(index = true)
     var groupId: String,
     @ColumnInfo(index = true)
-    var accountId: Int,
+    val accountId: Int,
     @ColumnInfo
-    var isNotification: Boolean = false,
+    val isNotification: Boolean = false,
     @ColumnInfo
-    var isFullContent: Boolean = false,
+    val isFullContent: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val isBrowser: Boolean = false,
+    @Ignore val important: Int = 0
 ) {
-
-    @Ignore
-    var important: Int? = 0
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Feed
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (icon != other.icon) return false
-        if (url != other.url) return false
-        if (groupId != other.groupId) return false
-        if (accountId != other.accountId) return false
-        if (isNotification != other.isNotification) return false
-        if (isFullContent != other.isFullContent) return false
-        if (important != other.important) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + (icon?.hashCode() ?: 0)
-        result = 31 * result + url.hashCode()
-        result = 31 * result + groupId.hashCode()
-        result = 31 * result + accountId
-        result = 31 * result + isNotification.hashCode()
-        result = 31 * result + isFullContent.hashCode()
-        result = 31 * result + (important ?: 0)
-        return result
-    }
+    constructor(
+        id: String,
+        name: String,
+        icon: String?,
+        url: String,
+        groupId: String,
+        accountId: Int,
+        isNotification: Boolean,
+        isFullContent: Boolean,
+        isBrowser: Boolean
+    ) : this(
+        id = id,
+        name = name,
+        icon = icon,
+        url = url,
+        groupId = groupId,
+        accountId = accountId,
+        isNotification = isNotification,
+        isFullContent = isFullContent,
+        isBrowser = isBrowser,
+        important = 0
+    )
 }

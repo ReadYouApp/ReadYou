@@ -20,20 +20,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.InitialFilterPreference
 import me.ash.reader.infrastructure.preference.InitialPagePreference
 import me.ash.reader.infrastructure.preference.LocalArticleListSwipeEndAction
 import me.ash.reader.infrastructure.preference.LocalArticleListSwipeStartAction
+import me.ash.reader.infrastructure.preference.LocalHideEmptyGroups
 import me.ash.reader.infrastructure.preference.LocalInitialFilter
 import me.ash.reader.infrastructure.preference.LocalInitialPage
+import me.ash.reader.infrastructure.preference.LocalMarkAsReadOnScroll
 import me.ash.reader.infrastructure.preference.LocalOpenLink
 import me.ash.reader.infrastructure.preference.LocalOpenLinkSpecificBrowser
 import me.ash.reader.infrastructure.preference.LocalPullToSwitchArticle
+import me.ash.reader.infrastructure.preference.LocalSettings
 import me.ash.reader.infrastructure.preference.LocalSharedContent
+import me.ash.reader.infrastructure.preference.LocalSortUnreadArticles
 import me.ash.reader.infrastructure.preference.OpenLinkPreference
+import me.ash.reader.infrastructure.preference.PullToLoadNextFeedPreference
 import me.ash.reader.infrastructure.preference.SharedContentPreference
+import me.ash.reader.infrastructure.preference.SortUnreadArticlesPreference
 import me.ash.reader.infrastructure.preference.SwipeEndActionPreference
 import me.ash.reader.infrastructure.preference.SwipeStartActionPreference
 import me.ash.reader.ui.component.base.DisplayText
@@ -49,17 +54,23 @@ import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun InteractionPage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val initialPage = LocalInitialPage.current
     val initialFilter = LocalInitialFilter.current
     val swipeToStartAction = LocalArticleListSwipeStartAction.current
     val swipeToEndAction = LocalArticleListSwipeEndAction.current
+    val markAsReadOnScroll = LocalMarkAsReadOnScroll.current
+    val hideEmptyGroups = LocalHideEmptyGroups.current
+    val sortUnreadArticles = LocalSortUnreadArticles.current
     val pullToSwitchArticle = LocalPullToSwitchArticle.current
     val openLink = LocalOpenLink.current
     val openLinkSpecificBrowser = LocalOpenLinkSpecificBrowser.current
     val sharedContent = LocalSharedContent.current
+    val settings = LocalSettings.current
+    val pullToSwitchFeed = settings.pullToSwitchFeed
+
     val scope = rememberCoroutineScope()
     val isOpenLinkSpecificBrowserItemEnabled = remember(openLink) {
         openLink == OpenLinkPreference.SpecificBrowser
@@ -71,6 +82,8 @@ fun InteractionPage(
     var openLinkDialogVisible by remember { mutableStateOf(false) }
     var openLinkSpecificBrowserDialogVisible by remember { mutableStateOf(false) }
     var sharedContentDialogVisible by remember { mutableStateOf(false) }
+    var showSortUnreadArticlesDialog by remember { mutableStateOf(false) }
+    var showPullToLoadDialog by remember { mutableStateOf(false) }
 
     RYScaffold(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
@@ -78,10 +91,9 @@ fun InteractionPage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -112,6 +124,22 @@ fun InteractionPage(
 
                     Subtitle(
                         modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.feeds_page),
+                    )
+                    SettingItem(
+                        title = stringResource(R.string.hide_empty_groups),
+                        onClick = {
+                            hideEmptyGroups.toggle(context, scope)
+                        },
+                    ) {
+                        RYSwitch(activated = hideEmptyGroups.value) {
+                            hideEmptyGroups.toggle(context, scope)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Subtitle(
+                        modifier = Modifier.padding(horizontal = 24.dp),
                         text = stringResource(R.string.article_list),
                     )
                     SettingItem(
@@ -128,6 +156,35 @@ fun InteractionPage(
                             swipeEndDialogVisible = true
                         },
                     ) {}
+
+                    SettingItem(
+                        title = stringResource(R.string.sort_unread_articles),
+                        onClick = {
+                            showSortUnreadArticlesDialog = true
+                        },
+                        desc = sortUnreadArticles.description()
+                    ) {
+                    }
+
+                    SettingItem(
+                        title = stringResource(R.string.mark_as_read_on_scroll),
+                        onClick = {
+                            markAsReadOnScroll.toggle(context, scope)
+                        },
+                    ) {
+                        RYSwitch(activated = markAsReadOnScroll.value) {
+                            markAsReadOnScroll.toggle(context, scope)
+                        }
+                    }
+
+                    SettingItem(
+                        title = stringResource(R.string.pull_from_bottom),
+                        desc = pullToSwitchFeed.description(),
+                        onClick = {
+                            showPullToLoadDialog = true
+                        },
+                    )
+
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Subtitle(
@@ -299,4 +356,36 @@ fun InteractionPage(
     ) {
         sharedContentDialogVisible = false
     }
+
+    RadioDialog(
+        visible = showSortUnreadArticlesDialog,
+        title = stringResource(R.string.sort_unread_articles),
+        options = SortUnreadArticlesPreference.values.map {
+            RadioDialogOption(
+                text = it.description(),
+                selected = it == sortUnreadArticles,
+            ) {
+                it.put(context, scope)
+            }
+        },
+        onDismissRequest = {
+            showSortUnreadArticlesDialog = false
+        }
+    )
+
+    RadioDialog(
+        visible = showPullToLoadDialog,
+        title = stringResource(R.string.pull_from_bottom),
+        options = PullToLoadNextFeedPreference.values.map {
+            RadioDialogOption(
+                text = it.description(),
+                selected = it == pullToSwitchFeed,
+            ) {
+                it.put(context, scope)
+            }
+        },
+        onDismissRequest = {
+            showPullToLoadDialog = false
+        }
+    )
 }

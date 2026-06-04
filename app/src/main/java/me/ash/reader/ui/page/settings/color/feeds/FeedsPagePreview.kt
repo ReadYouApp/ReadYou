@@ -7,16 +7,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -25,46 +29,31 @@ import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.general.Filter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.infrastructure.preference.FeedsGroupListExpandPreference
-import me.ash.reader.infrastructure.preference.FeedsGroupListTonalElevationPreference
 import me.ash.reader.infrastructure.preference.FeedsTopBarTonalElevationPreference
 import me.ash.reader.ui.component.FilterBar
 import me.ash.reader.ui.component.base.FeedbackIconButton
-import me.ash.reader.ui.ext.alphaLN
 import me.ash.reader.ui.ext.surfaceColorAtElevation
 import me.ash.reader.ui.page.home.feeds.FeedItem
 import me.ash.reader.ui.page.home.feeds.GroupItem
-import me.ash.reader.ui.theme.palette.onDark
-import kotlin.math.ln
+import me.ash.reader.ui.page.home.feeds.GroupWithFeedsContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedsPagePreview(
     topBarTonalElevation: FeedsTopBarTonalElevationPreference,
     groupListExpand: FeedsGroupListExpandPreference,
-    groupListTonalElevation: FeedsGroupListTonalElevationPreference,
     filterBarStyle: Int,
     filterBarFilled: Boolean,
     filterBarPadding: Dp,
     filterBarTonalElevation: Dp,
 ) {
     var filter by remember { mutableStateOf(Filter.Unread) }
-    val feedBadgeAlpha by remember { derivedStateOf { (ln(groupListTonalElevation.value + 1.4f) + 2f) / 100f } }
-    val groupAlpha by remember { derivedStateOf { groupListTonalElevation.value.dp.alphaLN(weight = 1.2f) } }
-    val groupIndicatorAlpha by remember {
-        derivedStateOf {
-            groupListTonalElevation.value.dp.alphaLN(
-                weight = 1.4f
-            )
-        }
-    }
 
     Column(
         modifier = Modifier
             .animateContentSize()
             .background(
-                color = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                    groupListTonalElevation.value.dp
-                ) onDark MaterialTheme.colorScheme.surface,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(24.dp)
             )
     ) {
@@ -95,18 +84,15 @@ fun FeedsPagePreview(
             )
         )
         Spacer(modifier = Modifier.height(12.dp))
-        GroupItem(
-            roundedBottomCorner = { false },
-            isExpanded = { groupListExpand.value },
-            group = generateGroupPreview(),
-            alpha = groupAlpha,
-            indicatorAlpha = groupIndicatorAlpha,
-        )
-        FeedItemExpandSwitcher(
-            groupAlpha = groupAlpha,
-            feedBadgeAlpha = feedBadgeAlpha,
-            isExpanded = groupListExpand.value
-        )
+        GroupWithFeedsContainer {
+            GroupItem(
+                isExpanded = { groupListExpand.value },
+                group = generateGroupPreview(),
+            )
+            FeedItemExpandSwitcher(
+                isExpanded = groupListExpand.value
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         FilterBar(
             filter = filter,
@@ -122,22 +108,18 @@ fun FeedsPagePreview(
 
 @Stable
 @Composable
-fun FeedItemExpandSwitcher(groupAlpha: Float, feedBadgeAlpha: Float, isExpanded: Boolean) {
+fun FeedItemExpandSwitcher(isExpanded: Boolean) {
     FeedPreview(
-        groupAlpha = groupAlpha,
-        feedBadgeAlpha = feedBadgeAlpha,
         isExpanded = isExpanded
     )
 }
 
 @Stable
 @Composable
-fun FeedPreview(groupAlpha: Float, feedBadgeAlpha: Float, isExpanded: Boolean) {
+fun FeedPreview(isExpanded: Boolean) {
     FeedItem(
         feed = generateFeedPreview(),
-        alpha = groupAlpha,
-        badgeAlpha = feedBadgeAlpha,
-        isEnded = { true },
+        isLastItem = { true },
         isExpanded = { isExpanded }
     )
 }
@@ -152,9 +134,8 @@ fun generateFeedPreview(): Feed =
         accountId = 0,
         groupId = "",
         url = "",
-    ).apply {
         important = 100
-    }
+    )
 
 @Stable
 @Composable

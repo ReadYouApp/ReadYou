@@ -33,8 +33,8 @@
     <string name="style">Stylo</string>
     <string name="on">Activate</string>
     <string name="other">Alteres</string>
-    <string name="amoled_dark_theme">Thema obscur AMOLED</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="amoled_dark_theme">Tema preto escuro</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="change_log">Registro de cambiamentos</string>
     <string name="update">Actualisation</string>
     <string name="skip_this_version">Saltar iste version</string>
@@ -136,9 +136,13 @@
     <string name="every_1_hour">Cata hora</string>
     <string name="every_2_hours">Cata 2 horas</string>
     <string name="for_1_week">1 septimana</string>
-    <string name="external_links">Ligamines externe</string>
+    <string name="external_links">Ligamines Externe</string>
     <string name="none">Necun</string>
     <string name="swipe_to_end">Glissa al dextra</string>
     <string name="swipe_to_start">Glissa al sinistra</string>
     <string name="export">Exportar</string>
+    <string name="export_as_json">Exportar como JSON</string>
+    <string name="export_as_protobuf_file">Exportar como file protobuf</string>
+    <string name="about">A proposito de</string>
+    <string name="only_available_on_webview">Solmente disponibile sur WebView</string>
 </resources>

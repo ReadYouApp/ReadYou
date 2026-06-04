@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Separate ViewPager.
-
-2. Merge notifications by feeds.
-
-3. No longer download update files, but jump to release page.

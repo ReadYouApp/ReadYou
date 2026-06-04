@@ -128,7 +128,7 @@
     <string name="accounts_desc">Lokal, FreshRSS</string>
     <string name="basic_colors">Grunnfarger</string>
     <string name="primary_color_hint">Som #666666 eller 666666</string>
-    <string name="amoled_dark_theme">Svart</string>
+    <string name="amoled_dark_theme">Svart mørkt tema</string>
     <string name="basic_fonts">Grunnskrifter</string>
     <string name="reading_fonts">Leseskrifter</string>
     <string name="feeds_page">Informasjonskanalside</string>
@@ -199,7 +199,7 @@
     <string name="tonal_elevation">Fargelysstyrke</string>
     <string name="display">Skjerm</string>
     <string name="article_date_sticky_header">Festet hode for publiseringsdato (eksperimentelt)</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="update">Installer</string>
     <string name="checking_updates">Ser etter nye versjoner …</string>
     <string name="check_failure">Kunne ikke lete etter nye versjoner</string>
@@ -224,7 +224,6 @@
     <string name="only_when_charging">Kun ved lading</string>
     <string name="synchronous">Synkronisering</string>
     <string name="tips_article_list_tonal_elevation">Denne fargelysstyrken er kun tilgjengelig med lys drakt.</string>
-    <string name="bionic_reading">Kunstig lesing</string>
     <string name="every_1_hour">Hver time</string>
     <string name="every_2_hours">Annenhver time</string>
     <string name="every_3_hours">Hver tredje time</string>
@@ -241,7 +240,7 @@
     <string name="clear_all_articles_toast">Tømte alle artiklene fra denne kontoen</string>
     <string name="delete_account_toast">Konto slettet</string>
     <string name="synchronous_tips">Start programmet på ny for å bruke de nye innstillingene.</string>
-    <string name="tos_content"><h5> Personvernspraksis</h5><br/><p> Jeg tar personvernet ditt på alvor. </p> <br/> <p> <b>Read You</b> henter ikke inn brukerdata, og all sensitiv info (passord og annen kontoinfo) lagres på enheten i lokalt og sikret programdata. </p> <br/> <p> <b>Read You</b> bruker følgende tilganger. </p> <br/> <p> - Tilgang til nettverk (for å laste ned innholdet du ber om) </p> <p> -Innhenting av nettverksstatus (for å finne ut om du er tilknyttet Internett) </p> <p> - Bakgrunnstjenestetilgang (for å synkronisere favorittene dine regelmessig) </p> <br/> <br/> <h5> Tredjepartstjenester </h5> <br/> <p> Denne praksisen har ikke innvirkning på tredjepartstjenester du bruker med <b>Read You</b>. Du kan vurdere personvernspraksisen for tredjeparter på deres respektive nettsider </p> <br/> <br/> <h5> Ansvarsfraskrivelser </h5> <br/> <p> <b>Read You</b> er kun et verktøy for å levere innhold. Bruk av <b>Read You</b> er underlagt lokale lover og reguleringer, og alt ansvaret for dette bærer du. </p> <br/> <br/> <h5> Gemenfrihetslig lisens </h5> <br/> <p> <b>Read You</b> er lisensiert GPLv3+[1], som lar alle studere og endre kildekoden til <b>Read You</b>, men tillater ikke å lukke endrede og utledet kode. Flere detaljer er å finne i den fullstendige GPLv3+-lisensen[2]. </p> <br/> <br/> <h5> Sammendrag </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Personvernspraksis</h5><br/><p> Jeg tar personvernet ditt på alvor. </p> <br/> <p> <b>Read You</b> henter ikke inn brukerdata, og all sensitiv info (passord og annen kontoinfo) lagres på enheten i lokalt og sikret programdata. </p> <br/> <p> <b>Read You</b> bruker følgende tilganger. </p> <br/> <p> - Tilgang til nettverk (for å laste ned innholdet du ber om) </p> <p> -Innhenting av nettverksstatus (for å finne ut om du er tilknyttet Internett) </p> <p> - Bakgrunnstjenestetilgang (for å synkronisere favorittene dine regelmessig) </p> <br/> <br/> <h5> Tredjepartstjenester </h5> <br/> <p> Denne praksisen har ikke innvirkning på tredjepartstjenester du bruker med <b>Read You</b>. Du kan vurdere personvernspraksisen for tredjeparter på deres respektive nettsider </p> <br/> <br/> <h5> Ansvarsfraskrivelser </h5> <br/> <p> <b>Read You</b> er kun et verktøy for å levere innhold. Bruk av <b>Read You</b> er underlagt lokale lover og reguleringer, og alt ansvaret for dette bærer du. </p> <br/> <br/> <h5> Gemenfrihetslig lisens </h5> <br/> <p> <b>Read You</b> er lisensiert GPLv3+[1], som lar alle studere og endre kildekoden til <b>Read You</b>, men tillater ikke å lukke endrede og utledet kode. Flere detaljer er å finne i den fullstendige GPLv3+-lisensen[2]. </p> <br/> <br/> <h5> Sammendrag </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="switch_account">Bytt konto</string>
     <string name="add">Legg til</string>
     <string name="accounts_tips">Klikk på kontonavnet på informasjonskanalsiden for å bytte dem.</string>

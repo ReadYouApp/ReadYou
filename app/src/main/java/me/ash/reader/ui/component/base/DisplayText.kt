@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import me.ash.reader.ui.ext.roundClick
+import me.ash.reader.ui.interaction.alphaIndicationClickable
 
 @Composable
 fun DisplayText(
@@ -19,17 +19,14 @@ fun DisplayText(
     onTextClick: (() -> Unit)? = null,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                start = 24.dp,
-                top = 48.dp,
-                end = 24.dp,
-                bottom = 24.dp,
-            )
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .alphaIndicationClickable(enabled = onTextClick != null) { onTextClick?.invoke() }
+                .padding(start = 24.dp, top = 48.dp, end = 24.dp, bottom = 24.dp)
     ) {
         Text(
-            modifier = Modifier.roundClick(enabled = onTextClick != null) { onTextClick?.invoke() },
+            modifier = Modifier,
             text = text,
             style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.colorScheme.onSurface,

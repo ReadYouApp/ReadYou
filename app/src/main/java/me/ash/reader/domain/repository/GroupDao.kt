@@ -16,6 +16,14 @@ interface GroupDao {
     )
     suspend fun queryById(id: String): Group?
 
+    @Query(
+        """
+        SELECT * FROM `group`
+        WHERE id in (:idList)
+        """
+    )
+    suspend fun queryByIds(idList: List<String>): List<Group>
+
     @Transaction
     @Query(
         """
@@ -58,23 +66,23 @@ interface GroupDao {
     )
     suspend fun queryAll(accountId: Int): List<Group>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg group: Group)
+    @Insert
+    suspend fun insertAll(groups: List<Group>)
 
     @Update
-    suspend fun update(vararg group: Group)
+    suspend fun updateAll(groups: List<Group>)
 
-    @Delete
-    suspend fun delete(vararg group: Group)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(vararg group: Group)
 
+    @Update suspend fun update(vararg group: Group)
+
+    @Delete suspend fun delete(vararg group: Group)
+
+    @Transaction
     suspend fun insertOrUpdate(groups: List<Group>) {
-        groups.forEach {
-            val group = queryById(it.id)
-            if (group == null) {
-                insert(it)
-            } else {
-                update(it)
-            }
-        }
+        val localGroupIds = queryByIds(groups.map { it.id }).map { it.id }
+        val (newGroups, groupsToUpdate) = groups.partition { it.id !in localGroupIds }
+        insertAll(newGroups)
+        updateAll(groupsToUpdate)
     }
 }

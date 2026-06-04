@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. ViewPager'ı ayırın.
-
-2. Beslemelere göre bildirimleri birleştirin.
-
-3. Artık güncelleme dosyalarını indirmeyin, ancak sürüm sayfasına atlayın.

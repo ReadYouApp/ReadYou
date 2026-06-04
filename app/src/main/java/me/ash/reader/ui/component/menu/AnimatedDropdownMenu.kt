@@ -7,14 +7,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 
@@ -64,22 +63,27 @@ fun AnimatedDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    offset: DpOffset = DpOffset(0.dp, 0.dp),
+    offset: IntOffset = IntOffset.Zero,
     scrollState: ScrollState = rememberScrollState(),
     properties: PopupProperties = PopupProperties(focusable = true),
     content: @Composable ColumnScope.() -> Unit
 ) {
     val expandedState = remember { MutableTransitionState(false) }
     expandedState.targetState = expanded
-    
-    if (expandedState.currentState || expandedState.targetState || !expandedState.isIdle) {
+
+    if (expandedState.currentState || expandedState.targetState) {
+        val transformOriginState = remember { mutableStateOf(TransformOrigin.Center) }
         val density = LocalDensity.current
-        val popupPositionProvider = remember(offset, density) {
-            DropdownMenuPositionProvider(
-                offset,
-                density
-            )
-        }
+        val popupPositionProvider =
+            remember(density, offset) {
+                AnchorEndPopupPositionProvider(
+                    density,
+                    offset,
+                ) { transformOrigin ->
+                    transformOriginState.value = transformOrigin
+                }
+            }
+
         Popup(
             onDismissRequest = onDismissRequest,
             popupPositionProvider = popupPositionProvider,
@@ -87,9 +91,10 @@ fun AnimatedDropdownMenu(
         ) {
             DropdownMenuContent(
                 expandedState = expandedState,
+                transformOriginState = transformOriginState,
                 scrollState = scrollState,
                 modifier = modifier,
-                content = content
+                content = content,
             )
         }
     }

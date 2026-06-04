@@ -13,6 +13,7 @@ import me.ash.reader.ui.ext.DataStoreKey.Companion.openLinkAppSpecificBrowser
 import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.put
 
+@Deprecated("Use LocalUriHandler instead")
 val LocalOpenLinkSpecificBrowser = compositionLocalOf { OpenLinkSpecificBrowserPreference.default }
 
 data class OpenLinkSpecificBrowserPreference(

@@ -4,8 +4,24 @@ object WebViewStyle {
 
     private fun argbToCssColor(argb: Int): String = String.format("#%06X", 0xFFFFFF and argb)
 
+    private fun applyFontFace(
+        fontPath: String? = null
+    ): String = if (fontPath != null) """
+        @font-face {
+            font-family: external;
+            src: url("file://$fontPath")
+        }
+    """.trimIndent() else ""
+
+    private fun applyFontFamily(
+        fontPath: String? = null
+    ): String = if (fontPath != null) """
+        --font-family: external;
+    """.trimIndent() else ""
+
     fun get(
         fontSize: Int,
+        fontPath: String? = null,
         lineHeight: Float,
         letterSpacing: Float,
         textMargin: Int,
@@ -24,21 +40,22 @@ object WebViewStyle {
         selectionTextColor: Int,
         selectionBgColor: Int,
     ): String = """
+${applyFontFace(fontPath)}
 :root {
-    /* --font-family: Inter; */
+    ${applyFontFamily(fontPath)}
     --font-size: ${fontSize}px;
     --line-height: ${lineHeight * 1.5f};
     --letter-spacing: ${letterSpacing}px;
     --text-margin: ${textMargin}px;
     --text-color: ${argbToCssColor(textColor)};
-    --text-bold: ${if(textBold) "600" else "normal"};
+    --text-bold: ${if (textBold) "600" else "normal"};
     --text-align: ${textAlign};
     --bold-text-color: ${argbToCssColor(boldTextColor)};
     --link-text-color: ${argbToCssColor(linkTextColor)};
     --selection-text-color: ${argbToCssColor(selectionTextColor)};
     --selection-bg-color: ${argbToCssColor(selectionBgColor)};
-    --subhead-bold: ${if(subheadBold) "600" else "normal"};
-    --subhead-upper-case: ${if(subheadUpperCase) "uppercase" else "none"};
+    --subhead-bold: ${if (subheadBold) "600" else "normal"};
+    --subhead-upper-case: ${if (subheadUpperCase) "uppercase" else "none"};
     --img-margin: ${imgMargin}px;
     --img-border-radius: ${imgBorderRadius}px;
     --content-padding;
@@ -70,6 +87,7 @@ article {
     margin: 0;
     margin-left: var(--text-margin) !important;
     margin-right: var(--text-margin) !important;
+    line-height: var(--line-height) !important;
     font-family: var(--font-family) !important;
     font-size: var(--font-size) !important;
     font-weight: var(--text-bold) !important;
@@ -311,8 +329,7 @@ figure {
     letter-spacing: var(--letter-spacing) !important;
     text-align: var(--text-align) !important;
     margin: 0 !important;
-    opacity: 0.8 !important;
-    font-size: 0.8em !important;
+    font-size: 12px !important;
 }
 
 figure * {
@@ -322,8 +339,7 @@ figure * {
 figure p,
 caption,
 figcaption {
-    opacity: 0.8 !important;
-    font-size: 0.8em !important;
+    font-size: 12px !important;
 }
 
 hr {
@@ -333,5 +349,33 @@ hr {
     opacity: 0.08 !important;
     border-radius: 2px;
 }
+
+body {
+    --br-boldness: 600;
+}
+
+[br-mode=on] br-bold *,
+                         [br-mode=on] br-edge  {
+    opacity: var(--fixation-edge-opacity,  100%);
+}
+
+[br-mode=on] br-bold:nth-of-type(n+1) [fixation-strength="1"] {
+    display: inline;
+    font-weight: var(--br-boldness);
+    line-height: var(--br-line-height,  initial);
+    text-decoration: var(--br-line-style) underline 2px;
+    color: var(--bold-text-color) !important;
+    text-underline-offset: 3px;
+}
+
+[br-mode=on] br-bold:nth-of-type(n+1) [fixation-strength="2"] {
+    display: inline;
+    font-weight: var(--br-boldness);
+    line-height: var(--br-line-height, initial);
+    text-decoration: var(--br-line-style) underline 2px;
+    color: var(--bold-text-color) !important;
+    text-underline-offset: 3px;
+}
+
 """
 }

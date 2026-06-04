@@ -14,6 +14,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.ash.reader.R
 import me.ash.reader.domain.model.general.Version
 import me.ash.reader.domain.model.general.toVersion
@@ -68,10 +70,19 @@ fun Context.showToast(message: String?, duration: Int = Toast.LENGTH_SHORT) {
     toast?.show()
 }
 
+suspend fun Context.showToastSuspend(message: String?, duration: Int = Toast.LENGTH_SHORT) {
+    withContext(Dispatchers.Main) {
+        toast?.cancel()
+        toast = Toast.makeText(this@showToastSuspend, message, duration)
+        toast?.show()
+    }
+}
+
 fun Context.showToastLong(message: String?) {
     showToast(message, Toast.LENGTH_LONG)
 }
 
+@Deprecated("Use LocalUriHandler.current instead")
 fun Context.openURL(
     url: String?,
     openLink: OpenLinkPreference,
@@ -82,11 +93,14 @@ fun Context.openURL(
         val intent = Intent(Intent.ACTION_VIEW, uri)
         val customTabsIntent = CustomTabsIntent.Builder().setShowTitle(true).build()
         try {
-            when(openLink) {
+            when (openLink) {
                 OpenLinkPreference.AlwaysAsk -> {
                     val intents = packageManager.run {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong()))
+                            queryIntentActivities(
+                                intent,
+                                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong())
+                            )
                         } else {
                             queryIntentActivities(intent, PackageManager.MATCH_ALL)
                         }
@@ -101,10 +115,12 @@ fun Context.openURL(
 
                     startActivity(chooser)
                 }
+
                 OpenLinkPreference.AutoPreferCustomTabs -> {
                     customTabsIntent.launchUrl(this, uri)
                 }
-                OpenLinkPreference.AutoPreferDefaultBrowser-> startActivity(intent)
+
+                OpenLinkPreference.AutoPreferDefaultBrowser -> startActivity(intent)
                 OpenLinkPreference.CustomTabs -> {
                     val customTabsPackages = getCustomTabsPackages()
                     require(customTabsPackages.isNotEmpty())
@@ -118,10 +134,12 @@ fun Context.openURL(
                     customTabsIntent.intent.setPackage(targetApp)
                     customTabsIntent.launchUrl(this, uri)
                 }
+
                 OpenLinkPreference.DefaultBrowser -> {
                     val packageName = getDefaultBrowserInfo()!!.activityInfo.packageName
                     startActivity(intent.setPackage(packageName))
                 }
+
                 OpenLinkPreference.SpecificBrowser -> {
                     require(!specificBrowser.packageName.isNullOrBlank())
                     startActivity(intent.setPackage(specificBrowser.packageName))
@@ -152,7 +170,10 @@ fun Context.getBrowserAppList(): List<ResolveInfo> {
 fun Context.getDefaultBrowserInfo() = packageManager.run {
     val intent = Intent(Intent.ACTION_VIEW, "https://".toUri())
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        resolveActivity(intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))
+        resolveActivity(
+            intent,
+            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+        )
     } else {
         resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
     }
@@ -169,14 +190,15 @@ fun Context.getCustomTabsPackages(): List<String> {
         }
     }
     return appInfoList.mapNotNull { info ->
-        val serviceIntent = Intent(ACTION_CUSTOM_TABS_CONNECTION).setPackage(info.activityInfo.packageName)
+        val serviceIntent =
+            Intent(ACTION_CUSTOM_TABS_CONNECTION).setPackage(info.activityInfo.packageName)
         val service = pm.run {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            resolveService(serviceIntent, PackageManager.ResolveInfoFlags.of(0))
-        } else {
-            resolveService(serviceIntent, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                resolveService(serviceIntent, PackageManager.ResolveInfoFlags.of(0))
+            } else {
+                resolveService(serviceIntent, 0)
+            }
         }
-    }
         if (service != null) {
             return@mapNotNull info.activityInfo.packageName
         }

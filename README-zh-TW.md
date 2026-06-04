@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/icon.png">
+    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/icon.png">
 </div>
 
 <br>
@@ -7,11 +7,11 @@
 <br>
 
 <div align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/Ashinch/ReadYou?color=c3e7ff&style=flat-square">
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/releases">
-        <img alt="Version" src="https://img.shields.io/github/v/release/Ashinch/ReadYou?color=c3e7ff&label=version&style=flat-square">
+    <img alt="GitHub" src="https://img.shields.io/github/license/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/releases">
+        <img alt="Version" src="https://img.shields.io/github/v/release/ReadYouApp/ReadYou?color=c3e7ff&label=version&style=flat-square">
     </a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Ashinch/ReadYou?color=c3e7ff&style=flat-square">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
     <br>
     <a target="_blank" href="https://t.me/ReadYouApp">
         <img alt="Telegram" src="https://img.shields.io/badge/Telegram-ReadYouApp-c3e7ff?logo=telegram&style=flat-square">
@@ -24,18 +24,18 @@
 <div align="center">
     <h1>Read You</h1>
     <p>這是一個在 Android 上的  <a href="https://reederapp.com/">Reeder</a> 仿製品，為了讓 Android 擁有一個與 Reeder 相似的 RSS 閱讀器。</p>
-    <p><a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README.md">English by DeepL</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-fa.md">فارسی</a></p>
+    <p><a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README.md">English by DeepL</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-fa.md">فارسی</a></p>
     繁體中文</p>
     <br/>
     <br/>
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/startup.png" width="19.2%"alt="startup" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/startup.png" width="19.2%"alt="startup" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/zh-TW/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
     <br/>
     <br/>
 </div>
@@ -76,7 +76,7 @@
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/me.ash.reader/)
 
-或者从 [GitHub release](https://github.com/Ashinch/ReadYou/releases) 获取 APK 文件。
+或者从 [GitHub release](https://github.com/ReadYouApp/ReadYou/releases) 获取 APK 文件。
 
 ## 翻译
 
@@ -93,7 +93,7 @@
 1. 首先需要獲取 **Read You** 的原始碼：
 
     ```shell
-    git clone https://github.com/Ashinch/ReadYou.git
+    git clone https://github.com/ReadYouApp/ReadYou.git
     ```
 
 2. 然後通過 [Android Studio (最新版本)](https://developer.android.com/studio) 打開。
@@ -114,4 +114,4 @@
 
 ## 許可證
 
-[GNU GPL v3.0](https://github.com/Ashinch/ReadYou/blob/main/LICENSE)
+[GNU GPL v3.0](https://github.com/ReadYouApp/ReadYou/blob/main/LICENSE)

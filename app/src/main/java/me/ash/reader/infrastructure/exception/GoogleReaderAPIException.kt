@@ -1,14 +1,12 @@
 package me.ash.reader.infrastructure.exception
 
-class GoogleReaderAPIException : BusinessException {
-    constructor() : super()
-    constructor(message: String) : super(message)
-    constructor(message: String, cause: Throwable) : super(message, cause)
-    constructor(cause: Throwable) : super(cause)
-    constructor(
-        message: String,
-        cause: Throwable,
-        enableSuppression: Boolean,
-        writableStackTrace: Boolean,
-    ) : super(message, cause, enableSuppression, writableStackTrace)
+data class GoogleReaderAPIException(
+    override val message: String,
+    val query: String? = null,
+    val params: List<Pair<String, String>>? = null,
+    val form: List<Pair<String, String>>? = null,
+) : BusinessException() {
+    override fun toString(): String {
+        return "GoogleReaderAPIException(message='$message', query=$query, params=$params, form=$form)"
+    }
 }

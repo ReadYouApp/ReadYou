@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/icon.png">
+    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/icon.png">
 </div>
 
 <br>
@@ -7,11 +7,11 @@
 <br>
 
 <div align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/Ashinch/ReadYou?color=c3e7ff&style=flat-square">
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/releases">
-        <img alt="Version" src="https://img.shields.io/github/v/release/Ashinch/ReadYou?color=c3e7ff&label=version&style=flat-square">
+    <img alt="GitHub" src="https://img.shields.io/github/license/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/releases">
+        <img alt="Version" src="https://img.shields.io/github/v/release/ReadYouApp/ReadYou?color=c3e7ff&label=version&style=flat-square">
     </a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Ashinch/ReadYou?color=c3e7ff&style=flat-square">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
     <br>
     <a target="_blank" href="https://t.me/ReadYouApp">
         <img alt="Telegram" src="https://img.shields.io/badge/Telegram-ReadYouApp-c3e7ff?logo=telegram&style=flat-square">
@@ -25,17 +25,17 @@
     <h1 dir="ltr">Read You</h1>
     <p>این اپلیکیشن، یک کپی از <a href="https://reederapp.com/">Reeder</a> به منظور ارائه یک خبرخوان RSS مشابه Reeder برای اندروید است.</p>
     <p>فارسی&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README-zh-TW.md">繁體中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/Ashinch/ReadYou/blob/main/README.md">English by DeepL</a></p>
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-TW.md">繁體中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README.md">English by DeepL</a></p>
     <br/>
     <br/>
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/startup.png" width="19.2%" alt="startup" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
-    <img src="https://raw.githubusercontent.com/Ashinch/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/startup.png" width="19.2%" alt="startup" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
+    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
     <br/>
     <br/>
 </div>
@@ -79,7 +79,7 @@
      alt="دریافت از F-Droid"
      height="80">](https://f-droid.org/packages/me.ash.reader/)
 
-یا از [خروجی گیت‌هاب اکشن](https://github.com/Ashinch/ReadYou/releases) دانلود کنید.
+یا از [خروجی گیت‌هاب اکشن](https://github.com/ReadYouApp/ReadYou/releases) دانلود کنید.
 
 ## ترجمه
 
@@ -96,7 +96,7 @@
 ۱. ابتدا لازم است سورس کد **Read You** را کلون کنید:
 
 ```shell
-    git clone https://github.com/Ashinch/ReadYou.git
+    git clone https://github.com/ReadYouApp/ReadYou.git
 ```
 
 ۲. سپس آن را با [ااندروید استادیو (آخرین ورژن)](https://developer.android.com/studio) باز کنید.
@@ -117,4 +117,4 @@
 
 ## لایسنس
 
-[GNU GPL v3.0](https://github.com/Ashinch/ReadYou/blob/main/LICENSE)
+[GNU GPL v3.0](https://github.com/ReadYouApp/ReadYou/blob/main/LICENSE)

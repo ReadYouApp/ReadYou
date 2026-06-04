@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. ViewPager getrennt.
-
-2. Zusammenführung von Benachrichtigungen nach Feeds.
-
-3. Update-Dateien werden nicht mehr heruntergeladen, sondern es wird zur Release-Seite weitergeleitet.

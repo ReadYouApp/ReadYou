@@ -1,6 +1,9 @@
 package me.ash.reader.ui.page.home.reading
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
@@ -15,97 +18,117 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.MenuOpen
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.MenuOpen
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalReadingPageTonalElevation
 import me.ash.reader.infrastructure.preference.LocalSharedContent
+import me.ash.reader.infrastructure.preference.ReadingPageTonalElevationPreference
 import me.ash.reader.ui.component.base.FeedbackIconButton
-import me.ash.reader.ui.ext.surfaceColorAtElevation
-import me.ash.reader.ui.page.common.RouteName
+import me.ash.reader.ui.page.adaptive.NavigationAction
+
+private val sizeSpec = spring<IntSize>(stiffness = 700f)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    navController: NavHostController,
     isShow: Boolean,
-    showDivider: Boolean = false,
+    isScrolled: Boolean = false,
     title: String? = "",
     link: String? = "",
+    navigationAction: NavigationAction,
     onClick: (() -> Unit)? = null,
-    onClose: () -> Unit = {},
+    onNavButtonClick: (NavigationAction) -> Unit = {},
+    onNavigateToStylePage: () -> Unit,
 ) {
     val context = LocalContext.current
-    val tonalElevation = LocalReadingPageTonalElevation.current
     val sharedContent = LocalSharedContent.current
+    val isOutlined =
+        LocalReadingPageTonalElevation.current == ReadingPageTonalElevationPreference.Outlined
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .zIndex(1f),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Column(modifier = if (onClick == null) Modifier else Modifier.clickable(
-            onClick = onClick,
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() }
+    val containerColor by
+        animateColorAsState(
+            with(MaterialTheme.colorScheme) {
+                if (isOutlined || !isScrolled) surface else surfaceContainer
+            },
+            label = "",
+            animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         )
-        ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(
-                        WindowInsets.statusBars
-                            .asPaddingValues()
-                            .calculateTopPadding()
-                    )
-            ) {}
+
+    Box(modifier = Modifier.fillMaxSize().zIndex(1f), contentAlignment = Alignment.TopCenter) {
+        Column(modifier = Modifier.drawBehind { drawRect(containerColor) }) {
+            Spacer(
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .height(WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
+            )
             AnimatedVisibility(
                 visible = isShow,
-                enter = expandVertically(expandFrom = Alignment.Top),
-                exit = shrinkVertically(shrinkTowards = Alignment.Top)
+                enter = expandVertically(expandFrom = Alignment.Bottom, animationSpec = sizeSpec),
+                exit = shrinkVertically(shrinkTowards = Alignment.Bottom, animationSpec = sizeSpec),
             ) {
                 TopAppBar(
                     title = {},
-                    modifier = Modifier,
+                    modifier =
+                        if (onClick == null) Modifier
+                        else
+                            Modifier.clickable(
+                                onClick = onClick,
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ),
                     windowInsets = WindowInsets(0.dp),
                     navigationIcon = {
+                        val imageVector =
+                            when (navigationAction) {
+                                NavigationAction.Close -> Icons.Rounded.Close
+                                NavigationAction.HideList -> Icons.AutoMirrored.Rounded.MenuOpen
+                                NavigationAction.ExpandList -> Icons.Rounded.Menu
+                            }
+                        val contentDescription =
+                            when (navigationAction) {
+                                NavigationAction.Close -> stringResource(R.string.close)
+                                NavigationAction.HideList -> "Hide list"
+                                NavigationAction.ExpandList -> "Expand list"
+                            }
                         FeedbackIconButton(
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = stringResource(R.string.close),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            imageVector = imageVector,
+                            contentDescription = contentDescription,
+                            tint = MaterialTheme.colorScheme.onSurface,
                         ) {
-                            onClose()
+                            onNavButtonClick(navigationAction)
                         }
-                    }, actions = {
+                    },
+                    actions = {
                         FeedbackIconButton(
                             modifier = Modifier.size(22.dp),
                             imageVector = Icons.Outlined.Palette,
                             contentDescription = stringResource(R.string.style),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSurface,
                         ) {
-                            navController.navigate(RouteName.READING_PAGE_STYLE) {
-                                launchSingleTop = true
-                            }
+                            onNavigateToStylePage()
                         }
                         FeedbackIconButton(
                             modifier = Modifier.size(20.dp),
@@ -115,17 +138,14 @@ fun TopBar(
                         ) {
                             sharedContent.share(context, title, link)
                         }
-                    }, colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                            tonalElevation.value.dp
-                        ),
-                    )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 )
             }
-            if (showDivider) {
+            if (isOutlined && isScrolled) {
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    thickness = 0.5f.dp
+                    thickness = 0.5f.dp,
                 )
             }
         }

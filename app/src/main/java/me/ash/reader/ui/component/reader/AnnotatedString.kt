@@ -22,7 +22,10 @@ package me.ash.reader.ui.component.reader
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 
 class AnnotatedParagraphStringBuilder {
 
@@ -51,34 +54,24 @@ class AnnotatedParagraphStringBuilder {
             return false
         }
 
-    fun pushStyle(style: SpanStyle): Int =
-        builder.pushStyle(style = style)
+    fun pushStyle(style: SpanStyle): Int = builder.pushStyle(style = style)
 
-    fun pop(index: Int) =
-        builder.pop(index)
+    fun pushStyle(style: ParagraphStyle): Int = builder.pushStyle(style)
 
-    fun pushStringAnnotation(tag: String, annotation: String): Int =
-        builder.pushStringAnnotation(tag = tag, annotation = annotation)
+    fun pop(index: Int) = builder.pop(index)
 
-    fun pushComposableStyle(
-        style: @Composable () -> SpanStyle,
-    ): Int {
-        composableStyles.add(
-            ComposableStyleWithStartEnd(
-                style = style,
-                start = builder.length
-            )
-        )
+    fun pop() = builder.pop()
+
+    fun pushComposableStyle(style: @Composable () -> TextStyle): Int {
+        composableStyles.add(ComposableStyleWithStartEnd(style = style, start = builder.length))
         return composableStyles.lastIndex
     }
 
-    fun popComposableStyle(
-        index: Int,
-    ) {
-        poppedComposableStyles.add(
-            composableStyles.removeAt(index).copy(end = builder.length)
-        )
+    fun popComposableStyle(index: Int) {
+        poppedComposableStyles.add(composableStyles.removeAt(index).copy(end = builder.length))
     }
+
+    fun pushLink(link: LinkAnnotation) = builder.pushLink(link)
 
     fun append(text: String) {
         if (text.count() >= 2) {
@@ -97,18 +90,32 @@ class AnnotatedParagraphStringBuilder {
 
     @Composable
     fun toAnnotatedString(): AnnotatedString {
+        val poppedComposableStyles = poppedComposableStyles.cleanup()
         for (composableStyle in poppedComposableStyles) {
+            val style = composableStyle.style()
+            val spanStyle = style.toSpanStyle()
+            val paragraphStyle = style.toParagraphStyle()
             builder.addStyle(
-                style = composableStyle.style(),
+                style = spanStyle,
                 start = composableStyle.start,
-                end = composableStyle.end
+                end = composableStyle.end,
+            )
+            builder.addStyle(
+                style = paragraphStyle,
+                start = composableStyle.start,
+                end = composableStyle.end,
             )
         }
+        val composableStyles = composableStyles.cleanup()
         for (composableStyle in composableStyles) {
+            val style = composableStyle.style()
+            val spanStyle = style.toSpanStyle()
+            val paragraphStyle = style.toParagraphStyle()
+            builder.addStyle(style = spanStyle, start = composableStyle.start, end = builder.length)
             builder.addStyle(
-                style = composableStyle.style(),
+                style = paragraphStyle,
                 start = composableStyle.start,
-                end = builder.length
+                end = builder.length,
             )
         }
         return builder.toAnnotatedString()
@@ -116,6 +123,7 @@ class AnnotatedParagraphStringBuilder {
 }
 
 fun AnnotatedParagraphStringBuilder.isEmpty() = lastTwoChars.isEmpty()
+
 fun AnnotatedParagraphStringBuilder.isNotEmpty() = lastTwoChars.isNotEmpty()
 
 fun AnnotatedParagraphStringBuilder.ensureDoubleNewline() {
@@ -129,8 +137,8 @@ fun AnnotatedParagraphStringBuilder.ensureDoubleNewline() {
         }
 
         length == 2 &&
-                lastTwoChars.peekLatest()?.isWhitespace() == true &&
-                lastTwoChars.peekSecondLatest()?.isWhitespace() == true -> {
+            lastTwoChars.peekLatest()?.isWhitespace() == true &&
+            lastTwoChars.peekSecondLatest()?.isWhitespace() == true -> {
             // Nothing to do
         }
 
@@ -148,7 +156,7 @@ fun AnnotatedParagraphStringBuilder.ensureDoubleNewline() {
     }
 }
 
-private fun AnnotatedParagraphStringBuilder.ensureSingleNewline() {
+fun AnnotatedParagraphStringBuilder.ensureSingleNewline() {
     when {
         lastTwoChars.isEmpty() -> {
             // Nothing to do
@@ -178,7 +186,7 @@ private fun CharSequence.secondToLast(): Char {
 private fun <T> MutableList<T>.pushMaxTwo(item: T) {
     this.add(0, item)
     if (count() > 2) {
-        this.removeLast()
+        this.removeAt(lastIndex)
     }
 }
 
@@ -194,7 +202,33 @@ private fun <T> List<T>.peekSecondLatest(): T? {
 }
 
 data class ComposableStyleWithStartEnd(
-    val style: @Composable () -> SpanStyle,
+    val style: @Composable () -> TextStyle,
     val start: Int,
     val end: Int = -1,
 )
+
+private fun List<ComposableStyleWithStartEnd>.cleanup(): List<ComposableStyleWithStartEnd> {
+    val sortedStyles =
+        this.sortedWith(
+            compareBy<ComposableStyleWithStartEnd> { it.start }.thenByDescending { it.end }
+        )
+
+    val validStyles = mutableListOf<ComposableStyleWithStartEnd>()
+
+    var lastStyleEnd = -1
+
+    for (currentStyle in sortedStyles) {
+        if (currentStyle.start >= currentStyle.end) continue
+        if (currentStyle.start < lastStyleEnd) {
+            val fixedStart = lastStyleEnd
+            if (fixedStart < currentStyle.end) {
+                validStyles.add(currentStyle.copy(start = fixedStart))
+                lastStyleEnd = currentStyle.end
+            }
+        } else {
+            validStyles.add(currentStyle)
+            lastStyleEnd = currentStyle.end
+        }
+    }
+    return validStyles
+}

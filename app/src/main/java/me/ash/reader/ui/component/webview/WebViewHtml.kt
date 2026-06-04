@@ -15,7 +15,6 @@ object WebViewHtml {
 </head>
 <body>
 <main>
-    <!-- <button id="submit-btn" onclick="bionicRead()">BIONIC</button> -->
     <article>
         %s
     </article>

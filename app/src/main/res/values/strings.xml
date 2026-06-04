@@ -3,26 +3,26 @@
     <string name="read_you" translatable="false">Read You</string>
     <string name="all">All</string>
     <plurals name="all_desc">
-        <item quantity="one">%1$d Archived Item</item>
-        <item quantity="other">%1$d Archived Items</item>
+        <item quantity="one">%1$d archived item</item>
+        <item quantity="other">%1$d archived items</item>
     </plurals>
     <string name="unread">Unread</string>
     <plurals name="unread_desc">
-        <item quantity="one">%1$d Unread Item</item>
-        <item quantity="other">%1$d Unread Items</item>
+        <item quantity="one">%1$d unread item</item>
+        <item quantity="other">%1$d unread items</item>
     </plurals>
     <string name="starred">Starred</string>
     <plurals name="starred_desc">
-        <item quantity="one">%1$d Starred Item</item>
-        <item quantity="other">%1$d Starred Items</item>
+        <item quantity="one">%1$d starred item</item>
+        <item quantity="other">%1$d starred items</item>
     </plurals>
     <string name="feeds">Feeds</string>
     <string name="syncing">Syncing…</string>
     <string name="loading">Loading…</string>
     <string name="expand_less">Shrink</string>
     <string name="expand_more">Expand</string>
-    <string name="unfold_more">Expand All</string>
-    <string name="unfold_less">Collapse All</string>
+    <string name="unfold_more">Expand all</string>
+    <string name="unfold_less">Collapse all</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="allow">Allow</string>
@@ -40,32 +40,36 @@
     <string name="already_subscribed">Already subscribed</string>
     <string name="clear">Clear</string>
     <string name="paste">Paste</string>
-    <string name="feed_or_site_url">Feed or Site URL</string>
+    <string name="feed_or_site_url">Feed or site URL</string>
     <string name="import_from_opml">Import from OPML</string>
     <string name="preset">Preset</string>
     <string name="selected">Selected</string>
-    <string name="allow_notification">Allow Notification</string>
+    <string name="allow_notification">Allow notifications</string>
     <string name="all_allow_notification_tips">Allow all feeds in the \"%1$s\" group to send notifications</string>
-    <string name="all_allow_notification_toast">All notifications from the \"%1$s\" group are allowed</string>
-    <string name="all_deny_notification_toast">All notifications from the \"%1$s\" group are denied</string>
-    <string name="parse_full_content">Parse Full Content</string>
+    <string name="all_allow_notification_toast">Notifications from the \"%1$s\" group are allowed</string>
+    <string name="all_deny_notification_toast">Notifications from the \"%1$s\" group are denied</string>
+    <string name="parse_full_content">Parse full content</string>
     <string name="all_parse_full_content_tips">Full content parsing of all articles in the \"%1$s\" group</string>
-    <string name="all_parse_full_content_toast">Full content parsing of all articles in the \"%1$s\" group</string>
-    <string name="all_deny_parse_full_content_toast">No more full content parsing of all articles in the \"%1$s\" group</string>
-    <string name="clear_articles">Clear Articles</string>
-    <string name="clear_articles_in_feed_toast">Cleaned all archived of articles in the \"%1$s\" feed</string>
-    <string name="clear_articles_in_group_toast">Cleaned all archived of articles in the \"%1$s\" group</string>
-    <string name="clear_articles_feed_tips">Clear all archived of articles in \"%1$s\" feed</string>
-    <string name="clear_articles_group_tips">Clear all archived of articles in \"%1$s\" group</string>
-    <string name="add_to_group">Add to Group</string>
-    <string name="move_to_group">Move to Group</string>
+    <string name="all_parse_full_content_toast">Full content parsing of all articles in the \"%1$s\" group is allowed</string>
+    <string name="all_deny_parse_full_content_toast">Full content parsing of all articles in the \"%1$s\" group is denied</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="all_open_in_browser_tips">Open all articles in the \"%1$s\" group using the default browser</string>
+    <string name="all_open_in_browser_toast">Opening all articles in the \"%1$s\" group in the default browser is allowed</string>
+    <string name="all_deny_open_in_browser_toast">Opening all articles in the \"%1$s\" group in the default browser is denied</string>
+    <string name="clear_articles">Clear articles</string>
+    <string name="clear_articles_in_feed_toast">Cleared all archived articles in the \"%1$s\" feed</string>
+    <string name="clear_articles_in_group_toast">Cleared all archived articles in the \"%1$s\" group</string>
+    <string name="clear_articles_feed_tips">Clear all archived articles in the \"%1$s\" feed</string>
+    <string name="clear_articles_group_tips">Clear all archived articles in \"%1$s\" group</string>
+    <string name="add_to_group">Add to group</string>
+    <string name="move_to_group">Move to group</string>
     <string name="all_move_to_group_tips">Move all feeds in the \"%1$s\" group to the \"%2$s\" group</string>
     <string name="all_move_to_group_toast">Moved all feeds to the \"%1$s\" group</string>
     <string name="rename">Rename</string>
     <string name="change_url">Change URL</string>
     <string name="feed_url_placeholder" translatable="false">http://example.com/feed.rss</string>
     <string name="rename_toast">Renamed to \"%1$s\"</string>
-    <string name="create_new_group">Create New Group</string>
+    <string name="create_new_group">Create new group</string>
     <string name="name">Name</string>
     <string name="open_with">Open %1$s</string>
     <string name="options">Options</string>
@@ -73,7 +77,7 @@
     <string name="delete_toast">Deleted \"%1$s\"</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="unsubscribe_tips">Unsubscribe from \"%1$s\" and delete all archived articles in it</string>
-    <string name="delete_group">Delete Group</string>
+    <string name="delete_group">Delete group</string>
     <string name="delete_group_tips">Delete the \"%1$s\" group and all of the feeds and archived articles it contains</string>
     <string name="group_option_tips">The following options apply to all feeds in this group</string>
     <string name="today">Today</string>
@@ -81,11 +85,11 @@
     <string name="date_at_time">%1$s at %2$s</string>
     <string name="search_for_in">Search for %1$s items in \"%2$s\"</string>
     <string name="search_for">Search for %1$s items</string>
-    <string name="mark_as_read">Mark as Read</string>
-    <string name="mark_all_as_read">Mark All as Read</string>
-    <string name="mark_as_unread">Mark as Unread</string>
-    <string name="mark_as_starred">Mark as Starred</string>
-    <string name="mark_as_unstar">Mark as Unstarred</string>
+    <string name="mark_as_read">Mark as read</string>
+    <string name="mark_all_as_read">Mark all as read</string>
+    <string name="mark_as_unread">Mark as unread</string>
+    <string name="mark_as_starred">Mark as starred</string>
+    <string name="mark_as_unstar">Mark as unstarred</string>
     <string name="mark_as_read_one_day">Mark as read older than 1 day</string>
     <string name="mark_as_read_three_days">Mark as read older than 3 days</string>
     <string name="mark_as_read_seven_days">Mark as read older than 7 days</string>
@@ -95,14 +99,14 @@
     <string name="close">Close</string>
     <string name="get_new_updates">Get new updates</string>
     <string name="get_new_updates_desc">New version %1$s is available</string>
-    <string name="in_coding">In coding</string>
+    <string name="in_coding">In progress</string>
     <string name="coming_soon">Coming soon</string>
     <string name="accounts">Accounts</string>
-    <string name="accounts_desc">Local, FreshRSS</string>
+    <string name="accounts_desc">Local, services, self-hosted</string>
     <string name="color_and_style">Color &amp; style</string>
     <string name="color_and_style_desc">Theme, color style, font size</string>
-    <string name="interaction">Interaction</string>
-    <string name="interaction_desc">Initial page, haptic feedback</string>
+    <string name="interaction">Usage</string>
+    <string name="interaction_desc">Startup page, gestures</string>
     <string name="languages">Languages</string>
     <string name="help_translate">Help translate</string>
     <string name="translatable_url" translatable="false">https://hosted.weblate.org/projects/readyou/</string>
@@ -121,128 +125,18 @@
     <string name="indonesian" translatable="false">Bahasa Indonesia</string>
     <string name="chinese_traditional" translatable="false">繁體中文</string>
     <string name="tips_and_support">Tips &amp; support</string>
-    <string name="tips_and_support_desc">About, open source licenses</string>
+    <string name="tips_and_support_desc">About, sponsor, open source licenses</string>
     <string name="welcome">Welcome</string>
-    <string name="tos_tips">Please read and agree to Read You\'s Terms of Service and Privacy Policy to continue.</string>
-    <string name="browse_tos_tips">Browse the &lt;i&gt;&lt;u&gt;Terms of Service and Privacy Policy&lt;/u&gt;&lt;/i&gt;
-    </string>
-    <string name="terms_of_service">Terms of Service</string>
-    <string name="tos_content">
-        &lt;h5&gt;
-
-        Privacy Policy
-
-        &lt;/h5&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-
-        I take your privacy very seriously.
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-        &lt;b&gt;Read You&lt;/b&gt;
-
-        does not collect any user data, and all sensitive information (passwords and other account information) is
-        stored securely in the local application database on your device.
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-        &lt;b&gt;Read You&lt;/b&gt;
-
-        will use the following permissions to provide you with the service.
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-
-        - Access Network permission (to access online content as you specify)
-
-        &lt;/p&gt;
-        &lt;p&gt;
-
-        - Get network status permission (to determine if the device currently has available network conditions)
-
-        &lt;/p&gt;
-        &lt;p&gt;
-
-        - Background service permission (to automatically sync your favorites for you on a regular
-        basis)
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;br/&gt;
-        &lt;h5&gt;
-
-        Third Party Services
-
-        &lt;/h5&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-
-        This policy does not apply to third-party services that you use with &lt;b&gt;Read You&lt;/b&gt;. You can review
-        the privacy policies of the third-party services you use on their websites
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;br/&gt;
-        &lt;h5&gt;
-
-        Disclaimers
-
-        &lt;/h5&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-        &lt;b&gt;Read You&lt;/b&gt;
-
-        is a content collection tool only. Your use of &lt;b&gt;Read You&lt;/b&gt; is subject to the laws and
-        regulations of your country and region, and any liability arising from your actions will be borne by you
-        personally.
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;br/&gt;
-        &lt;h5&gt;
-
-        Open Source License
-
-        &lt;/h5&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-        &lt;b&gt;Read You&lt;/b&gt;
-
-        is an open source project under the GNU GPL 3.0 Open Source License[1], which allows you to use, reference, and
-        modify the source code of &lt;b&gt;Read You&lt;/b&gt; free of charge, but does not allow the
-        modified and derived code to be distributed and sold as closed-source commercial software. For details, please
-        see the full GNU GPL 3.0 Open Source License[2].
-
-        &lt;/p&gt;
-        &lt;br/&gt;
-        &lt;br/&gt;
-        &lt;h5&gt;
-
-        Appendix
-
-        &lt;/h5&gt;
-        &lt;br/&gt;
-        &lt;p&gt;
-
-        - [1] https://github.com/Ashinch/ReadYou
-
-        &lt;/p&gt;
-        &lt;p&gt;
-
-        - [2] https://www.gnu.org/licenses/gpl-3.0.html
-
-        &lt;/p&gt;
-    </string>
+    <string name="tos_tips">Please read and agree to Read You\'s terms of service and privacy policy to continue.</string>
+    <string name="browse_tos_tips">Browse the <i><u>terms of service and privacy policy</u></i></string>
+    <string name="terms_of_service">Terms of service</string>
+    <string name="tos_content"><h5> Privacy policy </h5> <br /> <p> We take your privacy very seriously. </p> <br /> <p> <b>Read You</b> does not collect any user data, and all sensitive information (passwords and other account information) is stored securely in the local application database on your device. </p> <br /> <p> <b>Read You</b> will use the following permissions to provide you with the service. </p> <br /> <p> - Access network permission (to access online content as you specify) </p> <p> - Get network status permission (to determine if the device currently has available network conditions) </p> <p> - Background service permission (to automatically sync your favorites for you on a regular basis) </p> <br /> <br /> <h5> Third-party services </h5> <br /> <p> This policy does not apply to third-party services that you use with <b>Read You</b>. You can review the privacy policies of the third-party services you use on their websites </p> <br /> <br /> <h5> Disclaimers </h5> <br /> <p> <b>Read You</b> is a content collection tool only. Your use of <b>Read You</b> is subject to the laws and regulations of your country and region, and any liability arising from your actions will be borne by you personally. </p> <br /> <br /> <h5> Open source license </h5> <br /> <p> <b>Read You</b> is an open source project under the GNU GPL 3.0 Open Source License[1], which allows you to use, reference, and modify the source code of <b>Read You</b> free of charge, but does not allow the modified and derived code to be distributed and sold as closed-source commercial software. For details, please see the full GNU GPL 3.0 Open Source License[2]. </p> <br /> <br /> <h5> Appendix </h5> <br /> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="agree">Agree</string>
     <string name="wallpaper_colors">Wallpaper colors</string>
-    <string name="no_palettes">No Palettes</string>
+    <string name="no_palettes">No palettes</string>
     <string name="only_android_8.1_plus">Only Android 8.1+</string>
     <string name="basic_colors">Basic colors</string>
-    <string name="primary_color">Primary Color</string>
+    <string name="primary_color">Primary color</string>
     <string name="primary_color_hint">Like #666666 or 666666</string>
     <string name="appearance">Appearance</string>
     <string name="style">Style</string>
@@ -251,31 +145,32 @@
     <string name="on">On</string>
     <string name="off">Off</string>
     <string name="other">Other</string>
-    <string name="amoled_dark_theme">AMOLED dark theme</string>
+    <string name="amoled_dark_theme">Black dark theme</string>
     <string name="tonal_elevation">Tonal elevation</string>
     <string name="reading_fonts">Reading fonts</string>
     <string name="basic_fonts">Basic fonts</string>
+    <string name="google_sans" translatable="false">Google Sans Flex</string>
     <string name="feeds_page">Feeds page</string>
     <string name="flow_page">Flow page</string>
     <string name="reading_page">Reading page</string>
     <string name="sponsor">Sponsor</string>
     <string name="open_source_licenses">Open source licenses</string>
-    <string name="github_link" translatable="false">https://github.com/Ashinch/ReadYou</string>
+    <string name="github_link" translatable="false">https://github.com/ReadYouApp/ReadYou</string>
     <string name="telegram_link" translatable="false">https://t.me/ReadYouApp</string>
-    <string name="wiki_link" translatable="false">https://github.com/Ashinch/ReadYou/wiki/Getting-Started</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="wiki_link" translatable="false">https://github.com/ReadYouApp/ReadYou/wiki/Getting-Started</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="change_log">Changelog</string>
     <string name="update">Update</string>
-    <string name="skip_this_version">Skip This Version</string>
+    <string name="skip_this_version">Skip this version</string>
     <string name="checking_updates">Checking for updates…</string>
     <string name="is_latest_version">This is the latest version of the app</string>
     <string name="check_failure">Failed to check for updates</string>
     <string name="download_failure">Could not download updates</string>
     <string name="rate_limit">The request rate is limited</string>
     <string name="help">Help</string>
-    <string name="on_start">On Start</string>
-    <string name="initial_page">Initial page</string>
-    <string name="initial_filter">Initial filter</string>
+    <string name="on_start">On start</string>
+    <string name="initial_page">Startup page</string>
+    <string name="initial_filter">Default filter</string>
     <string name="preview_article_title">The novel "Lord of the Mysteries" has finally come to an end</string>
     <string name="preview_article_desc">The Fool is the eighth and final volume of the Lord of the Mysteries series
         written by Cuttlefish That Loves Diving.
@@ -288,18 +183,18 @@
     <string name="article_images">Article images</string>
     <string name="feed_names">Feed names</string>
     <string name="feed_favicons">Feed favicons</string>
-    <string name="article_date_sticky_header">Sticky publication date header (experimental)</string>
-    <string name="article_list">Article List</string>
-    <string name="group_list">Group List</string>
+    <string name="article_date_sticky_header">Sticky publication date header</string>
+    <string name="article_list">Article list</string>
+    <string name="group_list">Group list</string>
     <string name="always_expand">Always expand</string>
     <string name="top">Top</string>
-    <string name="mark_as_read_button_position">\"Mark as Read\" button position</string>
-    <string name="top_bar">Top Bar</string>
+    <string name="mark_as_read_button_position">\"Mark as read\" button position</string>
+    <string name="top_bar">Top bar</string>
     <string name="fill_selected_icon">Fill current filter icon</string>
-    <string name="filter_bar">Filter Bar</string>
+    <string name="filter_bar">Filter bar</string>
     <string name="icons">Icons</string>
-    <string name="icons_and_labels">Icons and Labels</string>
-    <string name="icons_and_label_only_selected">Icons and Label (only active)</string>
+    <string name="icons_and_labels">Icons and labels</string>
+    <string name="icons_and_label_only_selected">Icons and label (only active)</string>
     <string name="tips_top_bar_tonal_elevation">Tonal elevation for the top bar list is only available when scrolling</string>
     <string name="tips_article_list_tonal_elevation">Tonal elevation for the article list is only available in the light theme</string>
     <string name="tips_group_list_tonal_elevation">Tonal elevation for the group list is only available in the light theme</string>
@@ -311,9 +206,8 @@
     <string name="line_spacing">Line spacing</string>
     <string name="alignment">Alignment</string>
     <string name="general">General</string>
-    <string name="auto_hide_toolbars">Auto hide toolbars</string>
+    <string name="auto_hide_toolbars">Automatically hide toolbars</string>
     <string name="rearrange_buttons">Rearrange buttons</string>
-    <string name="bionic_reading">Bionic Reading</string>
     <string name="images">Images</string>
     <string name="rounded_corners">Rounded corners</string>
     <string name="videos">Videos</string>
@@ -360,14 +254,14 @@
     <string name="services">Services</string>
     <string name="feedly_desc" translatable="false">feedly.com</string>
     <string name="inoreader_desc" translatable="false">inoreader.com</string>
-    <string name="self_hosted">Self-Hosted</string>
+    <string name="self_hosted">Self-hosted</string>
     <string name="fresh_rss_desc" translatable="false">freshrss.org</string>
     <string name="google_reader_desc" translatable="false">Google Reader API</string>
     <string name="fever_desc">Deprecated. Not recommended.</string>
     <string name="more">More</string>
     <string name="add_accounts">Add accounts</string>
     <string name="list">List</string>
-    <string name="add_accounts_desc">Local, Services, Self-Hosted</string>
+    <string name="add_accounts_desc">Local, services, self-hosted</string>
     <string name="display">Display</string>
     <string name="synchronous">Syncing</string>
     <string name="sync_interval">Sync</string>
@@ -381,30 +275,31 @@
     <string name="delete_account">Delete account</string>
     <string name="clear_all_articles_tips">Are you sure you want to clear the articles list for this account?</string>
     <string name="delete_account_tips">Are you sure you want to delete this account?</string>
-    <string name="must_have_an_account">Must have an account</string>
-    <string name="clear_all_articles_toast">Cleared the articles list</string>
+    <string name="must_have_an_account">You must have at least 1 account</string>
+    <string name="clear_all_articles_toast"> Cleared the articles list</string>
     <string name="delete_account_toast">Account deleted</string>
     <string name="synchronous_tips">Restart required for changes to take effect</string>
-    <string name="keep_archived_tips">Archived items are articles which are marked as read, not starred and not tagged. The \"Keep archived articles\" setting is only effective on this devices. Older archived articles will be deleted from this devices. The deletion of articles can\'t be undone.</string>
+    <string name="keep_archived_tips">Archived items are articles which are marked as read, not starred and not tagged. The \"Keep archived articles\" setting is only effective on this device. Older archived articles will be deleted from this device. The deletion of articles cannot be undone.</string>
     <string name="switch_account">Switch</string>
     <string name="add">Add</string>
-    <string name="accounts_tips">You can tap the account name on the feed page to toggle it</string>
+    <string name="accounts_tips">You can switch accounts by tapping on the account name on the feed page</string>
     <string name="server_url">Server URL</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="client_certificate">Client certificate (optional)</string>
     <string name="connection">Connection</string>
     <string name="system_default">System</string>
     <string name="initial_open_app">App when link is clicked</string>
     <string name="open_link_specific_browser_not_selected">None</string>
-    <string name="auto_customtabs">Auto (Prefer CustomTabs)</string>
-    <string name="auto_default_browser">Auto (Prefer Default Browser)</string>
-    <string name="custom_tabs">Force CustomTabs</string>
+    <string name="auto_customtabs">Auto (prefer custom tabs)</string>
+    <string name="auto_default_browser">Auto (prefer default browser)</string>
+    <string name="custom_tabs">Force custom tabs</string>
     <string name="specific_browser">Force specific browser</string>
     <string name="specific_browser_name">Browser: %1$s</string>
     <string name="default_browser">Force default browser</string>
-    <string name="always_ask">Always Ask</string>
+    <string name="always_ask">Always ask</string>
     <string name="open_link_specific_browser">Browser</string>
-    <string name="open_link_something_wrong">\"Open Link\" setting ignored because something went wrong.</string>
+    <string name="open_link_something_wrong">\"Open link\" setting ignored because something went wrong</string>
     <string name="open_link_ask_dialog_title">Open with…</string>
     <string name="include_additional_info">Include additional info</string>
     <string name="exclude">Exclude</string>
@@ -412,11 +307,11 @@
     <string name="grey_out_articles">Grey out articles</string>
     <string name="all_read">All read</string>
     <string name="read_excluding_starred">Read, excluding starred</string>
-    <string name="external_links">External Links</string>
+    <string name="external_links">External links</string>
     <string name="unexpected_error_title">Oops! Something went wrong…</string>
     <string name="copy_error_report">Copy error report</string>
-    <string name="submit_bug_report">submit a bug report on GitHub</string>
-    <string name="unexpected_error_msg">The app encountered an unexpected error and had to close.\n\nTo help us identify and fix this issue quickly, you can %1$s with the error stack trace below.</string>
+    <string name="submit_bug_report">Submit a bug report on GitHub</string>
+    <string name="unexpected_error_msg">The app encountered an unexpected error and closed.\n\nTo help us identify and fix this issue quickly, you can %1$s with the stack trace below.</string>
     <string name="next_article">Next article</string>
     <string name="swipe_to_start">Swipe left</string>
     <string name="swipe_to_end">Swipe right</string>
@@ -435,9 +330,9 @@
     <string name="only_link">Only link</string>
     <string name="title_and_link">Title and link</string>
     <string name="troubleshooting">Troubleshooting</string>
-    <string name="troubleshooting_desc">Bug report, debug tools</string>
+    <string name="troubleshooting_desc">Bug report, app preferences</string>
     <string name="bug_report">Bug report</string>
-    <string name="issue_tracer_url" translatable="false">https://github.com/Ashinch/ReadYou/issues</string>
+    <string name="issue_tracer_url" translatable="false">https://github.com/ReadYouApp/ReadYou/issues</string>
     <string name="app_preferences">App preferences</string>
     <string name="import_from_protobuf_file">Import from protobuf file</string>
     <string name="export_as_protobuf_file">Export as protobuf file</string>
@@ -446,17 +341,55 @@
     <string name="export_as_json">Export as JSON</string>
     <string name="invalid_json_file_warning">This file may not be a valid JSON file. Importing it could potentially corrupt the app and result in the loss of current preferences. Are you sure you want to proceed?</string>
     <string name="webview" translatable="false">WebView</string>
-    <string name="native_component">Native Component</string>
+    <string name="native_component">Native component</string>
     <string name="content_renderer">Content renderer</string>
-    <string name="read_aloud">Read Aloud</string>
-    <string name="only_available_on_webview">Only available on the WebView</string>
-    <string name="bionic_reading_preview" translatable="false"><![CDATA[<p>With Bionic Reading you read texts faster, better and more focused.<p>]]></string>
-    <string name="use_bionic_reading">Use Bionic Reading</string>
+    <string name="read_aloud">Read aloud</string>
+    <string name="only_available_on_webview">Only available when using the WebView content renderer</string>
     <string name="about">About</string>
     <string name="bionic_reading_tips">What is Bionic Reading?</string>
     <string name="browse_bionic_reading_tips">Learn more at &lt;i&gt;&lt;u&gt;bionic-reading.com&lt;/u&gt;&lt;/i&gt;.</string>
     <string name="bionic_reading_domain" translatable="false">bionic-reading.com</string>
     <string name="bionic_reading_link" translatable="false">https://bionic-reading.com</string>
+    <string name="mark_as_read_on_scroll">Mark as read on scroll</string>
+    <string name="hide_empty_groups">Hide empty groups</string>
+    <string name="become_a_sponsor">Become a sponsor</string>
+    <string name="sponsor_desc">We build and maintain this free, open source app in our free time. If you enjoy it, please consider supporting us with a small donation! ☕️</string>
+    <string name="toolbars">Toolbars</string>
+    <string name="sort_unread_articles">Sort unread articles</string>
+    <string name="latest">Latest</string>
+    <string name="earliest">Earliest</string>
+    <string name="short_desc">Short</string>
+    <string name="long_desc">Long</string>
+    <string name="none_desc">None</string>
+    <string name="pull_to_switch_feed">Pull to load next feed</string>
+    <string name="bold_characters">Bold characters</string>
+    <string name="use_bold_characters">Use bold characters</string>
+    <string name="bold_characters_preview">Bold the first few characters of words in an article</string>
+    <string name="load_next_feed">Load next feed</string>
+    <string name="mark_all_as_read_and_load_next_feed">Mark all as read and load next feed</string>
+    <string name="pull_from_bottom">Pull from bottom</string>
+    <string name="account">Account</string>
+    <string name="feed">Feed</string>
+    <string name="folder">Folder</string>
+    <string name="data_source">Data source</string>
+    <string name="theme">Theme</string>
+    <string name="widget_settings">Widget settings</string>
+    <string name="done">Done</string>
+    <string name="last_updated">Last updated</string>
+    <string name="no_unread_articles">No unread articles</string>
+    <string name="list_widget_label">List view</string>
+    <string name="card_widget_label">Card view</string>"
+    <string name="widget_description">View latest unread articles from selected sources</string>
+    <string name="apply">Apply</string>
+    <string name="notifications">Notifications</string>
+    <string name="group_configuration_description">Configure \"%1$s\" for feeds in \"%2$s\"</string>
+    <string name="disabled">Disabled</string>
+    <string name="enabled">Enabled</string>
+    <string name="notifications_desc">Get notifications when new unread articles are available</string>
+    <string name="open_in_browser_desc">Open articles in the browser</string>
+    <string name="parse_full_content_desc">Fetch full articles from webpages</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
 
     <!-- Filters -->
     <string name="filters">Filters</string>

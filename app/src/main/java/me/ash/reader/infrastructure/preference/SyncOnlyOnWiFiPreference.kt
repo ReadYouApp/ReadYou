@@ -12,7 +12,7 @@ sealed class SyncOnlyOnWiFiPreference(
     object Off : SyncOnlyOnWiFiPreference(false)
 
     fun put(accountId: Int, viewModel: AccountViewModel) {
-        viewModel.update(accountId) { syncOnlyOnWiFi = this@SyncOnlyOnWiFiPreference }
+        viewModel.update(accountId) { copy(syncOnlyOnWiFi = this@SyncOnlyOnWiFiPreference) }
     }
 
     fun toDesc(context: Context): String =

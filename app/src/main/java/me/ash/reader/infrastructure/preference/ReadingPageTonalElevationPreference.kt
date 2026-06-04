@@ -15,42 +15,30 @@ val LocalReadingPageTonalElevation =
     compositionLocalOf<ReadingPageTonalElevationPreference> { ReadingPageTonalElevationPreference.default }
 
 sealed class ReadingPageTonalElevationPreference(val value: Int) : Preference() {
-    object Level0 : ReadingPageTonalElevationPreference(ElevationTokens.Level0)
-    object Level1 : ReadingPageTonalElevationPreference(ElevationTokens.Level1)
-    object Level2 : ReadingPageTonalElevationPreference(ElevationTokens.Level2)
-    object Level3 : ReadingPageTonalElevationPreference(ElevationTokens.Level3)
-    object Level4 : ReadingPageTonalElevationPreference(ElevationTokens.Level4)
-    object Level5 : ReadingPageTonalElevationPreference(ElevationTokens.Level5)
+    data object Outlined : ReadingPageTonalElevationPreference(ElevationTokens.Level0)
+    data object Elevated : ReadingPageTonalElevationPreference(ElevationTokens.Level2)
 
     override fun put(context: Context, scope: CoroutineScope) {
         scope.launch {
-            context.dataStore.put(DataStoreKey.readingPageTonalElevation, value)
+            context.dataStore.put(readingPageTonalElevation, value)
         }
     }
 
     fun toDesc(context: Context): String =
         when (this) {
-            Level0 -> "Level 0 (${ElevationTokens.Level0}dp)"
-            Level1 -> "Level 1 (${ElevationTokens.Level1}dp)"
-            Level2 -> "Level 2 (${ElevationTokens.Level2}dp)"
-            Level3 -> "Level 3 (${ElevationTokens.Level3}dp)"
-            Level4 -> "Level 4 (${ElevationTokens.Level4}dp)"
-            Level5 -> "Level 5 (${ElevationTokens.Level5}dp)"
+            Outlined -> "${ElevationTokens.Level0}dp"
+            Elevated -> "${ElevationTokens.Level2}dp"
         }
 
     companion object {
 
-        val default = Level0
-        val values = listOf(Level0, Level1, Level2, Level3, Level4, Level5)
+        val default = Outlined
+        val values = listOf(Outlined, Elevated)
 
         fun fromPreferences(preferences: Preferences) =
             when (preferences[DataStoreKey.keys[readingPageTonalElevation]?.key as Preferences.Key<Int>]) {
-                ElevationTokens.Level0 -> Level0
-                ElevationTokens.Level1 -> Level1
-                ElevationTokens.Level2 -> Level2
-                ElevationTokens.Level3 -> Level3
-                ElevationTokens.Level4 -> Level4
-                ElevationTokens.Level5 -> Level5
+                ElevationTokens.Level0 -> Outlined
+                ElevationTokens.Level2 -> Elevated
                 else -> default
             }
     }

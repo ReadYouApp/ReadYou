@@ -2,4 +2,5 @@
 <resources>
     <string name="all">Alle</string>
     <string name="unread">Ulesen</string>
+    <string name="amoled_dark_theme">Svart mørkt tema</string>
 </resources>

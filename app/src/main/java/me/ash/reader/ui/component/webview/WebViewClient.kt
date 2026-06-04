@@ -60,18 +60,7 @@ class WebViewClient(
 
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
-        val jsCode = """
-            javascript:(function() {
-                var imgs = document.getElementsByTagName("img");
-                for(var i = 0; i < imgs.length; i++){
-                    imgs[i].pos = i;
-                    imgs[i].onclick = function() {
-                        window.${JavaScriptInterface.NAME}.onImgTagClick(this.src, this.alt);
-                    }
-                }
-            })()
-            """
-        view!!.loadUrl(jsCode)
+        view!!.evaluateJavascript(OnImgClickScript, null)
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -92,5 +81,20 @@ class WebViewClient(
 
     override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
         handler?.cancel()
+    }
+
+    companion object {
+        private const val OnImgClickScript = """
+            javascript:(function() {
+                var imgs = document.getElementsByTagName("img");
+                for(var i = 0; i < imgs.length; i++){
+                    imgs[i].pos = i;
+                    imgs[i].onclick = function(event) {
+                        event.preventDefault();
+                        window.${JavaScriptInterface.NAME}.onImgTagClick(this.src, this.alt);
+                    }
+                }
+            })()
+            """
     }
 }

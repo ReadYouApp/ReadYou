@@ -50,7 +50,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.BasicFontsPreference
 import me.ash.reader.infrastructure.preference.CustomPrimaryColorPreference
@@ -74,7 +73,6 @@ import me.ash.reader.ui.component.base.TextFieldDialog
 import me.ash.reader.ui.ext.ExternalFonts
 import me.ash.reader.ui.ext.MimeType
 import me.ash.reader.ui.ext.showToast
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.svg.PALETTE
 import me.ash.reader.ui.svg.SVGString
@@ -88,7 +86,11 @@ import me.ash.reader.ui.theme.palette.safeHexToColor
 
 @Composable
 fun ColorAndStylePage(
-    navController: NavHostController,
+    onBack: () -> Unit,
+    navigateToDarkTheme: () -> Unit,
+    navigateToFeedsPageStyle: () -> Unit,
+    navigateToFlowPageStyle: () -> Unit,
+    navigateToReadingPageStyle: () -> Unit,
 ) {
     val context = LocalContext.current
     val darkTheme = LocalDarkTheme.current
@@ -115,10 +117,9 @@ fun ColorAndStylePage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -133,8 +134,7 @@ fun ColorAndStylePage(
                             .aspectRatio(1.38f)
                             .clip(RoundedCornerShape(24.dp))
                             .background(
-                                MaterialTheme.colorScheme.inverseOnSurface
-                                        onLight MaterialTheme.colorScheme.surface.copy(0.7f)
+                                MaterialTheme.colorScheme.surfaceContainerLow
                             )
                             .clickable { },
                         horizontalArrangement = Arrangement.Center,
@@ -195,11 +195,7 @@ fun ColorAndStylePage(
                         title = stringResource(R.string.dark_theme),
                         desc = darkTheme.toDesc(context),
                         separatedActions = true,
-                        onClick = {
-                            navController.navigate(RouteName.DARK_THEME) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToDarkTheme,
                     ) {
                         RYSwitch(
                             activated = darkTheme.isDarkTheme()
@@ -221,27 +217,15 @@ fun ColorAndStylePage(
                     )
                     SettingItem(
                         title = stringResource(R.string.feeds_page),
-                        onClick = {
-                            navController.navigate(RouteName.FEEDS_PAGE_STYLE) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToFeedsPageStyle,
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.flow_page),
-                        onClick = {
-                            navController.navigate(RouteName.FLOW_PAGE_STYLE) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToFlowPageStyle,
                     ) {}
                     SettingItem(
                         title = stringResource(R.string.reading_page),
-                        onClick = {
-                            navController.navigate(RouteName.READING_PAGE_STYLE) {
-                                launchSingleTop = true
-                            }
-                        },
+                        onClick = navigateToReadingPageStyle,
                     ) {}
                 }
                 item {

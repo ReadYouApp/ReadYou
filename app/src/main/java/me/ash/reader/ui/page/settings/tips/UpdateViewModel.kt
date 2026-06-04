@@ -3,6 +3,7 @@ package me.ash.reader.ui.page.settings.tips
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.ash.reader.domain.service.AppService
@@ -18,22 +19,24 @@ class UpdateViewModel @Inject constructor(
     private val _updateUiState = MutableStateFlow(UpdateUiState())
     val updateUiState: StateFlow<UpdateUiState> = _updateUiState.asStateFlow()
 
+    var updateJob: Job? = null
+
     fun checkUpdate(
         preProcessor: suspend () -> Unit = {},
         postProcessor: suspend (Boolean) -> Unit = {},
     ) {
-        if (isGitHub) {
-            viewModelScope.launch {
-                preProcessor()
-                appService.checkUpdate().let {
-                    it?.let {
-                        if (it) {
-                            showDialog()
-                        } else {
-                            hideDialog()
-                        }
-                        postProcessor(it)
+        if (!isGitHub) return
+        if (updateJob?.isActive == true) return
+        updateJob = viewModelScope.launch {
+            preProcessor()
+            appService.checkUpdate().let {
+                it?.let {
+                    if (it) {
+                        showDialog()
+                    } else {
+                        hideDialog()
                     }
+                    postProcessor(it)
                 }
             }
         }

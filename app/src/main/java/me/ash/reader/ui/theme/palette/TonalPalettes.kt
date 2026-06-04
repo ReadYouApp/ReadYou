@@ -82,7 +82,7 @@ data class TonalPalettes(
     infix fun neutral(tone: TonalValue): Color = neutral.getOrPut(tone) {
         zcamLch(
             L = tone.toZcamLightness(),
-            C = MaterialYouStandard.sRGBLightnessChromaMap.getValue(tone) / 12.0,
+            C = MaterialYouStandard.sRGBLightnessChromaMap.getValue(tone) / 8.0,
             h = hue,
         ).clampToRgb().toColor()
     }

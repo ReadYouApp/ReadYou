@@ -1,9 +1,0 @@
-## 0.9.7
-
-Bu ek bir güncellemedir.
-
-1. c0ff8ba düzeltmesini birleştirin
-
-2. Çeviriyi geliştirin (herkese teşekkürler)
-
-3. GitHub'ın README açıklama dosyalarını güncelleyin

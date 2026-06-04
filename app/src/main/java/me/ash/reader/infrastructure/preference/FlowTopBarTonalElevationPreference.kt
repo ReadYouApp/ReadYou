@@ -15,12 +15,8 @@ val LocalFlowTopBarTonalElevation =
     compositionLocalOf<FlowTopBarTonalElevationPreference> { FlowTopBarTonalElevationPreference.default }
 
 sealed class FlowTopBarTonalElevationPreference(val value: Int) : Preference() {
-    object Level0 : FlowTopBarTonalElevationPreference(ElevationTokens.Level0)
-    object Level1 : FlowTopBarTonalElevationPreference(ElevationTokens.Level1)
-    object Level2 : FlowTopBarTonalElevationPreference(ElevationTokens.Level2)
-    object Level3 : FlowTopBarTonalElevationPreference(ElevationTokens.Level3)
-    object Level4 : FlowTopBarTonalElevationPreference(ElevationTokens.Level4)
-    object Level5 : FlowTopBarTonalElevationPreference(ElevationTokens.Level5)
+    object None : FlowTopBarTonalElevationPreference(ElevationTokens.Level0)
+    object Elevated : FlowTopBarTonalElevationPreference(ElevationTokens.Level2)
 
     override fun put(context: Context, scope: CoroutineScope) {
         scope.launch {
@@ -30,27 +26,19 @@ sealed class FlowTopBarTonalElevationPreference(val value: Int) : Preference() {
 
     fun toDesc(context: Context): String =
         when (this) {
-            Level0 -> "Level 0 (${ElevationTokens.Level0}dp)"
-            Level1 -> "Level 1 (${ElevationTokens.Level1}dp)"
-            Level2 -> "Level 2 (${ElevationTokens.Level2}dp)"
-            Level3 -> "Level 3 (${ElevationTokens.Level3}dp)"
-            Level4 -> "Level 4 (${ElevationTokens.Level4}dp)"
-            Level5 -> "Level 5 (${ElevationTokens.Level5}dp)"
+            None -> "Level 0 (${ElevationTokens.Level0}dp)"
+            Elevated -> "Level 2 (${ElevationTokens.Level2}dp)"
         }
 
     companion object {
 
-        val default = Level0
-        val values = listOf(Level0, Level1, Level2, Level3, Level4, Level5)
+        val default = None
+        val values = listOf(None, Elevated)
 
         fun fromPreferences(preferences: Preferences) =
             when (preferences[DataStoreKey.keys[flowTopBarTonalElevation]?.key as Preferences.Key<Int>]) {
-                ElevationTokens.Level0 -> Level0
-                ElevationTokens.Level1 -> Level1
-                ElevationTokens.Level2 -> Level2
-                ElevationTokens.Level3 -> Level3
-                ElevationTokens.Level4 -> Level4
-                ElevationTokens.Level5 -> Level5
+                ElevationTokens.Level0 -> None
+                ElevationTokens.Level2 -> Elevated
                 else -> default
             }
     }

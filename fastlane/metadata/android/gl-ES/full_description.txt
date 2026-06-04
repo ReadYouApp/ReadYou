@@ -2,15 +2,15 @@
 
 <b>Características:</b>
 
-* Suscrición a ligazóns de Fontes
+* Suscrición a ligazóns de fontes
 * Importar de OPML
 * Sincronizar artigos
 * Notificación de actualización de artigos
-* Análise de Contido Completo
-* Filtrar por Non Lidos e Favoritos
-* Agrupación de Fontes
+* Análise de contido completo
+* Filtrar por non lidos e favoritos
+* Agrupación de fontes
 * Tradución
 * Exportar como OPML
 * Busca de artigos
 
-E mais por vir…
+E máis por vir…

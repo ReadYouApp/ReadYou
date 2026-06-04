@@ -3,17 +3,17 @@
     <string name="all">诸</string>
     <plurals name="all_desc">
         <item quantity="one">%1$d 项已纳入</item>
-        <item quantity="other">%1$d 项已纳入</item>
+        <item quantity="other"/>
     </plurals>
     <string name="unread">未览</string>
     <plurals name="unread_desc">
         <item quantity="one">%1$d 项未览</item>
-        <item quantity="other">%1$d 项未览</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="starred">已藏</string>
     <plurals name="starred_desc">
         <item quantity="one">%1$d 项已藏</item>
-        <item quantity="other">%1$d 项已藏</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="feeds">分类</string>
     <string name="syncing">同步中……</string>

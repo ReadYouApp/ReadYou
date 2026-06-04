@@ -2,6 +2,8 @@ package me.ash.reader.ui.component.base
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
@@ -16,7 +18,6 @@ import coil.request.ImageRequest
 import coil.size.Precision
 import coil.size.Scale
 import coil.size.Size
-import me.ash.reader.R
 import me.ash.reader.ui.ext.extractDomain
 
 val SIZE_1000 = Size(1000, 1000)
@@ -29,65 +30,73 @@ fun RYAsyncImage(
     scale: Scale = Scale.FIT,
     precision: Precision = Precision.AUTOMATIC,
     contentScale: ContentScale = ContentScale.Fit,
-    contentDescription: String = "",
-    @DrawableRes placeholder: Int? = R.drawable.ic_hourglass_empty_black_24dp,
-    @DrawableRes error: Int? = R.drawable.ic_broken_image_black_24dp,
+    contentDescription: String? = null,
+    @DrawableRes placeholder: Int? = null,
+    @DrawableRes error: Int? = null,
 ) {
+    val painter =
+        rememberAsyncImagePainter(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .apply {
+                        val domain = data.toString().extractDomain()
+                        if (data.toString().extractDomain() != null) {
+                            addHeader("Referer", domain!!)
+                        }
+                    }
+                    .data(data = data)
+                    .apply {
+                        if (placeholder != null) placeholder(placeholder)
+                        if (error != null) error(error)
+                        crossfade(true)
+                        scale(scale)
+                        precision(precision)
+                        size(size)
+                    }
+                    .build()
+        )
     Image(
-        painter = rememberAsyncImagePainter(
-            model = ImageRequest.Builder(LocalContext.current).apply {
-                val domain = data.toString().extractDomain()
-                if (data.toString().extractDomain() != null) {
-                    addHeader("Referer", domain!!)
-                }
-            }.data(data = data).apply {
-                if (placeholder != null) placeholder(placeholder)
-                if (error != null) error(error)
-                crossfade(true)
-                scale(scale)
-                precision(precision)
-                size(size)
-            }.build(),
-        ),
+        painter = painter,
         contentDescription = contentDescription,
         contentScale = contentScale,
-        modifier = modifier,
+        modifier = modifier.background(MaterialTheme.colorScheme.surfaceContainer),
     )
 
-//    coil.compose.AsyncImage(
-//        modifier = modifier,
-//        model = ImageRequest
-//            .Builder(LocalContext.current)
-//            .data(data)
-//            .crossfade(true)
-//            .scale(scale)
-//            .precision(precision)
-//            .size(size)
-//            .build(),
-//        contentDescription = contentDescription,
-//        contentScale = contentScale,
-//        imageLoader = LocalImageLoader.current,
-//        placeholder = placeholder?.run {
-//            forwardingPainter(
-//                painter = painterResource(this),
-//                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-//                alpha = 0.1f,
-//            )
-//        },
-//        error = error?.run {
-//            forwardingPainter(
-//                painter = painterResource(this),
-//                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-//                alpha = 0.1f,
-//            )
-//        },
-//    )
+    //    coil.compose.AsyncImage(
+    //        modifier = modifier,
+    //        model = ImageRequest
+    //            .Builder(LocalContext.current)
+    //            .data(data)
+    //            .crossfade(true)
+    //            .scale(scale)
+    //            .precision(precision)
+    //            .size(size)
+    //            .build(),
+    //        contentDescription = contentDescription,
+    //        contentScale = contentScale,
+    //        imageLoader = LocalImageLoader.current,
+    //        placeholder = placeholder?.run {
+    //            forwardingPainter(
+    //                painter = painterResource(this),
+    //                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+    //                alpha = 0.1f,
+    //            )
+    //        },
+    //        error = error?.run {
+    //            forwardingPainter(
+    //                painter = painterResource(this),
+    //                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+    //                alpha = 0.1f,
+    //            )
+    //        },
+    //    )
 }
 
 // From: https://gist.github.com/colinrtwhite/c2966e0b8584b4cdf0a5b05786b20ae1
 
 /**
- * Create and return a new [Painter] that wraps [painter] with its [alpha], [colorFilter], or [onDraw] overwritten.
+ * Create and return a new [Painter] that wraps [painter] with its [alpha], [colorFilter], or
+ * [onDraw] overwritten.
  */
 fun forwardingPainter(
     painter: Painter,
@@ -113,7 +122,8 @@ private class ForwardingPainter(
 
     private var info = newInfo()
 
-    override val intrinsicSize get() = painter.intrinsicSize
+    override val intrinsicSize
+        get() = painter.intrinsicSize
 
     override fun applyAlpha(alpha: Float): Boolean {
         if (alpha == DefaultAlpha) {
@@ -141,7 +151,7 @@ private val DefaultOnDraw: DrawScope.(ForwardingDrawInfo) -> Unit = { info ->
         draw(
             androidx.compose.ui.geometry.Size(size.width, size.height),
             info.alpha,
-            info.colorFilter
+            info.colorFilter,
         )
     }
 }

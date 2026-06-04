@@ -107,7 +107,7 @@
     <string name="tos_tips">आगे बढ़ने के लिए Read You की सेवा शर्तें और गोपनीयता नीति को पढ़े और स्वीकार करें।</string>
     <string name="browse_tos_tips">यहाँ <i><u>सेवा शर्तें और गोपनीयता नीति पढ़े</u></i></string>
     <string name="terms_of_service">सेवा की शर्तें</string>
-    <string name="tos_content"><h5> गोपनीयता नीति </h5> <br/> <p> मैं आपकी गोपनीयता को बहुत गंभीरता से लेता हूं </p> <br/> <p> <b>Read You</b> कोई उपयोगकर्ता डेटा एकत्र नहीं करता है, और सभी संवेदनशील जानकारी (पासवर्ड और अन्य खाता जानकारी) आपके डिवाइस पर स्थानीय एप्लिकेशन डेटाबेस में सुरक्षित रूप से संग्रहीत है| </p> <br/> <p> <b>Read You</b> आपको सेवा प्रदान करने के लिए निम्नलिखित अनुमतियों का उपयोग किया जाएगा। </p> <br/> <p> - एक्सेस नेटवर्क अनुमति (आपके द्वारा निर्देशित ऑनलाइन सामग्री तक पहुंचने के लिए) </p> <p> - नेटवर्क स्थिति की अनुमति (यह जानने करने के लिए कि क्या डिवाइस में वर्तमान में नेटवर्क की स्थिति उपलब्ध है) </p> <p> -पृष्ठभूमिक सेवा अनुमति (नियमित रूप से अपने पसंदीदार पाठों को स्वचालित रूप से नियमित सिंक करने के लिए आधार) </p> <br/> <br/> <h5> तृतीय पक्ष सेवाएं </h5> <br/> <p> यह नीति आपके द्वारा <b>Read You</b>के साथ उपयोग की जाने वाली तृतीय-पक्ष सेवाओं पर लागू नहीं होती है। आप उन वेबसाइटों की गोपनीयता नीतियों की समीक्षा करने हेतु स्वतंत्र है| </p> <br/> <br/> <h5> अस्वीकरण </h5> <br/> <p> <b>Read You</b> केवल एक सामग्री संग्रह उपकरण है। आपके द्वारा <b>Read You</b> का उपयोग आपके देश/राष्ट्र और क्षेत्र के नियम ऐवं कानून के अंतर्गत है और आपके कार्यों से उत्पन्न होने वाले किसी भी दायित्व का वहन आपके द्वारा ही किया जाएगा | </p> <br/> <br/> <h5> ओपन सोर्स लाइसेंस </h5> <br/> <p> <b>Read You</b> GNU GPL 3.0 Open Source License[1] के अंतर्गत एक ओपन सौरसे प्रोजेक्ट है, जो आपको <b>Read You</b> के सोर्स कोड को उपयोग, प्रासंगिक सन्दर्भ और मुफ्त में संशोधित करेने के अनुमति देता है, परन्तु संशोधित और व्युत्पन्न कोड को क्लोज्ड-सोर्स वाणिज्यिक सॉफ्टवेयर के रूप में वितरित और बेचा जाने की अनुमति नहीं देता । पूर्ण जानकारी हेतु GNU GPL 3.0 Open Source License[2]. देखें। </p> <br/> <br/> <h5> शेषसंग्रह </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> गोपनीयता नीति </h5> <br/> <p> मैं आपकी गोपनीयता को बहुत गंभीरता से लेता हूं </p> <br/> <p> <b>Read You</b> कोई उपयोगकर्ता डेटा एकत्र नहीं करता है, और सभी संवेदनशील जानकारी (पासवर्ड और अन्य खाता जानकारी) आपके डिवाइस पर स्थानीय एप्लिकेशन डेटाबेस में सुरक्षित रूप से संग्रहीत है| </p> <br/> <p> <b>Read You</b> आपको सेवा प्रदान करने के लिए निम्नलिखित अनुमतियों का उपयोग किया जाएगा। </p> <br/> <p> - एक्सेस नेटवर्क अनुमति (आपके द्वारा निर्देशित ऑनलाइन सामग्री तक पहुंचने के लिए) </p> <p> - नेटवर्क स्थिति की अनुमति (यह जानने करने के लिए कि क्या डिवाइस में वर्तमान में नेटवर्क की स्थिति उपलब्ध है) </p> <p> -पृष्ठभूमिक सेवा अनुमति (नियमित रूप से अपने पसंदीदार पाठों को स्वचालित रूप से नियमित सिंक करने के लिए आधार) </p> <br/> <br/> <h5> तृतीय पक्ष सेवाएं </h5> <br/> <p> यह नीति आपके द्वारा <b>Read You</b>के साथ उपयोग की जाने वाली तृतीय-पक्ष सेवाओं पर लागू नहीं होती है। आप उन वेबसाइटों की गोपनीयता नीतियों की समीक्षा करने हेतु स्वतंत्र है| </p> <br/> <br/> <h5> अस्वीकरण </h5> <br/> <p> <b>Read You</b> केवल एक सामग्री संग्रह उपकरण है। आपके द्वारा <b>Read You</b> का उपयोग आपके देश/राष्ट्र और क्षेत्र के नियम ऐवं कानून के अंतर्गत है और आपके कार्यों से उत्पन्न होने वाले किसी भी दायित्व का वहन आपके द्वारा ही किया जाएगा | </p> <br/> <br/> <h5> ओपन सोर्स लाइसेंस </h5> <br/> <p> <b>Read You</b> GNU GPL 3.0 Open Source License[1] के अंतर्गत एक ओपन सौरसे प्रोजेक्ट है, जो आपको <b>Read You</b> के सोर्स कोड को उपयोग, प्रासंगिक सन्दर्भ और मुफ्त में संशोधित करेने के अनुमति देता है, परन्तु संशोधित और व्युत्पन्न कोड को क्लोज्ड-सोर्स वाणिज्यिक सॉफ्टवेयर के रूप में वितरित और बेचा जाने की अनुमति नहीं देता । पूर्ण जानकारी हेतु GNU GPL 3.0 Open Source License[2]. देखें। </p> <br/> <br/> <h5> शेषसंग्रह </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="agree">स्वीकृत करें  </string>
     <string name="wallpaper_colors">वॉलपेपर रंग</string>
     <string name="no_palettes">कोई पैलेट नहीं</string>
@@ -122,7 +122,7 @@
     <string name="on">चालू</string>
     <string name="off">बंद</string>
     <string name="other">अन्य </string>
-    <string name="amoled_dark_theme">अमोलेड गहरी थीम</string>
+    <string name="amoled_dark_theme">काला गहरा विषय</string>
     <string name="tonal_elevation">टोनल एलिवेशन</string>
     <string name="reading_fonts">पठन मोड</string>
     <string name="basic_fonts">बेसिक फॉन्ट</string>
@@ -131,7 +131,7 @@
     <string name="reading_page">पठन पृष्ठ</string>
     <string name="sponsor">प्रायोजक</string>
     <string name="open_source_licenses">ओपन सोर्स लाइसेंस</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="change_log">बदलाव सूचि </string>
     <string name="update">अपडेट</string>
     <string name="skip_this_version">इस संस्करण को छोडें</string>
@@ -179,12 +179,11 @@
     <string name="general">सामान्य </string>
     <string name="auto_hide_toolbars">टूलबार स्वतः छुपाएं</string>
     <string name="rearrange_buttons">बटन पुनर्व्यवस्थित करें </string>
-    <string name="bionic_reading">बैओनिक पठन</string>
     <string name="images">छवियां</string>
     <string name="rounded_corners">गोल कोने </string>
     <string name="videos">वीडियो</string>
-    <string name="align_start">बाएं संरेखित करें</string>
-    <string name="align_end">दाएं संरेखित करें</string>
+    <string name="align_start">शुरुआत संरेखित करें</string>
+    <string name="align_end">अंत संरेखित करें</string>
     <string name="center_text">केंद्र पाठ</string>
     <string name="justify">संरेखित करें</string>
     <string name="external_fonts">बाहरी फॉन्ट</string>
@@ -278,9 +277,7 @@
     <string name="toggle_read">पठित टॉगल करें</string>
     <string name="additional_info_desc">अतिरिक्त जानकारी में प्रत्येक feed के लिए कॉन्फिगरेशन विकल्प शामिल हैं, जैसे अधिसूचना की अनुमति देना है या नहीं, पूर्ण सामग्री को पार्स करना आदि। जब आप अन्य पाठकों के साथ निर्यातित OMPL फाइल का उपयोग करने का इरादा रखते हैं, तो कृपया \"बहिष्कृत करें\" चुनें।</string>
     <string name="toggle_starred">तारांकित टॉगल करें</string>
-    <string name="unexpected_error_msg">ऐप में एक अप्रत्याशित त्रुटि आई और उसे बंद करना पड़ा।
-\n
-\nइस समस्या को शीघ्रता से पहचानने और ठीक करने में हमारी सहायता के लिए, आप नीचे दिए गए त्रुटि स्टैक ट्रेस के साथ %1$s कर सकते हैं।</string>
+    <string name="unexpected_error_msg">ऐप में एक अप्रत्याशित त्रुटि आई और उसे बंद करना पड़ा। \n \nइस समस्या को शीघ्रता से पहचानने और ठीक करने में हमारी सहायता के लिए, आप नीचे दिए गए त्रुटि स्टैक ट्रेस के साथ %1$s कर सकते हैं।</string>
     <string name="swipe_to_end">दाएं स्वाइप करें</string>
     <string name="export">निर्यात</string>
     <string name="pull_to_switch_article">लेख बदलने के लिए खींचें</string>
@@ -306,4 +303,22 @@
     <string name="invalid_json_file_warning">यह फाइल मान्य JSON फाइल नहीं हो सकती है। इसे आयात करने से संभावित रूप से ऐप दूषित हो सकता है और परिणामस्वरूप वर्तमान प्राथमिकताएं खो सकती हैं। क्या आप वाकई आगे बढ़ना चाहते हैं?</string>
     <string name="unfold_more">सभी विस्तृत करें</string>
     <string name="unfold_less">सभी संक्षिप्त करें</string>
+    <string name="native_component">मूल घटक</string>
+    <string name="content_renderer">सामग्री रेंडरर</string>
+    <string name="read_aloud">जोर से पढ़ें</string>
+    <string name="only_available_on_webview">केवल वेबव्यू पर उपलब्ध</string>
+    <string name="about">परिचय</string>
+    <string name="client_certificate">क्लाइंट प्रमाणपत्र (वैकल्पिक)</string>
+    <string name="hide_empty_groups">रिक्त समूह छिपाएँ</string>
+    <string name="open_in_browser">ब्राउज़र में खोलें</string>
+    <string name="all_open_in_browser_tips">ब्राउज़र का उपयोग करके \"%1$s\" समूह के सभी लेख खोलें</string>
+    <string name="all_open_in_browser_toast">ब्राउज़र का उपयोग करके \"%1$s\" समूह के सभी लेख खोलें</string>
+    <string name="all_deny_open_in_browser_toast">अब ब्राउज़र का उपयोग करके \"%1$s\" समूह के सभी लेख नहीं खोले जा सकेंगे</string>
+    <string name="mark_as_read_on_scroll">स्क्रॉल पर पढ़ा हुआ चिह्नित करें</string>
+    <string name="become_a_sponsor">प्रायोजक बनें</string>
+    <string name="toolbars">उपकरण पट्टियाँ</string>
+    <string name="sort_unread_articles">अपठित लेखों को छाँटें</string>
+    <string name="latest">नवीनतम</string>
+    <string name="earliest">सबसे पुराना</string>
+    <string name="sponsor_desc">हम अपने ऑफ-ऑवर्स में इस मुफ़्त, ओपन-सोर्स ऐप का निर्माण और रखरखाव करते हैं। अगर आपको यह पसंद है, तो कृपया एक छोटे से दान के साथ हमारा समर्थन करने पर विचार करें! ☕️</string>
 </resources>

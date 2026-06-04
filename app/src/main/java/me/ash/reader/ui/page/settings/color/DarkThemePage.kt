@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.DarkThemePreference
 import me.ash.reader.infrastructure.preference.LocalAmoledDarkTheme
@@ -26,7 +25,7 @@ import me.ash.reader.ui.theme.palette.onLight
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DarkThemePage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val darkTheme = LocalDarkTheme.current
@@ -39,10 +38,9 @@ fun DarkThemePage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {

@@ -9,7 +9,7 @@ object SyncBlockListPreference {
     val default: SyncBlockList = emptyList()
 
     fun put(accountId: Int, viewModel: AccountViewModel, syncBlockList: SyncBlockList) {
-        viewModel.update(accountId) { this.syncBlockList = syncBlockList }
+        viewModel.update(accountId) { copy(syncBlockList = syncBlockList) }
     }
 
     fun of(syncBlockList: String): SyncBlockList {

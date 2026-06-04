@@ -2,8 +2,10 @@ package me.ash.reader.ui.theme
 
 import android.os.Build
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +20,7 @@ import me.ash.reader.ui.theme.palette.dynamic.extractTonalPalettesFromUserWallpa
 import me.ash.reader.ui.theme.palette.dynamicDarkColorScheme
 import me.ash.reader.ui.theme.palette.dynamicLightColorScheme
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean,
@@ -30,11 +33,13 @@ fun AppTheme(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (useDarkTheme) {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    0, APPEARANCE_LIGHT_STATUS_BARS
+                    0,
+                    APPEARANCE_LIGHT_STATUS_BARS,
                 )
             } else {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                    APPEARANCE_LIGHT_STATUS_BARS,
                 )
             }
         }
@@ -42,29 +47,32 @@ fun AppTheme(
 
     val themeIndex = LocalThemeIndex.current
 
-    val tonalPalettes = wallpaperPalettes[
-        if (themeIndex >= wallpaperPalettes.size) {
-            when {
-                wallpaperPalettes.size == 5 -> 0
-                wallpaperPalettes.size > 5 -> 5
-                else -> 0
-            }
-        } else {
-            themeIndex
-        }
-    ]
+    val tonalPalettes =
+        wallpaperPalettes[
+            if (themeIndex >= wallpaperPalettes.size) {
+                when {
+                    wallpaperPalettes.size == 5 -> 0
+                    wallpaperPalettes.size > 5 -> 5
+                    else -> 0
+                }
+            } else {
+                themeIndex
+            }]
 
     ProvideZcamViewingConditions {
         CompositionLocalProvider(
             LocalTonalPalettes provides tonalPalettes.apply { Preparing() },
-            LocalTextStyle provides LocalTextStyle.current.applyTextDirection()
+            LocalTextStyle provides LocalTextStyle.current.applyTextDirection(),
         ) {
+            val lightColors = dynamicLightColorScheme()
+            val darkColors = dynamicDarkColorScheme()
             MaterialTheme(
-                colorScheme =
-                if (useDarkTheme) dynamicDarkColorScheme()
-                else dynamicLightColorScheme(),
-                typography = LocalBasicFonts.current.asTypography(LocalContext.current)
-                    .applyTextDirection(),
+                motionScheme = MotionScheme.expressive(),
+                colorScheme = if (useDarkTheme) darkColors else lightColors,
+                typography =
+                    LocalBasicFonts.current
+                        .asTypography(LocalContext.current)
+                        .applyTextDirection(),
                 shapes = Shapes,
                 content = content,
             )

@@ -1,9 +1,0 @@
-## 0.9.7
-
-Dette er en ekstra opdatering.
-
-1. Flet c0ff8ba-hotfixet sammen
-
-2. Forbedret oversættelse (tak til alle)
-
-3. Opdatering af GitHubs README-beskrivelsesfiler

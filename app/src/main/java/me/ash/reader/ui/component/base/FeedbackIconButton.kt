@@ -34,34 +34,27 @@ fun FeedbackIconButton(
 ) {
     val view = LocalView.current
 
-    IconButton(
-        enabled = enabled,
-        onClick = {
-            if (isHaptic == true) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-            if (isSound == true) view.playSoundEffect(SoundEffectConstants.CLICK)
-            onClick()
-        },
-    ) {
-        if (showBadge) {
-            BadgedBox(
-                badge = {
-                    Badge(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape),
-                        containerColor = MaterialTheme.colorScheme.error,
-                        contentColor = MaterialTheme.colorScheme.onError,
-                    )
-                }
-            ) {
-                Icon(
-                    modifier = modifier,
-                    imageVector = imageVector,
-                    contentDescription = contentDescription,
-                    tint = tint,
+    BadgedBox(
+        badge = {
+            if (showBadge) {
+                Badge(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .clip(CircleShape),
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
                 )
             }
-        } else {
+        }
+    ) {
+        IconButton(
+            enabled = enabled,
+            onClick = {
+                if (isHaptic == true) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                if (isSound == true) view.playSoundEffect(SoundEffectConstants.CLICK)
+                onClick()
+            },
+        ) {
             Icon(
                 modifier = modifier,
                 imageVector = imageVector,

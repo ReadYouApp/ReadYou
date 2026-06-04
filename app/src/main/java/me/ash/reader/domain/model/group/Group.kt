@@ -11,22 +11,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "group")
 data class Group(
     @PrimaryKey
-    var id: String,
+    val id: String,
     @ColumnInfo
-    var name: String,
+    val name: String,
     @ColumnInfo(index = true)
-    var accountId: Int,
-) {
-
-    /**
-     * see [me.ash.reader.domain.model.feed.ImportantNum.important]
-     */
-    @Ignore
-    var important: Int? = 0
-
-    /**
-     * number of feeds within a group
-     * */
-    @Ignore
-    var feeds: Int = 0
-}
+    val accountId: Int,
+)

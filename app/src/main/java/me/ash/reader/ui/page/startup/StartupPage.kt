@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.ireward.htmlcompose.HtmlText
 import kotlinx.coroutines.launch
 import me.ash.reader.R
@@ -44,7 +43,8 @@ import me.ash.reader.ui.svg.WELCOME
 
 @Composable
 fun StartupPage(
-    navController: NavHostController,
+    //    navController: NavHostController,
+    onNavigateToFeeds: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -52,9 +52,7 @@ fun StartupPage(
 
     RYScaffold(
         content = {
-            LazyColumn(
-                modifier = Modifier.navigationBarsPadding(),
-            ) {
+            LazyColumn(modifier = Modifier.navigationBarsPadding()) {
                 item {
                     Spacer(modifier = Modifier.height(64.dp))
                     DisplayText(text = stringResource(R.string.welcome), desc = "")
@@ -76,13 +74,14 @@ fun StartupPage(
                 item {
                     TextButton(
                         modifier = Modifier.padding(horizontal = 12.dp),
-                        onClick = { tosVisible = true }
+                        onClick = { tosVisible = true },
                     ) {
                         HtmlText(
                             text = stringResource(R.string.browse_tos_tips),
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.outline,
-                            ),
+                            style =
+                                MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.outline
+                                ),
                         )
                     }
                     Spacer(modifier = Modifier.height(100.dp))
@@ -94,22 +93,13 @@ fun StartupPage(
             ExtendedFloatingActionButton(
                 modifier = Modifier.navigationBarsPadding(),
                 onClick = {
-                    navController.navigate(RouteName.FEEDS) {
-                        launchSingleTop = true
-                    }
-                    scope.launch {
-                        context.dataStore.put(DataStoreKey.isFirstLaunch, false)
-                    }
+                    onNavigateToFeeds()
+                    scope.launch { context.dataStore.put(DataStoreKey.isFirstLaunch, false) }
                 },
-                icon = {
-                    Icon(
-                        Icons.Rounded.CheckCircleOutline,
-                        stringResource(R.string.agree)
-                    )
-                },
+                icon = { Icon(Icons.Rounded.CheckCircleOutline, stringResource(R.string.agree)) },
                 text = { Text(text = stringResource(R.string.agree)) },
             )
-        }
+        },
     )
 
     RYDialog(
@@ -121,40 +111,33 @@ fun StartupPage(
                 contentDescription = stringResource(R.string.change_log),
             )
         },
-        title = {
-            Text(text = stringResource(R.string.terms_of_service))
-        },
+        title = { Text(text = stringResource(R.string.terms_of_service)) },
         text = {
             SelectionContainer {
                 HtmlText(
                     modifier = Modifier.verticalScroll(rememberScrollState()),
                     text = stringResource(R.string.tos_content),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
+                    style =
+                        MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        ),
                 )
             }
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    navController.navigate(RouteName.FEEDS) {
-                        launchSingleTop = true
-                    }
-                    scope.launch {
-                        context.dataStore.put(DataStoreKey.isFirstLaunch, false)
-                    }
+                    onNavigateToFeeds()
+                    scope.launch { context.dataStore.put(DataStoreKey.isFirstLaunch, false) }
                 }
             ) {
                 Text(text = stringResource(R.string.agree))
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = { tosVisible = false }
-            ) {
+            TextButton(onClick = { tosVisible = false }) {
                 Text(text = stringResource(R.string.cancel))
             }
-        }
+        },
     )
 }

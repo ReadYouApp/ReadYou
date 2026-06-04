@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.flow
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -9,7 +10,10 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -35,10 +39,14 @@ fun SearchBar(
 ) {
     val focusManager = LocalFocusManager.current
 
+    var input by remember { mutableStateOf(value) }
+
     Surface(
         modifier = Modifier
-            .height(56.dp)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 24.dp)
+            .padding(vertical = 12.dp)
+            .height(56.dp)
             .fillMaxWidth(),
         shape = CircleShape,
         tonalElevation = ElevationTokens.Level2.dp
@@ -64,15 +72,18 @@ fun SearchBar(
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
                     colors = TextFieldDefaults.colors(
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
                     ),
-                    value = value,
-                    onValueChange = { onValueChange(it) },
+                    value = input,
+                    onValueChange = {
+                        input = it
+                        onValueChange(it)
+                    },
                     placeholder = {
                         Text(
                             modifier = Modifier.alpha(0.7f),

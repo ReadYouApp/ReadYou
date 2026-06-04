@@ -12,7 +12,7 @@ sealed class SyncOnStartPreference(
     object Off : SyncOnStartPreference(false)
 
     fun put(accountId: Int, viewModel: AccountViewModel) {
-        viewModel.update(accountId) { syncOnStart = this@SyncOnStartPreference }
+        viewModel.update(accountId) { copy(syncOnStart = this@SyncOnStartPreference) }
     }
 
     fun toDesc(context: Context): String =

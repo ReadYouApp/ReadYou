@@ -1,11 +1,10 @@
-
 package me.ash.reader.infrastructure.android
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dagger.hilt.android.AndroidEntryPoint
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import me.ash.reader.infrastructure.preference.LocalOpenLink
@@ -51,8 +52,13 @@ import me.ash.reader.infrastructure.preference.SettingsProvider
 import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.theme.AppTheme
+import javax.inject.Inject
 
-class CrashReportActivity : ComponentActivity() {
+@AndroidEntryPoint
+class CrashReportActivity : AppCompatActivity() {
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +67,7 @@ class CrashReportActivity : ComponentActivity() {
         val errorMessage: String = intent.getStringExtra(ERROR_REPORT_KEY).toString()
 
         setContent {
-            SettingsProvider {
+            settingsProvider.ProvidesSettings {
                 AppTheme(useDarkTheme = LocalDarkTheme.current.isDarkTheme()) {
                     val clipboardManager = LocalClipboardManager.current
                     val appVersion = getCurrentVersion().toString()
@@ -69,11 +75,15 @@ class CrashReportActivity : ComponentActivity() {
                     val androidVersion =
                         "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
 
-                    val errorReport =
-                        "Version: $appVersion\nDevice: $deviceModel\nSystem: $androidVersion\n\nStack trace: \n\n$errorMessage"
+                    val prefix =
+                        "Version: $appVersion\nDevice: $deviceModel\nSystem: $androidVersion\n\n"
 
-                    CrashReportPage(text = errorReport) {
-                        clipboardManager.setText(AnnotatedString(errorReport))
+                    val stackTrace = "Stack trace: \n\n$errorMessage"
+
+                    val stacktraceBlock = "Stack trace: \n\n```$errorMessage```"
+
+                    CrashReportPage(text = prefix + stackTrace) {
+                        clipboardManager.setText(AnnotatedString(prefix + stacktraceBlock))
                     }
                 }
             }
@@ -110,9 +120,6 @@ fun CrashReportPage(
             "\tat android.view.ViewGroup.recreateChildDisplayList(ViewGroup.java:4550)\n",
     onClick: () -> Unit = {}
 ) {
-    val context = LocalContext.current
-    val openLinkPreference = LocalOpenLink.current
-    val openLinkSpecificBrowserPreference = LocalOpenLinkSpecificBrowser.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -149,33 +156,17 @@ fun CrashReportPage(
                 append(msg.format(hyperLinkText))
                 val startIndex = msg.indexOf(hyperLinkText)
                 val endIndex = startIndex + hyperLinkText.length
-                addUrlAnnotation(
-                    UrlAnnotation(stringResource(R.string.issue_tracer_url)),
+                addLink(
+                    LinkAnnotation.Url(stringResource(R.string.issue_tracer_url)),
                     start = startIndex,
-                    end = endIndex
-                )
-                addStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        textDecoration = TextDecoration.Underline,
-                    ), start = startIndex,
                     end = endIndex
                 )
             }
 
-            ClickableText(
+            Text(
                 text = annotatedString,
                 style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.padding(horizontal = 16.dp),
-                onClick = { index ->
-                    annotatedString.getUrlAnnotations(index, index).firstOrNull()?.let { range ->
-                        context.openURL(
-                            url = range.item.url,
-                            openLink = openLinkPreference,
-                            specificBrowser = openLinkSpecificBrowserPreference
-                        )
-                    }
-                }
             )
 
             Row(

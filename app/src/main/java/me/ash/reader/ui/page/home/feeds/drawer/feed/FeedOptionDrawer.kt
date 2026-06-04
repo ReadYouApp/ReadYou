@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalOpenLink
@@ -40,6 +40,7 @@ import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.ext.roundClick
 import me.ash.reader.ui.ext.showToast
+import me.ash.reader.ui.interaction.alphaIndicationClickable
 import me.ash.reader.ui.page.home.feeds.FeedOptionView
 
 @Composable
@@ -78,7 +79,7 @@ fun FeedOptionDrawer(
                     }, feedName = feed?.name, iconUrl = feed?.icon, size = 24.dp)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        modifier = Modifier.roundClick {
+                        modifier = Modifier.alphaIndicationClickable {
                             if (feedOptionViewModel.rssService.get().updateSubscription) {
                                 feedOptionViewModel.showRenameDialog()
                             }
@@ -97,6 +98,7 @@ fun FeedOptionDrawer(
                     selectedAllowNotificationPreset = feedOptionUiState.feed?.isNotification
                         ?: false,
                     selectedParseFullContentPreset = feedOptionUiState.feed?.isFullContent ?: false,
+                    selectedOpenInBrowserPreset = feedOptionUiState.feed?.isBrowser ?: false,
                     isMoveToGroup = true,
                     showGroup = feedOptionViewModel.rssService.get().moveSubscription,
                     showUnsubscribe = feedOptionViewModel.rssService.get().deleteSubscription,
@@ -107,6 +109,9 @@ fun FeedOptionDrawer(
                     },
                     parseFullContentPresetOnClick = {
                         feedOptionViewModel.changeParseFullContentPreset()
+                    },
+                    openInBrowserPresetOnClick = {
+                        feedOptionViewModel.changeOpenInBrowserPreset()
                     },
                     clearArticlesOnClick = {
                         feedOptionViewModel.showClearDialog()

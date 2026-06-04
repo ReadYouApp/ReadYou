@@ -1,9 +1,0 @@
-## 0.9.7
-
-Questo è un aggiornamento aggiuntivo.
-
-1. È stato inserito l'hotfix di c0ff8ba
-
-2. Le traduzioni sono state migliorate (grazie a tutti)
-
-3. È stato aggiornato il file README di descrizione su GitHub

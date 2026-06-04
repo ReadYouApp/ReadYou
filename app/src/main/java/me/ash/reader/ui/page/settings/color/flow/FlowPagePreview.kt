@@ -12,13 +12,17 @@ import androidx.compose.material.icons.rounded.DoneAll
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import me.ash.reader.R
 import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.article.ArticleWithFeed
@@ -28,6 +32,7 @@ import me.ash.reader.infrastructure.preference.FlowArticleListTonalElevationPref
 import me.ash.reader.infrastructure.preference.FlowTopBarTonalElevationPreference
 import me.ash.reader.ui.component.FilterBar
 import me.ash.reader.ui.component.base.FeedbackIconButton
+import me.ash.reader.ui.ext.formatAsString
 import me.ash.reader.ui.ext.surfaceColorAtElevation
 import me.ash.reader.ui.page.home.flow.ArticleItem
 import me.ash.reader.ui.theme.palette.onDark
@@ -55,8 +60,19 @@ fun FlowPagePreview(
                 shape = RoundedCornerShape(24.dp)
             )
     ) {
+        val preview = generateArticleWithFeedPreview()
+        val feed = preview.feed
+        val article = preview.article
+
         TopAppBar(
-            title = {},
+            title = {
+                Text(
+                    text = feed.name,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+                )
+            },
             navigationIcon = {
                 FeedbackIconButton(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
@@ -83,17 +99,13 @@ fun FlowPagePreview(
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        val preview = generateArticleWithFeedPreview()
-        val feed = preview.feed
-        val article = preview.article
-
         ArticleItem(
             modifier = Modifier,
             feedName = feed.name,
             feedIconUrl = feed.icon,
             title = article.title,
             shortDescription = article.shortDescription,
-            dateString = article.dateString,
+            timeString = article.dateString,
             imgData = R.drawable.animation,
             isStarred = article.isStarred,
             isUnread = article.isUnread,
@@ -128,8 +140,13 @@ fun generateArticleWithFeedPreview(): ArticleWithFeed =
             accountId = 0,
             date = Date(1654053729L),
             isStarred = true,
-            img = null
-        ),
+            img = null,
+        ).apply {
+            dateString = date.formatAsString(
+                context = LocalContext.current,
+                onlyHourMinute = true
+            )
+        },
         feed = Feed(
             id = "",
             name = stringResource(R.string.preview_feed_name),

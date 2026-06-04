@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width, viewport-fit=cover" />
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+
+    <title>Article</title>
+    <style type="text/css" id="reeder-font"></style>
+    <style type="text/css" id="reeder-title-font"></style>
+    <style type="text/css">
+:root {
+    --font-family: Inter;
+    --font-size: 22px;
+    --line-height: 1.5;
+    --letter-spacing: 0.5px;
+    --text-margin: 24px;
+    --text-color: #343434
+    --bold-text-color: #000000;
+    --link-text-color: #222222;
+    --selection-text-color: #000000;
+    --selection-bg-color: #79FFE1;
+    --img-margin: 0px;
+    --img-border-radius: 0px;
+    --content-padding;
+    --bold-text-color;
+    --image-caption-margin;
+    --blockquote-margin: 20px;
+    --blockquote-padding;
+    --blockquote-bg-color;
+    --blockquote-border-width: 3px;
+    --blockquote-border-color: #34343433;
+    --table-margin: ${tableMargin}px;
+    --table-border-width;
+    --table-border-color;
+    --table-cell-padding: 0.2em;
+    --table-alt-row-bg-color;
+    --code-text-color: #565656;
+    --code-bg-color: #bdbdbd;
+    --code-scrollbar-color: #56565622;
+    --code-border-width;
+    --code-border-color;
+    --code-padding;
+    --code-font-family: Menlo, Monospace, 'Courier New';
+    --code-font-size: 0.9em;
+    --pre-color;
+}
+
+article {
+    padding: 0;
+    margin: 0;
+    margin-left: var(--text-margin) !important;
+    margin-right: var(--text-margin) !important;
+    font-family: var(--font-family) !important;
+    font-size: var(--font-size) !important;
+    color: var(--text-color) !important;
+}
+
+/* Page  */
+body {
+    margin: 0;
+    padding 0;
+}
+
+::selection {
+    background-color: var(--selection-bg-color) !important;
+    color: var(--selection-text-color) !important;
+}
+
+/* Heading  */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: calc(min(1.2, var(--line-height))) !important;
+    letter-spacing: var(--letter-spacing) !important;
+    font-weight: 600 !important;
+    color: var(--bold-text-color) !important;
+}
+
+/* Paragraph */
+p {
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+span {
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+/* Strong  */
+strong,
+b {
+    font-weight: 600 !important;
+    color: var(--bold-text-color) !important;
+}
+
+/* Link */
+a,
+a > strong {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-weight: 600 !important;
+    color: var(--link-text-color) !important;
+}
+div > a {
+    display: block;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-weight: 600 !important;
+    color: var(--link-text-color);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+/* Image  */
+iframe,
+video,
+embed,
+object,
+img {
+    margin-top: 0.5em !important;
+    margin-left: calc(0px - var(--text-margin) + var(--img-margin)) !important;
+    margin-right: calc(0px - var(--text-margin) + var(--img-margin)) !important;
+    max-width: calc(100% + 2 * var(--text-margin) - 2 * var(--img-margin)) !important;
+    height: auto !important;
+    border-radius: var(--img-border-radius) !important;
+}
+
+img::after {
+    width: 100px !important;
+}
+
+img.loaded {
+    opacity: 1; /* 加载完成后设置透明度为1 */
+}
+
+img.thin {
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+    margin-left: unset !important;
+    margin-right: unset !important;
+    max-width: 100% !important;
+}
+
+p > img {
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+    margin-left: calc(0px - var(--text-margin) + var(--img-margin)) !important;
+    margin-right: calc(0px - var(--text-margin) + var(--img-margin)) !important;
+    max-width: calc(100% + 2 * var(--text-margin) - 2 * var(--img-margin)) !important;
+    height: auto !important;
+    border-radius: var(--img-border-radius) !important;
+}
+
+img + small {
+    display: inline-block;
+    line-height: calc(min(1.5, var(--line-height))) !important;
+    letter-spacing: var(--letter-spacing) !important;
+    margin-top: var(--image-caption-margin) !important;
+}
+
+/* List */
+ul,
+ol {
+    padding-left: 0 !important;
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+li {
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+    margin-left: 1.5em !important;
+}
+
+/* Quote  */
+blockquote {
+    margin-left: 0.5em !important;
+    padding-left: calc(0.9em) !important;
+    background-color: var(--blockquote-bg-color) !important;
+    border-left: var(--blockquote-border-width) solid var(--blockquote-border-color) !important;
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+blockquote blockquote {
+    margin-right: 0 !important;
+}
+
+blockquote img {
+    max-width 100% !important;
+    left: 0 !important;
+}
+
+/* Table  */
+table {
+    display: block;
+    max-width: var(--content-width) !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-left: var(--table-margin) !important;
+    margin-right: var(--table-margin) !important;
+}
+
+table th,
+table td {
+    border: var(--table-border-width) solid var(--table-border-color) !important;
+    padding: var(--table-cell-padding) !important;
+    line-height: var(--line-height) !important;
+    letter-spacing: var(--letter-spacing) !important;
+}
+
+table tr {
+    display: block;
+}
+
+table tr table tr td {
+    display: inline-block;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--table-alt-row-bg-color) !important;
+}
+
+/* Code */
+pre,
+code {
+    color: var(--code-text-color) !important;
+    background-color: var(--code-bg-color) !important;
+    border: 1 solid var(--code-text-color) !important;
+    border-radius: 8px !important;
+    padding: 2px 5px !important;
+    margin: 2px !important;
+    font-family: var(--code-font-family) !important;
+    font-size: var(--code-font-size) !important;
+}
+
+pre {
+    overflow: auto !important;
+}
+
+code {
+    display: inline-block !important;
+}
+
+li code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+
+pre::-webkit-scrollbar {
+    height: 14px;
+}
+
+pre::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background-color: var(--code-scrollbar-color);
+    border-radius: 7px;
+    background-clip: content-box;
+    border: 5px solid transparent;
+    border-left-width: 10px;
+    border-right-width: 10px;
+}
+
+/* MISC */
+figure {
+    line-height: calc(min(1.5, var(--line-height))) !important;
+    letter-spacing: var(--letter-spacing) !important;
+    margin: 0 !important;
+    opacity: 0.8 !important;
+    font-size: 0.8em !important;
+}
+
+figure * {
+    font-size: 1em !important;
+}
+
+figure p,
+caption,
+figcaption {
+    opacity: 0.8 !important;
+    font-size: 0.8em !important;
+}
+
+hr {
+    border: 0 !important;
+    height: 2px !important;
+    background-color: var(--text-color) !important;
+    opacity: 0.08 !important;
+    border-radius: 2px;
+}
+    </style>
+    <base href="" />
+</head>
+<body>
+
+<main>
+    <button id="submit-btn" onclick="bionicRead()">BIONIC</button>
+
+    <article>
+
+        <header>
+        </header>
+        <div>
+            <div id="readability-page-1" class="page">
+                <div>
+                    <div>
+                        <img alt="AMD" src="https://www.phoronix.com/assets/categories/amd.webp" width="100" height="100">
+                    </div>
+                    <p> At the start of the year </p>
+                    <a href="https://www.phoronix.com/news/AMD-XDNA-Linux-Driver-Ryzen-AI">AMD posted an open-source XDNA Linux driver to GitHub</a>
+                    <p> for supporting the Ryzen API NPU IP found within their newest Ryzen mobile SoCs. It wasn't until last month though in mid-July that </p>
+                    <a href="https://www.phoronix.com/news/AMD-XDNA-Ryzen-AI-Driver-Patch">AMD began the process of submitting the driver for review</a>
+                    <p> so that it can work its way toward the mainline Linux kernel within the "accel" accelerator subsystem. Today brings a second revision to that driver. </p>
+                    <p> AMDXDNA v2 was posted a few minutes ago as the revised patches for supporting the AMD Ryzen AI NPUs. The v2 iteration has some minor code changes and some other minor work as a result of early code review collected over the past three weeks. </p>
+                    <br>
+                    <blockquote>
+                        "NPU (Neural Processing Unit) is an AI inference accelerator integrated into AMD client CPUs. NPU enables efficient execution of Machine Learning applications like CNNs, LLMs, etc. NPU is based on AMD XDNA architecture.
+                        <p> AMD NPU consists of the following components: </p>
+                        <p>  - Tiled array of AMD AI Engine processors. </p>
+                        <br> - Micro Controller which runs the NPU Firmware responsible for command processing, AIE array configuration, and execution management.
+                        <br> - PCI EP for host control of the NPU device.
+                        <br> - Interconnect for connecting the NPU components together.
+                        <br> - SRAM for use by the NPU Firmware.
+                        <br> - Address translation hardware for protected host memory access by the NPU.
+                        <p> NPU supports multiple concurrent fully isolated contexts. Concurrent contexts may be bound to AI Engine array spatially and or temporarily. </p>
+                        <p> The driver is licensed under GPL-2.0 except for UAPI header which is licensed GPL-2.0 WITH Linux-syscall-note."</p>
+                    </blockquote>
+                    <p>So far the AMDXDNA Linux kernel driver has open-source user-space software supporting it of the Xilinx XRT and AMD AIE Plugin for IREE. Eventually the </p>
+                    <a href="https://www.phoronix.com/news/AMD-Unified-AI-Software-Stack">AMD Unified AI Software Stack</a>
+                    <p> will come. </p>
+                    <p><a href="https://www.phoronix.com/image-viewer.php?id=2024&amp;image=amd_ryzen_ai_9_lrg" target="_blank"><img src="https://www.phoronix.net/image.php?id=2024&amp;image=amd_ryzen_ai_9_med" alt="AMD Ryzen AI badge"></a></p>
+                    <p>We'll see how the </p>
+                    <a href="https://lore.kernel.org/dri-devel/20240805173959.3181199-1-lizhi.hou@amd.com/">v2 patches</a>
+                    <p> are reviewed. Hopefully this AMDXDNA kernel driver will be deemed ready for merging the next cycle, which would be Linux 6.12 and also happens to be this year's Long Term Support (LTS) kernel. The Linux 6.12 merge window opens in September but the stable release won't be out until around late November, which sadly puts AMDXDNA out of reach for the likes of Ubuntu 24.10 for having out-of-the-box Ryzen AI NPU support. Long story short, hopefully in 2025 we'll be seeing a more robust and out-of-the-box AMD NPU/AI experience on Linux.</p>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <img alt="VULKAN" src="https://www.phoronix.com/assets/categories/vulkan.webp" width="100" height="100">
+                        </div>
+                        <p style="display: inline;" class="readability-styled"> The Broadcom V3DV driver living within the Mesa code-base that provides Vulkan API support most notably for Raspberry Pi 4 and Raspberry Pi 5 single board computers now advertises Vulkan 1.3! </p>
+                        <p> Alejandro Piñeiro of Igalia saw his two month old merge request finally hit Mesa 24.3-devel today for exposing Vulkan 1.3 with the V3DV driver. This Vulkan 1.3 support has been successfully tested on both the Raspberry Pi 4 and Raspberry Pi 5 boards. </p>
+                        <p><img src="https://www.phoronix.net/image.php?id=2024&amp;image=v3dv_vulkan_13" alt="Vulkan 1.3 for V3DV"></p>
+                        <p style="display: inline;" class="readability-styled">Just a small fix to correctly set the maxInlineUniformBlockSize and maxInlineUniformTotalSize properties was the last needed step before bumping the supported Vulkan API version. The code landed via </p>
+                        <a href="https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29476">this merge request</a>
+                        <p style="display: inline;" class="readability-styled"> and is currently in the mainline Git code for Mesa 24.3. As it's just a small fix and bumping the version in the end, we'll see if this gets back-ported for the upcoming Mesa 24.2 release.</p>
+                    </div>
+                    <div>
+                        <span>2024-07-18</span>
+                        <span>15:31:34</span>
+                        <span> 来源：<a href="http://www.qbitai.com" target="blank" rel="nofllow">量子位</a> </span>
+                    </div>
+                    <p><img src="https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtAJicpw7icQOibpwhPgHO3CLWtKKnKvDvoBP2GcCSJa9jZpcyB6BaBcyP3fIdFKoKHZiaEoZk43RHVyibg/640?wx_fmt=png&amp;from=appmsg" alt="图片" crossorigin="anonymous" data-imgfileid="100255674" data-ratio="0.3787037037037037" data-src="https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtAJicpw7icQOibpwhPgHO3CLWtKKnKvDvoBP2GcCSJa9jZpcyB6BaBcyP3fIdFKoKHZiaEoZk43RHVyibg/640?wx_fmt=png&amp;from=appmsg" data-type="png" data-w="1080" data-original-style="text-align: center;margin-right: auto;margin-left: auto;" data-index="12" data-fail="0"></p>
+                    <p>|English|<a href="https://Ash7.io/blog/hello-read-you-welcome-to-google-reader-api-zh-cn/">中文</a>|</p>
+                    <div>
+                        <img alt="今日直播：从草稿到样品图，只需要一步AI｜AI产品测评" src="https://www.qbitai.com/wp-content/uploads/replace/c37ddfa30eb8a7d950c814b5f0ca5a79.png" data-src="/wp-content/uploads/replace/c37ddfa30eb8a7d950c814b5f0ca5a79.png">
+                    </div>
+                    <p data-track="3">就不能坐在家里动动手，让AI替我干杂活，把想法直接变成现实吗？</p>
+                    <div>
+                        <img alt="今日直播：从草稿到样品图，只需要一步AI｜AI产品测评" src="https://www.qbitai.com/wp-content/uploads/replace/a1d3e06952ea4f5e28405f9991e78f77.png" data-src="/wp-content/uploads/replace/a1d3e06952ea4f5e28405f9991e78f77.png">
+                    </div>
+                    <p data-track="4">这次量子位邀请到了李白人工智能实验室的苗哺雨——既是建筑设计师，也是神采PromeAI的产品经理，将与我们一起来实测<strong>神采PromeAI</strong>的AIGC设计效果。</p>
+                    <h5>MR-Ben团队 投稿<br> 量子位 | 公众号 QbitAI</h5>
+                    <h3>圆周旅迹：一键抄网友作业，旅行规划更轻松</h3>
+                    <ul>
+                        <li>平台：iOS</li>
+                        <li>关键词：旅行规划</li>
+                    </ul>
+                    <p><a data-mention="@Vanilla" user-id="bs2ov5lb34tch278f9ag" href="https://sspai.com/u/whoops">@Vanilla</a>：在筹划 6 月去东京的旅行时，我使用了 Tripsy 这款应用来规划自己的行程，还专门在少数派撰文介绍了这款功能丰富、设计精美的应用。在文章的评论区，有不少读者也发出了这样的疑问：为什么国内就没有这么一款好用的行程规划应用呢？其实在使用 Tripsy 的过程中，我也遇到了一些烦恼，比如说添加地点的步骤很繁琐、手工安排行程很麻烦等等，所以我也希望能有一款「更适合中国宝宝体质」的旅行规划应用。</p>
+                    <p>Two weeks ago, we released version <a href="https://github.com/ReadYouApp/ReadYou/releases/tag/0.9.12">0.9.12</a> of Read You, which includes integration with the Google Reader API, as well as improvements to the user interface. We’d like to take this opportunity to share some of the insights and experiences we had while integrating the Google Reader API into Read You. This will help users understand some of the internal mechanisms of Read You and hopefully assist in the development of future RSS readers.</p>
+                    <h2 id="multi-tenancy">Multi-Tenancy</h2>
+                    <p>A brief description of the multi-tenancy concept for RSS readers: allowing readers to have multiple (even different types of) accounts simultaneously while maintaining a consistent user experience. This solves issues related to local data backup, isolation, cloud synchronization, and also caters to a broader range of RSS user base.</p>
+                    <p><img src="https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCC9fA3gicM8wc0mTXzumJYrZ7zLRw99dsKqnpkygkaciaKpUOHqbt64ibHeEWr3eHKL7NuESLE6dXdw/640?wx_fmt=png&amp;from=appmsg" alt="图片" crossorigin="anonymous" data-imgfileid="100256183" data-ratio="0.18703703703703703" data-src="https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCC9fA3gicM8wc0mTXzumJYrZ7zLRw99dsKqnpkygkaciaKpUOHqbt64ibHeEWr3eHKL7NuESLE6dXdw/640?wx_fmt=png&amp;from=appmsg" data-type="png" data-w="1080" data-original-style="text-align: center;margin-right: auto;margin-left: auto;" data-index="18" data-fail="0"></p>
+                    <p>GitHub：<br> https://github.com/exo-explore/exo<br> 参考链接：<br> https://x.com/ac_crypto/status/1814912615946330473</p>
+                    <p><span></span><em>版权所有，未经授权不得以任何形式转载及使用，违者必究。</em><span></span></p>
+                    <p>Different types of accounts:</p>
+                    <ul>
+                        <li><strong>Local</strong>: All data is stored only on the current device, and this reader meets the basic RSS usage requirements.</li>
+                        <li><strong>Self-hosted</strong>: RSS tools deployed and hosted by users, which can be integrated with multiple supported readers to achieve cloud synchronization. These tools are mostly open-source projects, undergo code audits from the community, and users have full control over their data and privacy without relying on third-party services. Representative self-hosted RSS tools include FreshRSS, Miniflux, Tiny Tiny RSS, etc.</li>
+                        <li><strong>Third-party service providers</strong>: Mature commercial products that integrate various RSS features, usually require internet connectivity, and have data and privacy controlled and protected by service providers. Users benefit from their cloud computing technology to experience more mature features such as real-time push notifications of new articles or commercial advertisements. Representative RSS service providers include Inoreader, Feedly, Feedbin, etc.</li>
+                    </ul>
+                    <p>The original intention of developing Read You was to give Android its own “Reeder”, so many design concepts come from this “masterpiece” on iOS, and the design of the multi-tenancy architecture is no exception.</p>
+                    <p>These are the expectations for Read You after analyzing Reeder’s multi-account design:</p>
+                    <ul>
+                        <li><strong>Data layer</strong>: Use the unique identifier field of each tenant as the vertical segmentation point. Any query and modification of user behavior patterns will be accompanied by their own tenant identifier from the bottom layer to isolate the data between tenants and prevent data overflow.</li>
+                        <li><strong>Logical layer</strong>: In the application behavior mode, except for the application layer, all other logics need to consider the problems existing in the multi-tenancy scenario.</li>
+                        <li><strong>UI layer</strong>: Design different characteristics according to tenant types, abstract common characteristics into public components, and differentiate characteristics into separate components, paying attention to providing targeted state management.</li>
+                    </ul>
+                    <p>Read You started preparing for multi-account design since its inception. Currently, Read You has a good grasp of the commonalities of various account types in terms of UI/UX and has made some differentiation based on the API supported by different account types, such as Fever accounts that do not support write operations.</p>
+                    <p>This pit is particularly tricky when supporting integration with third-party services. After supporting the import/export function of article data, this function must be refactor as soon as possible, although it will inevitably involve database migration again.</p>
+                    <h2 id="google-reader-from-16-years-ago">Google Reader from 16 Years Ago</h2>
+                    <p>Google has never publicly released the API documentation for Google Reader. The various documents circulating on the market today are the results of reverse engineering at that time.</p>
+                    <p>An Article in Google Reader is one type of Item concept. When passing the ID of an Item to the server, to reduce the size of the message body, the ID is generally a long integer:</p>
+                    <pre tabindex="0"><code>150177826473082
+                                                                </code></pre>
+                    <p>However, when the server returns the details of the Item to the client, the Item ID is generally in a specific format:</p>
+                    <pre tabindex="0"><code>tag:google.com,2005:reader/item/000088960000047a
+                                                                </code></pre>
+                    <p>The first part <code>tag:google.com,2005:reader/item/</code> is a fixed value, and the second part <code>000088960000047a</code> is derived from <code>150177826473082</code> by converting it to a unsigned zero-padded 64 bit hexadecimal number format, corresponding to Kotlin code:</p>
+                    <div>
+                                                                    <pre tabindex="0"><code data-lang="kotlin"><span><span><span>fun</span> <span>String</span>.ofItemIdToHexId() = <span>String</span>.format(<span>"%016x"</span>, toLong())
+                                                                </span></span></code></pre>
+                    </div>
+                    <p>In Google Reader, the Tag concept is a more general operation for filtering and organizing information, such as:</p>
+                    <ul>
+                        <li>Adding a Tag to an Article can mark it as starred or read.</li>
+                        <li>Adding a Tag to a Feed makes feeds with the same Tag form a Folder (aka Group or Category).</li>
+                    </ul>
+                    <p>It is obvious that a Feed can be added with multiple Tags, and the relationship between Feed and Folder in Google Reader is many-to-many. If the reader integrated with it does not support multiple Folder relationships, some targeted changes need to be made, such as only taking the first Folder corresponding to the Feed.</p>
+                    <p>In Google Reader, organizing and filtering information results in various Streams:</p>
+                    <ul>
+                        <li><strong>All Items</strong>: <code>user/-/state/com.google/reading-list</code></li>
+                        <li><strong>Starred Items</strong>: <code>user/-/state/com.google/starred</code></li>
+                        <li><strong>Read Items</strong>: <code>user/-/state/com.google/read</code></li>
+                        <li><strong>Folder, Tag, or Smart</strong>: <code>user/-/label/...</code></li>
+                        <li><strong>Feed</strong>: <code>feed/...</code></li>
+                        <li><strong>Broadcast</strong> (third-party service providers focusing on articles generally return empty results): <code>user/-/state/com.google/broadcast</code></li>
+                    </ul>
+                    <p>When querying Streams via the Google Reader API, flexible set operations can be used to further narrow down the query range, reduce server pressure, and reduce message size. For example, to retrieve 100 unread Items added to the server after <code>2024-02-20 12:00:00</code>:</p>
+                    <pre tabindex="0"><code>
+                    GET /stream/items/ids
+                    ?s=user/-/state/com.google/reading-list
+                    &amp;xt=user/-/state/com.google/read
+                    &amp;ot=1708401600
+                    &amp;n=100
+                    </code></pre>
+                    <h2 id="various-google-readers">Various “Google Readers”</h2>
+                    <p>There are many third-party service providers that have implemented the Google Reader API in accordance with the Google model. FreshRSS, BazQux, etc., have relatively comprehensive support, while the implementations of other third-party service providers may differ:</p>
+                    <ul>
+                        <li>Inoreader: Now requires OAuth 2.0 authentication.</li>
+                        <li>Miniflux: When the authentication interface passes <code>output=json</code>, the Response is a JSON structure, which is understandable. However, currently, some providers implement this authentication interface and, for compatibility reasons, choose to ignore the <code>output</code> parameter passed to the authentication interface, just like Google Reader, so their Response is <code>text/plain</code>, and their field values are separated by newline characters.</li>
+                    </ul>
+                    <p>Today, service providers that support the Google Reader API have only implemented some of its interfaces, which are generally commonly used and indispensable during the entire synchronization process. When integrating these interfaces, attention needs to be paid to the extent to which various service providers support these interfaces, and sometimes compromises need to be made in terms of interface selection for compatibility.</p>
+                    <p><iframe loading="lazy" title="جهاز ترفيهي متكامل قبل مايكون تابلت  Lenovo Tab Plus !    #تقنية" width="708" height="398" src="https://www.youtube.com/embed/qeouKkCY00w?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+                    <p>Taking <code>/mark-all-as-read</code> as an example, this interface allows marking up to 50k Items in the Stream as read at one time, but unfortunately not all implemented service providers support this interface. Therefore, only the most common and best-supported <code>/edit-tag</code> interface can be selected to mark Items as read in batches.</p>
+                    <h2 id="synchronization-strategy">Synchronization Strategy</h2>
+                    <p>Compared to other APIs, the Google Reader API offers more freedom, and there are multiple implementation options during the synchronization process.</p>
+                    <p>The synchronization process mainly includes:</p>
+                    <ol>
+                        <li><strong>Syncing Tags</strong>: <code>/tag/list</code></li>
+                        <li><strong>Syncing Folders</strong>: <code>/subscription/list</code></li>
+                        <li><strong>Syncing Feeds</strong>: <code>/subscription/list</code></li>
+                        <li><strong>Syncing Articles and their Status</strong></li>
+                    </ol>
+                    <p>The implementation methods of various Readers for the first three points are basically the same, but for the fourth point, there may be significant differences in implementation due to differences in complexity, conditions, and emphasis.</p>
+                    <p>Some considerations when synchronizing articles and their status:</p>
+                    <blockquote>
+                        <p>How far back to sync articles?</p>
+                    </blockquote>
+                    <p>Imagine if there are 100k articles on the server dating back three years, what kind of disaster scenario would it be to completely sync for the reader?</p>
+                    <blockquote>
+                        <p>Do we need all unread articles?</p>
+                    </blockquote>
+                    <p>This seems unquestionable. We want to sync unread articles to let users read, but is it necessary to sync unread articles from three years ago?</p>
+                    <blockquote>
+                        <p>Do we need all starred articles?</p>
+                    </blockquote>
+                    <p>Starred articles are crucial “assets” for users, and of course, we hope that the reader can sync all starred articles on the server for users to browse at any time. But it’s another matter if there are 50k starred articles on the server.</p>
+                    <p>Each reader has its own answers to these questions. This <a href="https://github.com/FreshRSS/FreshRSS/issues/2566#issuecomment-541317776">Issue</a> discusses some readers’ synchronization strategies, and developers are also looking for their ideal “best practices”.</p>
+                    <p>Read You has referenced some readers’ “answers” to the Google Reader API, and after comprehensive domain modeling and database design, it adopted the same <a href="https://github.com/ReadYouApp/ReadYou/pulls?q=is:pr+is:closed+greader">synchronization strategy</a> as Reeder due to its similarity to Reeder’s situation.</p>
+                    <p>At the initial sync cycle, Read You fetches all read articles from the past month to provide a better experience across multiple devices. However, in subsequent sync cycles (the <code>n</code>-th time), it only fetches articles that differ between the local device and the server, thus reducing unnecessary network requests.</p>
+                    <p>Currently, most of the time spent on syncing in Read You is spent on replacing existing subscription database records. This can be solved by modifying the model in the future. Syncing relies mainly on memory to exchange data, which may not be very friendly for low-memory devices. This problem can be solved by using a database intermediate table for data exchange. However, other logic in Read You has already consumed too many connection pool resources. Increasing connection pool consumption would lead to a lagging experience even on high-memory devices. We also look forward to solving these problems through model refactoring in future iterations.</p>
+                    <p>Detailed synchronization process of Read You:</p>
+                    <ol>
+                        <li>Get Tags on the server (since Read You’s Tag feature has not been implemented yet, this step is skipped for now).</li>
+                        <li>Get the list of subscription sources and their associated Folders on the server (if there are missing data locally, use the data from the server to fill in the gaps, keeping it idempotent with the server).</li>
+                        <li>Get the set of IDs of all unread items on the server.</li>
+                        <li>Get the set of IDs of all starred items on the server.</li>
+                        <li>Take the set difference between the set of IDs of unread items on the server and locally, then use the IDs in the difference set to further retrieve the corresponding article content (up to 10k items at a time).</li>
+                        <li>Take the set difference between the set of IDs of starred items on the server and locally, then use the IDs in the difference set to further retrieve the corresponding article content (up to 10k items at a time).</li>
+                        <li>Take the set difference between the set of IDs of read items within the past month on the server and locally, then use the IDs in the difference set to further retrieve the corresponding article content (up to 10k items at a time).</li>
+                    </ol>
+                    <p>If there are a large number of unread articles, starred articles, or read articles within the past month on the server, it will definitely significantly increase the initial synchronization time. However, once synchronized, the data difference between local and server will become smaller, so the next synchronization will be much faster.</p>
+                    <figure>
+                        <img src="https://images.unsplash.com/photo-1586810724476-c294fb7ac01b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGZyZWUlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D" alt="WgTCbBgM6oaIhkx9Wm2cTCE6n3e" data-original="https://images.unsplash.com/photo-1586810724476-c294fb7ac01b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGZyZWUlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D">
+                    </figure>
+                    <p>It can be seen that this synchronization strategy depends more on the Reader’s “periodic sync” feature. By regularly synchronizing to keep the data difference between local and server small, each automatic and manual synchronization only requires minimal time.</p>
+                    <h2 id="parting-words">Parting Words</h2>
+                    <p>During the process of integrating the Google Reader API into Read You, we faced many challenges and made significant improvements. We look forward to the next technical sharing.</p>
+                    <p>Best regards, Ash 👋</p>
+                </div>
+            </div>
+        </div>
+
+    </article>
+
+</main>
+<script>
+function bionicRead() {
+    let div = document.getElementById("readability-page-1");
+
+    // Check if the input is empty
+    if (!div) {
+        alert("The element with id 'readability-page-1' does not exist.");
+        return;
+    }
+
+    // Remove all existing <strong> tags
+    let strongTags = div.querySelectorAll('strong');
+    strongTags.forEach(tag => {
+        let parent = tag.parentNode;
+        while (tag.firstChild) {
+            parent.insertBefore(tag.firstChild, tag);
+        }
+        parent.removeChild(tag);
+    });
+
+    // Get all text nodes within the div
+    let walker = document.createTreeWalker(div, NodeFilter.SHOW_TEXT, null, false);
+    let textNodes = [];
+    while (walker.nextNode()) {
+        textNodes.push(walker.currentNode);
+    }
+
+    // Process each text node
+    textNodes.forEach(node => {
+        let text = node.textContent;
+
+        // Split text into words and process each word
+        let words = text.split(/\s+/);
+        let formattedText = "";
+        words.forEach(word => {
+            if (word.trim()) {
+                let halfIndex = Math.round(word.length / 2);
+                let half = word.substr(0, halfIndex);
+                let remHalf = word.substr(halfIndex);
+                formattedText += "<strong>" + half + "</strong>" + remHalf + " ";
+            } else {
+                formattedText += word + " "; // Preserve spaces
+            }
+        });
+
+        // Create a temporary div to parse HTML
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = formattedText.trim();
+
+        // Replace original text node with new HTML content
+        while (tempDiv.firstChild) {
+            node.parentNode.insertBefore(tempDiv.firstChild, node);
+        }
+        node.parentNode.removeChild(node);
+    });
+}
+
+var images = document.querySelectorAll("img");
+
+images.forEach(function(img) {
+    img.onload = function() {
+        img.classList.add("loaded");
+        console.log("Image width:", img.width, "px");
+        if (img.width < 412) {
+            img.classList.add("thin");
+        }
+    };
+
+    img.onerror = function() {
+        console.error("Failed to load image:", img.src);
+    };
+});
+</script>
+</body>
+</html>

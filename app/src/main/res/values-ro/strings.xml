@@ -71,7 +71,7 @@
     <string name="on">Activat</string>
     <string name="maximize">Maximizează</string>
     <string name="feed_names">Numele fluxurilor</string>
-    <string name="amoled_dark_theme">Tema întunecată AMOLED</string>
+    <string name="amoled_dark_theme">Temă neagră întunecată</string>
     <string name="for_2_days">2 zile</string>
     <string name="auto_default_browser">Auto (Preferă browserul implicit)</string>
     <string name="basic_fonts">Fonturi de bază</string>
@@ -186,7 +186,6 @@
     <string name="cancel">Anulează</string>
     <string name="yesterday">Ieri</string>
     <string name="tips_article_list_tonal_elevation">Elevația tonală pentru lista articolelor este disponibilă doar în temă luminoasă</string>
-    <string name="bionic_reading">Lectură bionică</string>
     <string name="refresh">Reîncarcă</string>
     <string name="mark_all_as_read">Marchează tot ca citit</string>
     <string name="export_as_opml">Exportează ca OPML</string>
@@ -199,7 +198,7 @@
     <string name="all_allow_notification_tips">Acceptă ca toate fluxurile din grupul „%1$s” să trimită notificări</string>
     <string name="expand_less">Micșorează</string>
     <string name="list">Listă</string>
-    <string name="update_link">https://api.github.com/repos/Ashinch/ReadYou/releases/latest</string>
+    <string name="update_link">https://api.github.com/repos/ReadYouApp/ReadYou/releases/latest</string>
     <string name="all_parse_full_content_tips">Analiza completă a conținutului tuturor articolelor din grupul „%1$s”</string>
     <string name="search">Caută</string>
     <string name="delete_group">Șterge grupul</string>
@@ -246,7 +245,7 @@
     <string name="only_android_8.1_plus">Doar Android 8.1+</string>
     <string name="defaults">Implicit</string>
     <string name="go_to">Du-te la</string>
-    <string name="tos_content"><h5> Politica de confidențialitate </h5> <br/> <p> Vă iau foarte în serios confidențialitatea. </p> <br/> <p> <b>Read You</b> nu colectează date despre utilizator și toate informațiile sensibile (parole și alte informații despre cont) sunt stocate în siguranță în baza de date locală a aplicației de pe dispozitivul dumneavoastră. </p> <br/> <p> <b>Read You</b> va folosi următoarele permisiuni pentru a vă oferi serviciul. </p> <br/> <p> - Permisiune de acces la rețea (pentru a accesa conținutul online așa cum specificați dvs.) </p> <p> - Permisiune obținere a statusului rețelei (pentru a determina dacă dispozitivul are condiții de rețea disponibile în prezent) </p> <p> - Permisiune de serviciu în fundal (pentru a sincroniza automat favoritele dvs. în mod regulat) </p> <br/> <br/> <h5> Servicii de la terți </h5> <br/> <p> Această politică nu se aplică serviciilor terță parte pe care le utilizați cu <b>Read You</b>. Puteți consulta politicile de confidențialitate ale serviciilor terță parte pe care le utilizați pe site-urile lor </p> <br/> <br/> <h5> Declinări </h5> <br/> <p> <b>Read You</b> este doar un instrument de colectare a conținutului. Utilizarea de către dvs. a <b>Read You</b> este supusă legilor și reglementărilor din țara și regiunea dvs., iar orice răspundere care decurge din acțiunile dvs. va fi suportată de dvs. personal. </p> <br/> <br/> <h5> Licență Open Source </h5> <br/> <p> <b>Read You</b> este un proiect open source sub Licența Open Source GNU GPL 3.0[1], care vă permite să utilizați, să faceți referire la și să modificați codul sursă al <b>Read You</b> în mod gratuit , dar nu permite ca codul modificat și derivat să fie distribuit și vândut ca software comercial cu sursă închisă. Pentru detalii, vă rugăm să consultați întreaga Licență Open Source GNU GPL 3.0[2]. </p> <br/> <br/> <h5> Anexă </h5> <br/> <p> - [1] https://github.com/Ashinch/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
+    <string name="tos_content"><h5> Politica de confidențialitate </h5> <br/> <p> Vă iau foarte în serios confidențialitatea. </p> <br/> <p> <b>Read You</b> nu colectează date despre utilizator și toate informațiile sensibile (parole și alte informații despre cont) sunt stocate în siguranță în baza de date locală a aplicației de pe dispozitivul dumneavoastră. </p> <br/> <p> <b>Read You</b> va folosi următoarele permisiuni pentru a vă oferi serviciul. </p> <br/> <p> - Permisiune de acces la rețea (pentru a accesa conținutul online așa cum specificați dvs.) </p> <p> - Permisiune obținere a statusului rețelei (pentru a determina dacă dispozitivul are condiții de rețea disponibile în prezent) </p> <p> - Permisiune de serviciu în fundal (pentru a sincroniza automat favoritele dvs. în mod regulat) </p> <br/> <br/> <h5> Servicii de la terți </h5> <br/> <p> Această politică nu se aplică serviciilor terță parte pe care le utilizați cu <b>Read You</b>. Puteți consulta politicile de confidențialitate ale serviciilor terță parte pe care le utilizați pe site-urile lor </p> <br/> <br/> <h5> Declinări </h5> <br/> <p> <b>Read You</b> este doar un instrument de colectare a conținutului. Utilizarea de către dvs. a <b>Read You</b> este supusă legilor și reglementărilor din țara și regiunea dvs., iar orice răspundere care decurge din acțiunile dvs. va fi suportată de dvs. personal. </p> <br/> <br/> <h5> Licență Open Source </h5> <br/> <p> <b>Read You</b> este un proiect open source sub Licența Open Source GNU GPL 3.0[1], care vă permite să utilizați, să faceți referire la și să modificați codul sursă al <b>Read You</b> în mod gratuit , dar nu permite ca codul modificat și derivat să fie distribuit și vândut ca software comercial cu sursă închisă. Pentru detalii, vă rugăm să consultați întreaga Licență Open Source GNU GPL 3.0[2]. </p> <br/> <br/> <h5> Anexă </h5> <br/> <p> - [1] https://github.com/ReadYouApp/ReadYou </p> <p> - [2] https://www.gnu.org/licenses/gpl-3.0.html </p></string>
     <string name="clear_articles_group_tips">Ștergeți toate articolele arhivate din grupul „%1$s”</string>
     <string name="open_link_something_wrong">Setarea pentru deschiderea linkului a fost ignorată deoarece ceva a mers prost.</string>
     <string name="open_link_specific_browser_not_selected">Nici unul</string>

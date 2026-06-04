@@ -1,7 +1,0 @@
-## 0.7.6 
-
-1. ViewPager separado. 
-
-2. Fusión de notificaciones por feeds. 
-
-3. Ya no descargua los archivos de actualización, sino que salta a la página de lanzamiento.

@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. Különálló nézetlapozó.
-
-2. Értesítések egyesítése hírforrások szerint.
-
-3. Többé nem kerülnek letöltésre a frissítési fájlok, hanem a kiadási oldalra ugrik.

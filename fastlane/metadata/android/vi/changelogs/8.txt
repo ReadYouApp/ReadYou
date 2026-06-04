@@ -1,7 +1,0 @@
-## 0.7.6
-
-1. ViewPager riêng biệt.
-
-2. Hợp nhất các thông báo theo nguồn cấp dữ liệu.
-
-3. Không tải xuống các tệp cập nhật nữa mà chuyển sang trang phát hành.

@@ -1,0 +1,11 @@
+General:
+Fixed an bug where resuming the app from the background could open the wrong article.
+
+Google Reader API:
+Fixed an issue caused duplicated articles with FreshRSS
+Fixed an issue caused read/starred status not synced with server when syncing a single feed
+
+Local RSS:
+Fixed a regression caused thumbnails from some feeds could not load in article list
+
+

@@ -1,9 +1,0 @@
-## 0.9.7
-
-Esta es una actualización complementaria.
-
-1. Fusionar revisión c0ff8ba
-
-2. Traducciones adicionales (gracias a todos)
-
-3. Actualice el archivo Léame en Github

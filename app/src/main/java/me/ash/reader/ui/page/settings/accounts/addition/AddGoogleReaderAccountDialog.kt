@@ -2,6 +2,7 @@ package me.ash.reader.ui.page.settings.accounts.addition
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.domain.model.account.Account
@@ -44,7 +45,8 @@ import me.ash.reader.ui.page.settings.accounts.AccountViewModel
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun AddGoogleReaderAccountDialog(
-    navController: NavHostController,
+    onBack: () -> Unit,
+    onNavigateToAccountDetails: (Int) -> Unit,
     viewModel: AdditionViewModel = hiltViewModel(),
     accountViewModel: AccountViewModel = hiltViewModel(),
 ) {
@@ -56,6 +58,7 @@ fun AddGoogleReaderAccountDialog(
     var googleReaderServerUrl by rememberSaveable { mutableStateOf("") }
     var googleReaderUsername by rememberSaveable { mutableStateOf("") }
     var googleReaderPassword by rememberSaveable { mutableStateOf("") }
+    var googleReaderClientCertificateAlias by rememberSaveable { mutableStateOf("") }
 
     RYDialog(
         modifier = Modifier.padding(horizontal = 44.dp),
@@ -69,8 +72,7 @@ fun AddGoogleReaderAccountDialog(
         icon = {
             if (accountUiState.isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(24.dp),
+                    modifier = Modifier.size(24.dp),
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             } else {
@@ -89,11 +91,10 @@ fun AddGoogleReaderAccountDialog(
             )
         },
         text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     readOnly = accountUiState.isLoading,
                     value = googleReaderServerUrl,
                     onValueChange = { googleReaderServerUrl = it },
@@ -103,59 +104,73 @@ fun AddGoogleReaderAccountDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     requestFocus = false,
                     readOnly = accountUiState.isLoading,
                     value = googleReaderUsername,
                     onValueChange = { googleReaderUsername = it },
                     label = stringResource(R.string.username),
-                    placeholder = "demo",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     requestFocus = false,
                     readOnly = accountUiState.isLoading,
                     value = googleReaderPassword,
                     onValueChange = { googleReaderPassword = it },
                     isPassword = true,
                     label = stringResource(R.string.password),
-                    placeholder = "demodemo",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
+                Spacer(modifier = Modifier.height(10.dp))
+                CertificateSelector(
+                    value = googleReaderClientCertificateAlias,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    googleReaderClientCertificateAlias = it
+                }
                 Spacer(modifier = Modifier.height(10.dp))
             }
         },
         confirmButton = {
             TextButton(
-                enabled = !accountUiState.isLoading
-                        && googleReaderServerUrl.isNotBlank()
-                        && googleReaderUsername.isNotEmpty()
-                        && googleReaderPassword.isNotEmpty(),
+                enabled =
+                    !accountUiState.isLoading &&
+                        googleReaderServerUrl.isNotBlank() &&
+                        googleReaderUsername.isNotEmpty() &&
+                        googleReaderPassword.isNotEmpty(),
                 onClick = {
                     focusManager.clearFocus()
                     if (!googleReaderServerUrl.endsWith("/")) {
                         googleReaderServerUrl += "/"
                     }
-                    accountViewModel.addAccount(Account(
-                        type = AccountType.GoogleReader,
-                        name = context.getString(R.string.google_reader),
-                        securityKey = GoogleReaderSecurityKey(
-                            serverUrl = googleReaderServerUrl,
-                            username = googleReaderUsername,
-                            password = googleReaderPassword,
-                        ).toString(),
-                    )) { account, exception ->
+                    accountViewModel.addAccount(
+                        Account(
+                            type = AccountType.GoogleReader,
+                            name = context.getString(R.string.google_reader),
+                            securityKey =
+                                GoogleReaderSecurityKey(
+                                        serverUrl = googleReaderServerUrl,
+                                        username = googleReaderUsername,
+                                        password = googleReaderPassword,
+                                        clientCertificateAlias =
+                                            googleReaderClientCertificateAlias.takeIf {
+                                                it.isNotEmpty()
+                                            },
+                                    )
+                                    .toString(),
+                        )
+                    ) { account, exception ->
                         if (account == null) {
                             context.showToast(exception?.message ?: "Not valid credentials")
                         } else {
                             viewModel.hideAddGoogleReaderAccountDialog()
-                            navController.popBackStack()
-                            navController.navigate("${RouteName.ACCOUNT_DETAILS}/${account.id}") {
-                                launchSingleTop = true
-                            }
+                            onBack()
+                            onNavigateToAccountDetails(account.id!!)
                         }
                     }
-                }
+                },
             ) {
                 Text(stringResource(R.string.add))
             }

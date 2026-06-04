@@ -1,5 +1,6 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlin.android)
@@ -8,55 +9,63 @@ plugins {
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 fun fetchGitCommitHash(): String {
-    val process = ProcessBuilder("git", "rev-parse", "--verify", "--short", "HEAD")
-        .redirectErrorStream(true)
-        .start()
+    val process =
+        ProcessBuilder("git", "rev-parse", "--verify", "--short", "HEAD")
+            .redirectErrorStream(true)
+            .start()
     return process.inputStream.bufferedReader().use { it.readText().trim() }
 }
 
 val gitCommitHash = fetchGitCommitHash()
 val keyProps = Properties()
-val keyPropsFile: File = rootProject.file("signature/keystore.properties")
-if (keyPropsFile.exists()) {
-    println("Loading keystore properties from ${keyPropsFile.absolutePath}")
-    keyProps.load(FileInputStream(keyPropsFile))
+val releaseKeyPropsFile: File = rootProject.file("signature/keystore_release.properties")
+val debugKeyPropsFile: File = rootProject.file("signature/keystore.properties")
+
+
+if (releaseKeyPropsFile.exists()) {
+    println("Loading keystore properties from ${releaseKeyPropsFile.absolutePath}")
+    keyProps.load(FileInputStream(releaseKeyPropsFile))
+} else if (debugKeyPropsFile.exists()) {
+    keyProps.load(FileInputStream(debugKeyPropsFile))
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.rbware.legens"
         minSdk = 26
-        targetSdk = 33
-        versionCode = 25
-        versionName = "0.10.1"
+        targetSdk = 34
+        versionCode = 47
+        versionName = "0.16.2"
 
-        buildConfigField("String", "USER_AGENT_STRING", "\"ReadYou/${'$'}{versionName}(${versionCode})\"")
+        buildConfigField(
+            "String",
+            "USER_AGENT_STRING",
+            "\"ReadYou/${versionName}(${versionCode})\"",
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        room {
-            schemaDirectory("$projectDir/schemas")
-        }
+        room { schemaDirectory("$projectDir/schemas") }
 
-        ksp {
-            arg("room.incremental","true")
-        }
+        ksp { arg("room.incremental", "true") }
     }
 
     flavorDimensions.add("channel")
     productFlavors {
         create("github") {
+            isDefault = true
             dimension = "channel"
         }
-        create("fdroid") {
-            dimension = "channel"
-        }
+        create("fdroid") { dimension = "channel" }
         create("googlePlay") {
             dimension = "channel"
             applicationIdSuffix = ".google.play"
@@ -70,23 +79,23 @@ android {
             storePassword = keyProps["storePassword"] as String?
         }
     }
-    lint {
-        disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
-    }
+    lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation")) }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
             signingConfig = signingConfigs.getByName("release")
         }
-        all {
-            signingConfig = signingConfigs.getByName("release")
-        }
+        all { signingConfig = signingConfigs.getByName("release") }
     }
     applicationVariants.all {
         outputs.all {
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = "ReadYou-${defaultConfig.versionName}-${gitCommitHash}.apk"
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
+                "ReadYou-${defaultConfig.versionName}-${gitCommitHash}.apk"
         }
     }
     kotlinOptions {
@@ -97,21 +106,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
+    buildFeatures { buildConfig = true }
     packaging {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        resources.excludes.add("rome-utils-*.jar")
     }
-    androidResources {
-        generateLocaleConfig = true
-    }
+    androidResources { generateLocaleConfig = true }
+    composeCompiler { featureFlags = setOf(ComposeFeatureFlag.PausableComposition) }
     namespace = "me.ash.reader"
 }
+
+aboutLibraries { excludeFields = arrayOf("generated") }
 
 dependencies {
     // AboutLibraries
@@ -120,8 +125,9 @@ dependencies {
 
     // Compose
     implementation(libs.compose.html)
-    implementation(platform(libs.compose.bom))
-    androidTestImplementation(platform(libs.compose.bom))
+    implementation(platform(libs.compose.bom.alpha))
+    implementation(libs.androidx.ui.graphics)
+    androidTestImplementation(platform(libs.compose.bom.stable))
     implementation(libs.compose.animation.graphics)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.util)
@@ -132,9 +138,6 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     implementation(libs.compose.material3)
 
-    // Accompanist
-    implementation(libs.accompanist.swiperefresh)
-
     // Coil
     implementation(libs.coil.base)
     implementation(libs.coil.compose)
@@ -144,15 +147,19 @@ dependencies {
     // Hilt
     implementation(libs.hilt.work)
     implementation(libs.hilt.android)
+    androidTestImplementation(platform(libs.compose.bom.stable))
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.viewmodel)
 
     // AndroidX
     implementation(libs.android.svg)
     implementation(libs.opml.parser)
     implementation(libs.readability4j)
     implementation(libs.rome)
+    implementation(libs.rome.modules)
     implementation(libs.telephoto)
     implementation(libs.okhttp)
     implementation(libs.okhttp.coroutines)
@@ -175,6 +182,23 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.activity.compose)
     implementation(libs.appcompat)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.appwidget.preview)
+    implementation(libs.glance.material3)
+    implementation(libs.glance.preview)
+
+    implementation(libs.navigation3.runtime)
+    implementation(libs.navigation3.ui)
+    //    implementation(libs.compose.material3.adaptive.navigation3)
+    implementation(libs.lifecycle.viewmodel.navigation3)
+    implementation(libs.navigationevent)
+    implementation(libs.compose.material3.adaptive.navigation)
+    implementation(libs.compose.material3.adaptive.layout)
+
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.timber)
 
     // Testing
     testImplementation(libs.junit)

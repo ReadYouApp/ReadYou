@@ -23,7 +23,7 @@ sealed class SyncIntervalPreference(
     object Every1Day : SyncIntervalPreference(1440L)
 
     fun put(accountId: Int, viewModel: AccountViewModel) {
-        viewModel.update(accountId) { syncInterval = this@SyncIntervalPreference }
+        viewModel.update(accountId) { copy(syncInterval = this@SyncIntervalPreference) }
     }
 
     fun toDesc(context: Context): String =

@@ -14,27 +14,27 @@ import java.util.*
 @Entity(tableName = "account")
 data class Account(
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
+    val id: Int? = null,
     @ColumnInfo
-    var name: String,
+    val name: String,
     @ColumnInfo
-    var type: AccountType,
+    val type: AccountType,
     @ColumnInfo
-    var updateAt: Date? = null,
+    val updateAt: Date? = null,
     @ColumnInfo
-    var lastArticleId: String? = null,
+    val lastArticleId: String? = null,
     @ColumnInfo(defaultValue = "30")
-    var syncInterval: SyncIntervalPreference = SyncIntervalPreference.default,
+    val syncInterval: SyncIntervalPreference = SyncIntervalPreference.default,
     @ColumnInfo(defaultValue = "0")
-    var syncOnStart: SyncOnStartPreference = SyncOnStartPreference.default,
+    val syncOnStart: SyncOnStartPreference = SyncOnStartPreference.default,
     @ColumnInfo(defaultValue = "0")
-    var syncOnlyOnWiFi: SyncOnlyOnWiFiPreference = SyncOnlyOnWiFiPreference.default,
+    val syncOnlyOnWiFi: SyncOnlyOnWiFiPreference = SyncOnlyOnWiFiPreference.default,
     @ColumnInfo(defaultValue = "0")
-    var syncOnlyWhenCharging: SyncOnlyWhenChargingPreference = SyncOnlyWhenChargingPreference.default,
+    val syncOnlyWhenCharging: SyncOnlyWhenChargingPreference = SyncOnlyWhenChargingPreference.default,
     @ColumnInfo(defaultValue = "2592000000")
-    var keepArchived: KeepArchivedPreference = KeepArchivedPreference.default,
+    val keepArchived: KeepArchivedPreference = KeepArchivedPreference.default,
     @ColumnInfo(defaultValue = "")
-    var syncBlockList: SyncBlockList = SyncBlockListPreference.default,
+    val syncBlockList: SyncBlockList = SyncBlockListPreference.default,
     @ColumnInfo(defaultValue = DESUtils.empty)
-    var securityKey: String? = DESUtils.empty,
+    val securityKey: String? = DESUtils.empty,
 )

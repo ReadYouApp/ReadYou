@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.ui.component.base.*
@@ -24,11 +23,10 @@ import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
 fun FeedsPageStylePage(
-    navController: NavHostController,
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val filterBarStyle = LocalFeedsFilterBarStyle.current
-    val filterBarFilled = LocalFeedsFilterBarFilled.current
     val filterBarPadding = LocalFeedsFilterBarPadding.current
     val filterBarTonalElevation = LocalFeedsFilterBarTonalElevation.current
     val topBarTonalElevation = LocalFeedsTopBarTonalElevation.current
@@ -51,10 +49,9 @@ fun FeedsPageStylePage(
             FeedbackIconButton(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface
-            ) {
-                navController.popBackStack()
-            }
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
         },
         content = {
             LazyColumn {
@@ -80,9 +77,8 @@ fun FeedsPageStylePage(
                         FeedsPagePreview(
                             topBarTonalElevation = topBarTonalElevation,
                             groupListExpand = groupListExpand,
-                            groupListTonalElevation = groupListTonalElevation,
                             filterBarStyle = filterBarStyle.value,
-                            filterBarFilled = filterBarFilled.value,
+                            filterBarFilled = true,
                             filterBarPadding = filterBarPadding.dp,
                             filterBarTonalElevation = filterBarTonalElevation.value.dp,
                         )
@@ -123,7 +119,7 @@ fun FeedsPageStylePage(
                             (!groupListExpand).put(context, scope)
                         }
                     }
-                    SettingItem(
+/*                    SettingItem(
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${groupListTonalElevation.value}dp",
                         onClick = {
@@ -131,7 +127,7 @@ fun FeedsPageStylePage(
                         },
                     ) {}
                     Tips(text = stringResource(R.string.tips_group_list_tonal_elevation))
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))*/
                 }
 
                 // Filter Bar
@@ -147,16 +143,6 @@ fun FeedsPageStylePage(
                             filterBarStyleDialogVisible = true
                         },
                     ) {}
-                    SettingItem(
-                        title = stringResource(R.string.fill_selected_icon),
-                        onClick = {
-                            (!filterBarFilled).put(context, scope)
-                        },
-                    ) {
-                        RYSwitch(activated = filterBarFilled.value) {
-                            (!filterBarFilled).put(context, scope)
-                        }
-                    }
                     SettingItem(
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${filterBarPadding}dp",
@@ -242,7 +228,7 @@ fun FeedsPageStylePage(
         topBarTonalElevationDialogVisible = false
     }
 
-    RadioDialog(
+/*    RadioDialog(
         visible = groupListTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FeedsGroupListTonalElevationPreference.values.map {
@@ -255,5 +241,5 @@ fun FeedsPageStylePage(
         }
     ) {
         groupListTonalElevationDialogVisible = false
-    }
+    }*/
 }

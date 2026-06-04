@@ -2,6 +2,7 @@ package me.ash.reader.ui.page.settings.accounts.addition
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.domain.model.account.Account
@@ -43,7 +44,8 @@ import me.ash.reader.ui.page.settings.accounts.AccountViewModel
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun AddFeverAccountDialog(
-    navController: NavHostController,
+    onBack: () -> Unit,
+    onNavigateToAccountDetails: (Int) -> Unit,
     viewModel: AdditionViewModel = hiltViewModel(),
     accountViewModel: AccountViewModel = hiltViewModel(),
 ) {
@@ -55,6 +57,7 @@ fun AddFeverAccountDialog(
     var feverServerUrl by rememberSaveable { mutableStateOf("") }
     var feverUsername by rememberSaveable { mutableStateOf("") }
     var feverPassword by rememberSaveable { mutableStateOf("") }
+    var feverClientCertificateAlias by rememberSaveable { mutableStateOf("") }
 
     RYDialog(
         modifier = Modifier.padding(horizontal = 44.dp),
@@ -87,11 +90,10 @@ fun AddFeverAccountDialog(
             )
         },
         text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     readOnly = accountUiState.isLoading,
                     value = feverServerUrl,
                     onValueChange = { feverServerUrl = it },
@@ -101,56 +103,67 @@ fun AddFeverAccountDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     requestFocus = false,
                     readOnly = accountUiState.isLoading,
                     value = feverUsername,
                     onValueChange = { feverUsername = it },
                     label = stringResource(R.string.username),
-                    placeholder = "demo",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     requestFocus = false,
                     readOnly = accountUiState.isLoading,
                     value = feverPassword,
                     onValueChange = { feverPassword = it },
                     isPassword = true,
                     label = stringResource(R.string.password),
-                    placeholder = "demodemo",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
+                Spacer(modifier = Modifier.height(10.dp))
+                CertificateSelector(
+                    value = feverClientCertificateAlias,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    feverClientCertificateAlias = it
+                }
                 Spacer(modifier = Modifier.height(10.dp))
             }
         },
         confirmButton = {
             TextButton(
-                enabled = !accountUiState.isLoading
-                        && feverServerUrl.isNotBlank()
-                        && feverUsername.isNotEmpty()
-                        && feverPassword.isNotEmpty(),
+                enabled =
+                    !accountUiState.isLoading &&
+                        feverServerUrl.isNotBlank() &&
+                        feverUsername.isNotEmpty() &&
+                        feverPassword.isNotEmpty(),
                 onClick = {
                     focusManager.clearFocus()
-                    accountViewModel.addAccount(Account(
-                        type = AccountType.Fever,
-                        name = context.getString(R.string.fever),
-                        securityKey = FeverSecurityKey(
-                            serverUrl = feverServerUrl,
-                            username = feverUsername,
-                            password = feverPassword,
-                        ).toString(),
-                    )) { account, exception ->
+                    accountViewModel.addAccount(
+                        Account(
+                            type = AccountType.Fever,
+                            name = context.getString(R.string.fever),
+                            securityKey =
+                                FeverSecurityKey(
+                                        serverUrl = feverServerUrl,
+                                        username = feverUsername,
+                                        password = feverPassword,
+                                        clientCertificateAlias = feverClientCertificateAlias,
+                                    )
+                                    .toString(),
+                        )
+                    ) { account, exception ->
                         if (account == null) {
                             context.showToast(exception?.message ?: "Not valid credentials")
                         } else {
                             viewModel.hideAddFeverAccountDialog()
-                            navController.popBackStack()
-                            navController.navigate("${RouteName.ACCOUNT_DETAILS}/${account.id}") {
-                                launchSingleTop = true
-                            }
+                            onBack()
+                            onNavigateToAccountDetails(account.id!!)
                         }
                     }
-                }
+                },
             ) {
                 Text(stringResource(R.string.add))
             }

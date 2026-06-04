@@ -1,9 +1,0 @@
-## 0.9.7
-
-Il s'agit d'une mise à jour supplémentaire.
-
-1. Fusionner le correctif c0ff8ba
-
-2. Améliorer la traduction (merci à tous)
-
-3. Mettez à jour les fichiers de description README de GitHub
