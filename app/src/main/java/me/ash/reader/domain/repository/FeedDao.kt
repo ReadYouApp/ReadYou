@@ -189,6 +189,7 @@ interface FeedDao {
                         isNotification = existing.isNotification,
                         isFullContent = existing.isFullContent,
                         isBrowser = existing.isBrowser,
+                        rank = existing.rank,
                     )
                 if (updated == existing) {
                     null
@@ -209,4 +210,20 @@ interface FeedDao {
         """
     )
     suspend fun queryArchivedArticles(feedId: String): List<ArchivedArticle>
+
+    @Query(
+        """
+        UPDATE feed SET rank = :rank WHERE id = :feedId
+        """
+    )
+    suspend fun updateRank(feedId: String, rank: Int)
+
+    @Query(
+        """
+        SELECT * FROM feed
+        WHERE accountId = :accountId
+        ORDER BY CASE WHEN rank = 0 THEN 999999 ELSE rank END ASC, name ASC
+        """
+    )
+    suspend fun queryAllSortedByRank(accountId: Int): List<Feed>
 }

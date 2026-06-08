@@ -20,7 +20,7 @@ import java.util.*
 
 @Database(
     entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class],
-    version = 7,
+    version = 8,
     autoMigrations = [
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 5, to = 7),
@@ -80,6 +80,7 @@ val allMigrations = arrayOf(
     MIGRATION_2_3,
     MIGRATION_3_4,
     MIGRATION_4_5,
+    MIGRATION_7_8,
 )
 
 @Suppress("ClassName")
@@ -155,6 +156,18 @@ object MIGRATION_4_5 : Migration(4, 5) {
         database.execSQL(
             """
             ALTER TABLE account ADD COLUMN lastArticleId TEXT DEFAULT NULL
+            """.trimIndent()
+        )
+    }
+}
+
+@Suppress("ClassName")
+object MIGRATION_7_8 : Migration(7, 8) {
+
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            """
+            ALTER TABLE feed ADD COLUMN rank INTEGER NOT NULL DEFAULT 0
             """.trimIndent()
         )
     }

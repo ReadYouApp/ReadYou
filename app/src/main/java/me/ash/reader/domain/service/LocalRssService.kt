@@ -13,6 +13,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+import me.ash.reader.domain.data.ArticleSimilarity
+import me.ash.reader.domain.data.FeedSyncResult
 import me.ash.reader.domain.data.SyncLogger
 import me.ash.reader.domain.model.account.AccountType
 import me.ash.reader.domain.model.feed.Feed
@@ -76,7 +78,7 @@ constructor(
                     else -> feedDao.queryAll(accountId)
                 }
 
-            feedsToSync
+            val syncResults: List<FeedSyncResult> = feedsToSync
                 .mapIndexed { _, currentFeed ->
                     async(Dispatchers.IO) {
                         semaphore.withPermit {
@@ -90,21 +92,24 @@ constructor(
                                 fetchedFeed.articles.filterNot {
                                     archivedArticles.contains(it.link)
                                 }
-
                             val newArticles =
                                 articleDao.insertListIfNotExist(
                                     articles = fetchedArticles,
                                     feed = currentFeed,
                                 )
-                            if (currentFeed.isNotification && newArticles.isNotEmpty()) {
-                                notificationHelper.notify(
-                                    fetchedFeed.copy(articles = newArticles, feed = currentFeed)
-                                )
-                            }
+                            FeedSyncResult(feed = currentFeed, newArticles = newArticles)
                         }
                     }
                 }
                 .awaitAll()
+
+            // Cluster articles from this sync batch and notify only the highest-ranked source
+            val toNotify = ArticleSimilarity.deduplicateByRank(syncResults)
+            for ((feed, articles) in toNotify) {
+                if (feed.isNotification && articles.isNotEmpty()) {
+                    notificationHelper.notify(feed, articles)
+                }
+            }
 
             Timber.tag("RlOG").i("onCompletion: ${System.currentTimeMillis() - preTime}")
             accountService.update(currentAccount.copy(updateAt = Date()))

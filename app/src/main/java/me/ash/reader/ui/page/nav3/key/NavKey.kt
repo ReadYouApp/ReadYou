@@ -65,4 +65,7 @@ sealed interface Route : NavKey {
     @Serializable data object TipsAndSupport : Route
 
     @Serializable data object LicenseList : Route
+
+    // Feed Ranking
+    @Serializable data object FeedRanking : Route
 }

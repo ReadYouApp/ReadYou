@@ -49,6 +49,7 @@ retrofit2 = "2.11.0"
 rome = "2.1.0"
 telephoto = "0.15.1"
 swipe = "1.3.0"
+reorderable = "2.4.3"
 timber = "5.0.1"
 glance = "1.2.0-beta01"
 
@@ -100,6 +101,7 @@ rome = { group = "com.rometools", name = "rome", version.ref = "rome" }
 rome-modules = { module = "com.rometools:rome-modules", version.ref = "rome" }
 telephoto = { group = "me.saket.telephoto", name = "zoomable", version.ref = "telephoto" }
 swipe = { group = "me.saket.swipe", name = "swipe", version.ref = "swipe" }
+reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-coroutines = { group = "com.squareup.okhttp3", name = "okhttp-coroutines-jvm", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
