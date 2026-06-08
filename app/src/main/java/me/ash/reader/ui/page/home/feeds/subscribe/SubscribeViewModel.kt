@@ -150,11 +150,21 @@ constructor(
                 viewModelScope.launch {
                     runCatching { rssHelper.searchFeed(feedLink) }
                         .onSuccess {
+                            if (rssService.get().isFeedExist(it.feedLink)) {
+                                _subscribeState.value =
+                                    currentState.copy(
+                                        errorMessage =
+                                            androidStringsHelper.getString(
+                                                R.string.already_subscribed
+                                            )
+                                    )
+                                return@onSuccess
+                            }
                             val groups = groupsFlow.value
                             _subscribeState.value =
                                 SubscribeState.Configure(
-                                    searchedFeed = it,
-                                    feedLink = feedLink,
+                                    searchedFeed = it.feed,
+                                    feedLink = it.feedLink,
                                     groups = groups,
                                     selectedGroupId = firstGroupId,
                                 )
