@@ -10,6 +10,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataEvent
 import androidx.paging.PagingDataPresenter
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import javax.inject.Inject
 import kotlin.text.trim
 import kotlinx.coroutines.CoroutineDispatcher
@@ -109,6 +110,19 @@ constructor(
                                 }
                                 .flow
                                 .map { it.mapPagingFlowItem(androidStringsHelper) }
+                                .map { pagingData ->
+                                    val keywords = settingsProvider.settings.keywordFilters
+                                    if (keywords.isEmpty()) pagingData
+                                    else pagingData.filter { item ->
+                                        item !is ArticleFlowItem.Article ||
+                                            keywords.none { kw ->
+                                                item.articleWithFeed.article.title
+                                                    .contains(kw, ignoreCase = true) ||
+                                                    item.articleWithFeed.article.shortDescription
+                                                        .contains(kw, ignoreCase = true)
+                                            }
+                                    }
+                                }
                                 .cachedIn(applicationScope),
                             filterState = filterState,
                         )

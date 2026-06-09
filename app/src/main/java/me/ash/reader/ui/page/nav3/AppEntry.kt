@@ -48,6 +48,7 @@ import me.ash.reader.ui.page.settings.color.reading.ReadingTextPage
 import me.ash.reader.ui.page.settings.color.reading.ReadingTitlePage
 import me.ash.reader.ui.page.settings.color.reading.ReadingVideoPage
 import me.ash.reader.ui.page.settings.feedranking.FeedRankingPage
+import me.ash.reader.ui.page.settings.filter.FiltersPage
 import me.ash.reader.ui.page.settings.interaction.InteractionPage
 import me.ash.reader.ui.page.settings.languages.LanguagesPage
 import me.ash.reader.ui.page.settings.tips.LicenseListPage
@@ -185,6 +186,7 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
                                 navigateToColorAndStyle = { backStack.add(Route.ColorAndStyle) },
                                 navigateToInteraction = { backStack.add(Route.Interaction) },
                                 navigateToFeedRanking = { backStack.add(Route.FeedRanking) },
+                                navigateToFilters = { backStack.add(Route.Filters) },
                                 navigateToLanguages = { backStack.add(Route.Languages) },
                                 navigateToTroubleshooting = {
                                     backStack.add(Route.Troubleshooting)
@@ -276,6 +278,7 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
                         }
                     Route.LicenseList -> NavEntry(key) { LicenseListPage(onBack = onBack) }
                     Route.FeedRanking -> NavEntry(key) { FeedRankingPage(onBack = onBack) }
+                    Route.Filters -> NavEntry(key) { FiltersPage(onBack = onBack) }
                     else -> NavEntry(key) { throw Exception("Unknown destination") }
                 }
             },

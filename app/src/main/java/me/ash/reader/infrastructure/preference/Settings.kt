@@ -82,5 +82,9 @@ data class Settings(
 
     // Languages
     val languages: LanguagesPreference = LanguagesPreference.default,
+
+    // Filters
+    val keywordFilters: KeywordFilters = KeywordFiltersPreference.default,
+    val semanticFilter: Boolean = SemanticFilterPreference.default,
 )
 

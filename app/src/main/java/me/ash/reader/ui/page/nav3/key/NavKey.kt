@@ -68,4 +68,7 @@ sealed interface Route : NavKey {
 
     // Feed Ranking
     @Serializable data object FeedRanking : Route
+
+    // Filters
+    @Serializable data object Filters : Route
 }

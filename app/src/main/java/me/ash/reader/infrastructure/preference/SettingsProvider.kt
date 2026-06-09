@@ -140,6 +140,10 @@ class SettingsProvider @Inject constructor(
 
             // Languages
             LocalLanguages provides settings.languages,
+
+            // Filters
+            LocalKeywordFilters provides settings.keywordFilters,
+            LocalSemanticFilter provides settings.semanticFilter,
         ) {
             content()
         }

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.FormatListNumbered
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lightbulb
@@ -52,6 +53,7 @@ fun SettingsPage(
     navigateToColorAndStyle: () -> Unit,
     navigateToInteraction: () -> Unit,
     navigateToFeedRanking: () -> Unit,
+    navigateToFilters: () -> Unit,
     navigateToLanguages: () -> Unit,
     navigateToTroubleshooting: () -> Unit,
     navigateToTipsAndSupport: () -> Unit,
@@ -135,6 +137,14 @@ fun SettingsPage(
                         desc = stringResource(R.string.feed_ranking_desc),
                         icon = Icons.Outlined.FormatListNumbered,
                         onClick = navigateToFeedRanking
+                    )
+                }
+                item {
+                    SelectableSettingGroupItem(
+                        title = stringResource(R.string.filters),
+                        desc = stringResource(R.string.filters_desc),
+                        icon = Icons.Outlined.FilterAlt,
+                        onClick = navigateToFilters
                     )
                 }
                 item {

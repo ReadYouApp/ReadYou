@@ -112,6 +112,16 @@
     <string name="feed_ranking_hint">How ranking works</string>
     <string name="feed_ranking_hint_desc">Drag to reorder. When multiple sources cover the same story within 30 minutes, only the top-ranked notification-enabled source sends a notification.</string>
     <string name="unranked">Unranked</string>
+    <string name="filters">Filters</string>
+    <string name="filters_desc">Block keywords, smart filtering</string>
+    <string name="smart_filters">Smart Filters</string>
+    <string name="semantic_filter">Semantic Filter</string>
+    <string name="semantic_filter_desc">Coming soon</string>
+    <string name="keyword_filters">Keyword Filters</string>
+    <string name="add_keyword">Add Keyword</string>
+    <string name="add_keyword_desc">Block articles containing this word</string>
+    <string name="keyword_hint">e.g. crypto, NFT</string>
+    <string name="remove">Remove</string>
     <string name="languages">Languages</string>
     <string name="help_translate">Help translate</string>
     <string name="translatable_url" translatable="false">https://hosted.weblate.org/projects/readyou/</string>

@@ -36,7 +36,7 @@ data class Feed(
     @ColumnInfo(defaultValue = "0")
     val isBrowser: Boolean = false,
     @ColumnInfo(defaultValue = "0")
-    val rank: Int = 0,
+    var rank: Int = 0,
     @Ignore val important: Int = 0
 ) {
     constructor(
