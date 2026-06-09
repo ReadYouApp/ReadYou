@@ -39,7 +39,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "me.ash.reader"
+        applicationId = "com.rbware.reader"
         minSdk = 26
         targetSdk = 34
         versionCode = 47
