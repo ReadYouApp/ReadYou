@@ -20,11 +20,12 @@ import java.util.*
 
 @Database(
     entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class],
-    version = 7,
+    version = 8,
     autoMigrations = [
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 5, to = 7),
         AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 7, to = 8),
     ]
 )
 @TypeConverters(

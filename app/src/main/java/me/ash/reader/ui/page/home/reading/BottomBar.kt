@@ -23,16 +23,21 @@ import androidx.compose.material.icons.outlined.Headphones
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalReadingPageTonalElevation
@@ -52,6 +57,11 @@ fun BottomBar(
     isNextArticleAvailable: Boolean,
     isFullContent: Boolean,
     isBoldCharacters: Boolean,
+    isTranslated: Boolean = false,
+    isTranslating: Boolean = false,
+    isTranslateEnabled: Boolean = false,
+    isDownloadingModel: Boolean = false,
+    translationProgress: Float = 0f,
     ttsButton: @Composable () -> Unit,
     onUnread: (isUnread: Boolean) -> Unit = {},
     onStarred: (isStarred: Boolean) -> Unit = {},
@@ -59,6 +69,7 @@ fun BottomBar(
     onFullContent: (isFullContent: Boolean) -> Unit = {},
     onBoldCharacters: () -> Unit = {},
     onReadAloud: () -> Unit = {},
+    onTranslate: () -> Unit = {},
 ) {
     val tonalElevation = LocalReadingPageTonalElevation.current
     val isOutlined = tonalElevation == ReadingPageTonalElevationPreference.Outlined
@@ -86,6 +97,17 @@ fun BottomBar(
                 Surface(
                     color = MaterialTheme.colorScheme.run { if (isOutlined) surface else surfaceContainer }
                 ) {
+                    Column {
+                        // Download progress indicator
+                        if (isDownloadingModel) {
+                            LinearProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(3.dp),
+                                color = MaterialTheme.colorScheme.primary,
+                                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                            )
+                        }
                     // TODO: Component styles await refactoring
                     Row(
                         modifier = Modifier
@@ -142,6 +164,48 @@ fun BottomBar(
                             onNextArticle()
                         }
                         ttsButton()
+                        if (isTranslateEnabled) {
+                            CanBeDisabledIconButton(
+                                disabled = isTranslating,
+                                modifier = Modifier.size(40.dp),
+                                imageVector = if (isTranslating) null else Icons.Rounded.Translate,
+                                icon = {
+                                    if (isTranslating) {
+                                        Box(
+                                            contentAlignment = Alignment.Center,
+                                            modifier = Modifier.size(24.dp),
+                                        ) {
+                                            CircularProgressIndicator(
+                                                progress = { translationProgress },
+                                                modifier = Modifier.fillMaxSize(),
+                                                strokeWidth = 2.dp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                            )
+                                            Text(
+                                                text = "${(translationProgress * 100).toInt()}%",
+                                                style = MaterialTheme.typography.labelSmall.copy(
+                                                    fontSize = 7.sp,
+                                                    lineHeight = 7.sp,
+                                                ),
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            )
+                                        }
+                                    }
+                                },
+                                contentDescription = stringResource(
+                                    if (isTranslated) R.string.show_original else R.string.translate
+                                ),
+                                tint = if (isTranslated) {
+                                    MaterialTheme.colorScheme.onSecondaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.outline
+                                },
+                            ) {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                onTranslate()
+                            }
+                        }
                         CanBeDisabledIconButton(
                             disabled = false,
                             modifier = Modifier.size(40.dp),
@@ -160,6 +224,7 @@ fun BottomBar(
                             view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                             onFullContent(!isFullContent)
                         }
+                    }
                     }
                 }
             }
