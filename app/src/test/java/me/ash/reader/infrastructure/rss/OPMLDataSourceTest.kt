@@ -72,4 +72,30 @@ class OPMLDataSourceTest {
         Assert.assertEquals("ash7.io", result[1].feeds[0].name)
         Assert.assertEquals("https://ash7.io/index.xml", result[1].feeds[0].url)
     }
+
+    @Test
+    fun testTopLevelFeedUsesDefaultGroup() {
+        val opml = fill("""
+            <outline type="rss" text="Loose Feed" xmlUrl="https://loose.example/feed.xml"/>
+        """)
+        val result = parse(opml)
+        Assert.assertEquals(1, result.size)
+        Assert.assertEquals(defaultGroup.id, result[0].feeds[0].groupId)
+        Assert.assertEquals("Loose Feed", result[0].feeds[0].name)
+    }
+
+    @Test
+    fun testReadYouAttributesAndFallbackName() {
+        val opml = fill("""
+            <outline text="Blogs" title="Blogs">
+                <outline type="rss" xmlUrl="https://ash7.io/index.xml"
+                    isNotification="true" isFullContent="true" isBrowser="true"/>
+            </outline>
+        """)
+        val feed = parse(opml)[1].feeds[0]
+        Assert.assertEquals("ash7.io", feed.name)
+        Assert.assertTrue(feed.isNotification)
+        Assert.assertTrue(feed.isFullContent)
+        Assert.assertTrue(feed.isBrowser)
+    }
 }
