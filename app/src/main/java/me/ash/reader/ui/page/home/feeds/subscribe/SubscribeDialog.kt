@@ -2,6 +2,7 @@ package me.ash.reader.ui.page.home.feeds.subscribe
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
@@ -254,5 +255,6 @@ fun SubscribeDialog(
     }
 }
 
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun subscribeUrlKeyboardOptions(): KeyboardOptions =
     KeyboardOptions(keyboardType = KeyboardType.Uri)
