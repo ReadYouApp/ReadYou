@@ -33,6 +33,7 @@ fun Preferences.toSettings(): Settings {
         feedsTopBarTonalElevation = FeedsTopBarTonalElevationPreference.fromPreferences(this),
         feedsGroupListExpand = FeedsGroupListExpandPreference.fromPreferences(this),
         feedsGroupListTonalElevation = FeedsGroupListTonalElevationPreference.fromPreferences(this),
+        flowSingleColumn = FlowSingleColumnPreference.fromPreferences(this),
 
         // Flow page
         flowFilterBarStyle = FlowFilterBarStylePreference.fromPreferences(this),

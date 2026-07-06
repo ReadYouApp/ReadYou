@@ -38,9 +38,9 @@ class GroupWithFeedsListUseCase @Inject constructor(
 ) {
 
     private var currentJob: Job? = null
+    private val accountFlow = accountService.currentAccountFlow.mapNotNull { it }
 
     init {
-        val accountFlow = accountService.currentAccountFlow.mapNotNull { it }
         applicationScope.launch {
             accountFlow.collectLatest {
                 rssService.get(it.type.id).pullFeeds().collect { feeds -> feedsFlow.value = feeds }

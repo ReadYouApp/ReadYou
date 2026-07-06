@@ -82,8 +82,9 @@ class FeedsViewModel @Inject constructor(
         filterStateUseCase.updateFilterState(filterState)
     }
 
+    private val accountFlow = accountService.currentAccountFlow
+
     init {
-        val accountFlow = accountService.currentAccountFlow
         viewModelScope.launch {
             accountFlow.collect { account ->
                 _feedsUiState.update { it.copy(account = account) }

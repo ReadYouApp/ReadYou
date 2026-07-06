@@ -30,13 +30,10 @@ object WebViewLayout {
                         ReadingFontsPreference.SansSerif -> "sans-serif"
                         ReadingFontsPreference.Serif -> "serif"
                         ReadingFontsPreference.GoogleSans -> {
-                            allowFileAccess = true
-                            allowFileAccessFromFileURLs = true
                             "sans-serif"
                         }
                         ReadingFontsPreference.External -> {
                             allowFileAccess = true
-                            allowFileAccessFromFileURLs = true
                             "sans-serif"
                         }
 
