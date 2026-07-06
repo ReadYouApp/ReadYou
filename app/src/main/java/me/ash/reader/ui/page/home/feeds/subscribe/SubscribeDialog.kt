@@ -129,7 +129,7 @@ fun SubscribeDialog(
                                 placeholder = stringResource(R.string.feed_or_site_url),
                                 errorText = errorText,
                                 imeAction = ImeAction.Search,
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                                keyboardOptions = subscribeUrlKeyboardOptions(),
                                 onConfirm = {
                                     subscribeViewModel.searchFeed()
                                 },
@@ -253,3 +253,6 @@ fun SubscribeDialog(
         )
     }
 }
+
+internal fun subscribeUrlKeyboardOptions(): KeyboardOptions =
+    KeyboardOptions(keyboardType = KeyboardType.Uri)

@@ -38,8 +38,11 @@ fun ClipboardTextField(
                 if (imeAction != ImeAction.Default || imeAction != ImeAction.None) {
                     KeyboardActionHandler { onConfirm(state.text.toString()) }
                 } else null,
-            keyboardOptions = keyboardOptions.copy(imeAction = imeAction),
+            keyboardOptions = keyboardOptions.withImeAction(imeAction),
         )
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
+
+internal fun KeyboardOptions.withImeAction(imeAction: ImeAction): KeyboardOptions =
+    copy(imeAction = imeAction)
