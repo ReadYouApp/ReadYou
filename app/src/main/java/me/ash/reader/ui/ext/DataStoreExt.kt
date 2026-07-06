@@ -146,6 +146,7 @@ sealed interface PreferencesKey {
         const val feedsTopBarTonalElevation = "feedsTopBarTonalElevation"
         const val feedsGroupListExpand = "feedsGroupListExpand"
         const val feedsGroupListTonalElevation = "feedsGroupListTonalElevation"
+        const val flowSingleColumn = "flowSingleColumn"
 
         // Flow page
         const val flowFilterBarStyle = "flowFilterBarStyle"
@@ -225,6 +226,7 @@ sealed interface PreferencesKey {
                 IntKey(feedsTopBarTonalElevation),
                 BooleanKey(feedsGroupListExpand),
                 IntKey(feedsGroupListTonalElevation),
+                BooleanKey(flowSingleColumn),
                 // Flow page
                 IntKey(flowFilterBarStyle),
                 IntKey(flowFilterBarPadding),
@@ -308,6 +310,7 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
         const val feedsTopBarTonalElevation = "feedsTopBarTonalElevation"
         const val feedsGroupListExpand = "feedsGroupListExpand"
         const val feedsGroupListTonalElevation = "feedsGroupListTonalElevation"
+        const val flowSingleColumn = "flowSingleColumn"
 
         // Flow page
         const val flowFilterBarStyle = "flowFilterBarStyle"
@@ -404,6 +407,8 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
                     DataStoreKey(booleanPreferencesKey(feedsGroupListExpand), Boolean::class.java),
                 feedsGroupListTonalElevation to
                     DataStoreKey(intPreferencesKey(feedsGroupListTonalElevation), Int::class.java),
+                flowSingleColumn to
+                    DataStoreKey(booleanPreferencesKey(flowSingleColumn), Boolean::class.java),
                 // Flow page
                 flowFilterBarStyle to
                     DataStoreKey(intPreferencesKey(flowFilterBarStyle), Int::class.java),
