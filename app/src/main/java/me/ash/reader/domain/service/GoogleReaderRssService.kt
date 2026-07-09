@@ -33,10 +33,12 @@ import me.ash.reader.domain.model.account.AccountType.Companion.FreshRSS
 import me.ash.reader.domain.model.account.security.GoogleReaderSecurityKey
 import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.KeywordFilter
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
+import me.ash.reader.domain.repository.KeywordFilterDao
 import me.ash.reader.infrastructure.android.NotificationHelper
 import me.ash.reader.infrastructure.di.DefaultDispatcher
 import me.ash.reader.infrastructure.di.IODispatcher
@@ -71,6 +73,7 @@ constructor(
     private val rssHelper: RssHelper,
     private val notificationHelper: NotificationHelper,
     private val groupDao: GroupDao,
+    private val keywordFilterDao: KeywordFilterDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
@@ -81,6 +84,7 @@ constructor(
     AbstractRssRepository(
         articleDao,
         groupDao,
+        keywordFilterDao,
         feedDao,
         workManager,
         rssHelper,
@@ -134,6 +138,7 @@ constructor(
         isNotification: Boolean,
         isFullContent: Boolean,
         isBrowser: Boolean,
+        filteredKeywords: List<String>
     ) {
         val accountId = accountService.getCurrentAccountId()
         val quickAdd = getGoogleReaderAPI().subscriptionQuickAdd(feedLink)
@@ -437,6 +442,7 @@ constructor(
                         unreadIds = remoteUnreadIds.await(),
                         starredIds = remoteStarredIds.await(),
                         scope = this,
+                        allFilteredKeywords = keywordFilterDao.queryAllBlocking()
                     )
                     .toMutableList()
 
@@ -597,6 +603,7 @@ constructor(
                     accountId = accountId,
                     unreadIds = remoteUnreadIds.await(),
                     starredIds = remoteStarredIds.await(),
+                    allFilteredKeywords = keywordFilterDao.queryAllBlocking()
                 )
 
             if (feed.isNotification) {
@@ -688,6 +695,7 @@ constructor(
         unreadIds: Set<String>,
         starredIds: Set<String>,
         scope: CoroutineScope,
+        allFilteredKeywords: List<KeywordFilter>,
     ): List<Deferred<List<Article>>> {
         if (itemIds.isEmpty()) return emptyList()
         val currentDate = Date()
@@ -733,7 +741,14 @@ constructor(
                                         ?: currentDate,
                             )
                         },
-                    )
+                    ).filter { article ->
+                        val filteredKeywordsForThisArticle = allFilteredKeywords.filter { keyword ->
+                            keyword.feedId == article.feedId
+                        }
+                        filteredKeywordsForThisArticle.none { keyword ->
+                            article.title.lowercase().contains(keyword.keyword.lowercase())
+                        }
+                    }
                 }
             }
         }
@@ -745,6 +760,7 @@ constructor(
         accountId: Int,
         unreadIds: Set<String>,
         starredIds: Set<String>,
+        allFilteredKeywords: List<KeywordFilter>
     ): List<Article> = supervisorScope {
         fetchItemsContentsDeferred(
                 itemIds = itemIds,
@@ -753,6 +769,7 @@ constructor(
                 unreadIds = unreadIds,
                 starredIds = starredIds,
                 scope = this,
+                allFilteredKeywords = allFilteredKeywords,
             )
             .awaitAll()
             .flatten()
