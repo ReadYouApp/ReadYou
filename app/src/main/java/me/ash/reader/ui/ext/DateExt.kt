@@ -88,3 +88,8 @@ private fun String.parseToDate(
 }
 
 fun Date.isFuture(staticDate: Date = Date()): Boolean = this.time > staticDate.time
+
+fun Date.isTooOld(minYear: Int = 1970): Boolean {
+    val cal = Calendar.getInstance().apply { time = this@isTooOld }
+    return cal.get(Calendar.YEAR) < minYear
+}
