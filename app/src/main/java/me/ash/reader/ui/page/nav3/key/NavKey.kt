@@ -58,6 +58,10 @@ sealed interface Route : NavKey {
     // Languages
     @Serializable data object Languages : Route
 
+    // Translation
+    @Serializable data object Translation : Route
+    @Serializable data object TranslationTargetLanguage : Route
+
     // Troubleshooting
     @Serializable data object Troubleshooting : Route
 

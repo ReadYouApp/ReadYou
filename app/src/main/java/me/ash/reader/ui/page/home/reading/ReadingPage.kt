@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 import kotlin.math.abs
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import me.ash.reader.R
 import me.ash.reader.infrastructure.android.TextToSpeechManager
@@ -47,7 +48,10 @@ import me.ash.reader.infrastructure.preference.LocalPullToSwitchArticle
 import me.ash.reader.infrastructure.preference.LocalReadingAutoHideToolbar
 import me.ash.reader.infrastructure.preference.LocalReadingBoldCharacters
 import me.ash.reader.infrastructure.preference.LocalReadingTextLineHeight
+import me.ash.reader.infrastructure.preference.LocalTranslateArticle
+import me.ash.reader.infrastructure.preference.LocalTranslateTitle
 import me.ash.reader.infrastructure.preference.not
+import me.ash.reader.ui.component.base.RYDialog
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.showToast
 import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
@@ -74,6 +78,8 @@ fun ReadingPage(
     val readingUiState = viewModel.readingUiState.collectAsStateValue()
     val readerState = viewModel.readerStateStateFlow.collectAsStateValue()
     val boldCharacters = LocalReadingBoldCharacters.current
+    val translateGlobalEnabled = LocalTranslateArticle.current.value
+    val translateTitleEnabled = LocalTranslateTitle.current.value
     val coroutineScope = rememberCoroutineScope()
 
     var isReaderScrollingDown by remember { mutableStateOf(false) }
@@ -169,6 +175,7 @@ fun ReadingPage(
                                         tween(durationMillis = exit, easing = FastOutLinearInEasing)
                                     ))
                         },
+                        contentKey = { listOf(it.articleId, it.content::class, it.listIndex, it.isTranslated) },
                         label = "",
                     ) {
                         remember { it }
@@ -253,13 +260,13 @@ fun ReadingPage(
                                                     enabled = isPullToSwitchArticleEnabled,
                                                 ),
                                             contentPadding = paddings,
-                                            content = content.text ?: "",
+                                            content = readerState.content.text ?: "",
                                             feedName = feedName,
-                                            title = title.toString(),
+                                            title = readerState.title.toString(),
                                             author = author,
                                             link = link,
                                             publishedDate = publishedDate,
-                                            isLoading = content is ReaderState.Loading,
+                                            isLoading = readerState.content is ReaderState.Loading,
                                             scrollState = scrollState,
                                             listState = listState,
                                             onImageClick = { imgUrl, altText ->
@@ -288,6 +295,11 @@ fun ReadingPage(
                             readerState.content is ReaderState.FullContent ||
                                 readerState.content is ReaderState.Error,
                         isBoldCharacters = boldCharacters.value,
+                        isTranslated = readerState.isTranslated,
+                        isTranslating = readerState.isTranslating,
+                        isTranslateEnabled = translateGlobalEnabled,
+                        isDownloadingModel = readerState.isDownloadingModel,
+                        translationProgress = readerState.translationProgress,
                         onUnread = { viewModel.updateReadStatus(it) },
                         onStarred = { viewModel.updateStarredStatus(it) },
                         onNextArticle = {
@@ -297,8 +309,8 @@ fun ReadingPage(
                             }
                         },
                         onFullContent = {
-                            if (it) viewModel.renderFullContent()
-                            else viewModel.renderDescriptionContent()
+                            if (it) viewModel.renderFullContent(translateTitleEnabled)
+                            else viewModel.renderDescriptionContent(translateTitleEnabled)
                         },
                         onBoldCharacters = { (!boldCharacters).put(context, coroutineScope) },
                         onReadAloud = {
@@ -333,6 +345,9 @@ fun ReadingPage(
                                     viewModel.textToSpeechManager.stateFlow.collectAsStateValue(),
                             )
                         },
+                        onTranslate = {
+                            viewModel.toggleTranslation(translateTitleEnabled)
+                        },
                     )
                 }
             }
@@ -356,4 +371,34 @@ fun ReadingPage(
             onDismissRequest = { showFullScreenImageViewer = false },
         )
     }
+
+    // Model download confirmation dialog
+    RYDialog(
+        visible = readerState.needsDownloadConfirmation,
+        onDismissRequest = { viewModel.cancelTranslation() },
+        title = {
+            androidx.compose.material3.Text(
+                text = stringResource(R.string.download_model_title)
+            )
+        },
+        text = {
+            androidx.compose.material3.Text(
+                text = stringResource(R.string.download_model_message)
+            )
+        },
+        confirmButton = {
+            androidx.compose.material3.TextButton(
+                onClick = { viewModel.confirmDownloadAndTranslate(translateTitleEnabled) }
+            ) {
+                androidx.compose.material3.Text(text = stringResource(R.string.confirm))
+            }
+        },
+        dismissButton = {
+            androidx.compose.material3.TextButton(
+                onClick = { viewModel.cancelTranslation() }
+            ) {
+                androidx.compose.material3.Text(text = stringResource(R.string.cancel))
+            }
+        },
+    )
 }

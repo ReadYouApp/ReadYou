@@ -201,6 +201,13 @@ sealed interface PreferencesKey {
         // Languages
         const val languages = "languages"
 
+        // Translation
+        // Translation
+        const val translateArticle = "translateArticle"
+        const val translateTargetLanguage = "translateTargetLanguage"
+        const val translateWifiOnly = "translateWifiOnly"
+        const val translateTitle = "translateTitle"
+
         private val keyList =
             listOf(
                 // Version
@@ -275,6 +282,12 @@ sealed interface PreferencesKey {
                 IntKey(sharedContent),
                 // Languages
                 IntKey(languages),
+                // Translation
+                // Translation
+                BooleanKey(translateArticle),
+                IntKey(translateTargetLanguage),
+                BooleanKey(translateWifiOnly),
+                BooleanKey(translateTitle),
             )
 
         val keys = keyList.associateBy { it.name }
@@ -362,6 +375,13 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
 
         // Languages
         const val languages = "languages"
+
+        // Translation
+        // Translation
+        const val translateArticle = "translateArticle"
+        const val translateTargetLanguage = "translateTargetLanguage"
+        const val translateWifiOnly = "translateWifiOnly"
+        const val translateTitle = "translateTitle"
 
         val keys: MutableMap<String, DataStoreKey<*>> =
             mutableMapOf(
@@ -513,6 +533,16 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
                 sharedContent to DataStoreKey(intPreferencesKey(sharedContent), Int::class.java),
                 // Languages
                 languages to DataStoreKey(intPreferencesKey(languages), Int::class.java),
+                // Translation
+                // Translation
+                translateArticle to
+                    DataStoreKey(booleanPreferencesKey(translateArticle), Boolean::class.java),
+                translateTargetLanguage to
+                    DataStoreKey(intPreferencesKey(translateTargetLanguage), Int::class.java),
+                translateWifiOnly to
+                    DataStoreKey(booleanPreferencesKey(translateWifiOnly), Boolean::class.java),
+                translateTitle to
+                    DataStoreKey(booleanPreferencesKey(translateTitle), Boolean::class.java),
             )
     }
 }
