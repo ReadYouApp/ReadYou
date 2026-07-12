@@ -35,10 +35,12 @@ fun LazyItemScope.FreshRSSConnection(
     var serverUrlValue by remember { mutableStateOf(securityKey.serverUrl) }
     var usernameValue by remember { mutableStateOf(securityKey.username) }
     var passwordValue by remember { mutableStateOf(securityKey.password) }
+    var customHeadersValue by remember { mutableStateOf(securityKey.customHeaders) }
 
     var serverUrlDialogVisible by remember { mutableStateOf(false) }
     var usernameDialogVisible by remember { mutableStateOf(false) }
     var passwordDialogVisible by remember { mutableStateOf(false) }
+    var customHeadersDialogVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(securityKey.password) { passwordMask = securityKey.password?.mask() }
 
@@ -73,6 +75,12 @@ fun LazyItemScope.FreshRSSConnection(
                 null,
             )
         },
+    ) {}
+    SettingItem(
+        title = stringResource(R.string.custom_headers),
+        desc = if (securityKey.customHeaders.isNullOrBlank()) null
+        else stringResource(R.string.custom_headers_hint),
+        onClick = { customHeadersDialogVisible = true },
     ) {}
 
     TextFieldDialog(
@@ -119,6 +127,21 @@ fun LazyItemScope.FreshRSSConnection(
                 save(account, viewModel, securityKey)
                 passwordDialogVisible = false
             }
+        },
+    )
+
+    TextFieldDialog(
+        visible = customHeadersDialogVisible,
+        title = stringResource(R.string.custom_headers),
+        value = customHeadersValue ?: "",
+        placeholder = stringResource(R.string.custom_headers_hint),
+        singleLine = false,
+        onValueChange = { customHeadersValue = it },
+        onDismissRequest = { customHeadersDialogVisible = false },
+        onConfirm = { newValue ->
+            securityKey.customHeaders = newValue.ifBlank { null }
+            save(account, viewModel, securityKey)
+            customHeadersDialogVisible = false
         },
     )
 }

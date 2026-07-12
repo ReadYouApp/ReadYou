@@ -106,6 +106,7 @@ constructor(
                 httpUsername = null,
                 httpPassword = null,
                 clientCertificateAlias = clientCertificateAlias,
+                customHeaders = customHeaders.parseCustomHeaders(),
                 syncLogger = syncLogger,
             )
         }
@@ -261,7 +262,7 @@ constructor(
             requireNotNull(account) { "cannot find account" }
             check(
                 account.type.id == AccountType.GoogleReader.id ||
-                    account.type.id == AccountType.FreshRSS.id
+                        account.type.id == AccountType.FreshRSS.id
             ) {
                 "account type is invalid"
             }
@@ -291,12 +292,12 @@ constructor(
             val isFreshRss = account.type.id == FreshRSS.id
             val remoteReadIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getReadItemIds(
-                            since = lastMonthAt,
-                            continuationId = it,
-                            useIt = isFreshRss,
-                        )
-                    }
+                    googleReaderAPI.getReadItemIds(
+                        since = lastMonthAt,
+                        continuationId = it,
+                        useIt = isFreshRss,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
@@ -431,13 +432,13 @@ constructor(
 
             val deferredList =
                 fetchItemsContentsDeferred(
-                        itemIds = toBeSync.await(),
-                        googleReaderAPI = googleReaderAPI,
-                        accountId = accountId,
-                        unreadIds = remoteUnreadIds.await(),
-                        starredIds = remoteStarredIds.await(),
-                        scope = this,
-                    )
+                    itemIds = toBeSync.await(),
+                    googleReaderAPI = googleReaderAPI,
+                    accountId = accountId,
+                    unreadIds = remoteUnreadIds.await(),
+                    starredIds = remoteStarredIds.await(),
+                    scope = this,
+                )
                     .toMutableList()
 
             val remoteGroups = async { groupWithFeedsMap.await().keys.toList() }
@@ -471,21 +472,21 @@ constructor(
 
             if (deferredList.isNotEmpty()) {
                 launch {
-                        whileSelect {
-                            for (deferred in deferredList) {
-                                deferred.onAwait {
-                                    articleDao.insertList(it)
-                                    articlesToNotify.addAll(
-                                        it.fastFilter {
-                                            it.isUnread && notificationFeedIds.contains(it.feedId)
-                                        }
-                                    )
-                                    deferredList.remove(deferred)
-                                    deferredList.isNotEmpty()
-                                }
+                    whileSelect {
+                        for (deferred in deferredList) {
+                            deferred.onAwait {
+                                articleDao.insertList(it)
+                                articlesToNotify.addAll(
+                                    it.fastFilter {
+                                        it.isUnread && notificationFeedIds.contains(it.feedId)
+                                    }
+                                )
+                                deferredList.remove(deferred)
+                                deferredList.isNotEmpty()
                             }
                         }
                     }
+                }
                     .invokeOnCompletion {
                         launch {
                             articlesToNotify
@@ -530,7 +531,7 @@ constructor(
             requireNotNull(account) { "cannot find account" }
             check(
                 account.type.id == AccountType.GoogleReader.id ||
-                    account.type.id == AccountType.FreshRSS.id
+                        account.type.id == AccountType.FreshRSS.id
             ) {
                 "account type is invalid"
             }
@@ -560,24 +561,24 @@ constructor(
 
             val remoteUnreadIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getItemIdsForFeed(
-                            feedId = feedId.dollarLast(),
-                            filterRead = true,
-                            continuationId = it,
-                        )
-                    }
+                    googleReaderAPI.getItemIdsForFeed(
+                        feedId = feedId.dollarLast(),
+                        filterRead = true,
+                        continuationId = it,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
 
             val remoteAllIds = async {
                 fetchItemIdsAndContinue {
-                        googleReaderAPI.getItemIdsForFeed(
-                            feedId = feedId.dollarLast(),
-                            filterRead = false,
-                            continuationId = it,
-                        )
-                    }
+                    googleReaderAPI.getItemIdsForFeed(
+                        feedId = feedId.dollarLast(),
+                        filterRead = false,
+                        continuationId = it,
+                    )
+                }
                     .map { it.shortId }
                     .toSet()
             }
@@ -747,13 +748,13 @@ constructor(
         starredIds: Set<String>,
     ): List<Article> = supervisorScope {
         fetchItemsContentsDeferred(
-                itemIds = itemIds,
-                googleReaderAPI = googleReaderAPI,
-                accountId = accountId,
-                unreadIds = unreadIds,
-                starredIds = starredIds,
-                scope = this,
-            )
+            itemIds = itemIds,
+            googleReaderAPI = googleReaderAPI,
+            accountId = accountId,
+            unreadIds = unreadIds,
+            starredIds = starredIds,
+            scope = this,
+        )
             .awaitAll()
             .flatten()
     }
@@ -777,28 +778,28 @@ constructor(
             when {
                 groupId != null -> {
                     if (before == null) {
-                            articleDao.queryMetadataByGroupIdWhenIsUnread(
-                                accountId,
-                                groupId,
-                                !isUnread,
-                            )
-                        } else {
-                            articleDao.queryMetadataByGroupIdWhenIsUnread(
-                                accountId,
-                                groupId,
-                                !isUnread,
-                                before,
-                            )
-                        }
+                        articleDao.queryMetadataByGroupIdWhenIsUnread(
+                            accountId,
+                            groupId,
+                            !isUnread,
+                        )
+                    } else {
+                        articleDao.queryMetadataByGroupIdWhenIsUnread(
+                            accountId,
+                            groupId,
+                            !isUnread,
+                            before,
+                        )
+                    }
                         .map { it.id.dollarLast() }
                 }
 
                 feedId != null -> {
                     if (before == null) {
-                            articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread)
-                        } else {
-                            articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread, before)
-                        }
+                        articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread)
+                    } else {
+                        articleDao.queryMetadataByFeedId(accountId, feedId, !isUnread, before)
+                    }
                         .map { it.id.dollarLast() }
                 }
 
@@ -808,10 +809,10 @@ constructor(
 
                 else -> {
                     if (before == null) {
-                            articleDao.queryMetadataAll(accountId, isUnread = !isUnread)
-                        } else {
-                            articleDao.queryMetadataAll(accountId, !isUnread, before)
-                        }
+                        articleDao.queryMetadataAll(accountId, isUnread = !isUnread)
+                    } else {
+                        articleDao.queryMetadataAll(accountId, !isUnread, before)
+                    }
                         .map { it.id.dollarLast() }
                 }
             }
@@ -864,4 +865,20 @@ constructor(
                 unmark = if (!isStarred) GoogleReaderAPI.Stream.Starred.tag else null,
             )
     }
+}
+
+/**
+ * Parses a multiline string of "key:value" pairs into a map.
+ * Each line should be in the format "Header-Name: value" or "Header-Name:value".
+ * Blank lines and lines without a colon are ignored.
+ */
+internal fun String?.parseCustomHeaders(): Map<String, String> {
+    if (isNullOrBlank()) return emptyMap()
+    return lines()
+        .mapNotNull { line ->
+            val idx = line.indexOf(':')
+            if (idx <= 0) null
+            else line.substring(0, idx).trim() to line.substring(idx + 1).trim()
+        }
+        .toMap()
 }
