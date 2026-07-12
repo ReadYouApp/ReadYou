@@ -39,7 +39,8 @@ private constructor(
     private val httpPassword: String? = null,
     private val syncLogger: SyncLogger,
     clientCertificateAlias: String? = null,
-) : ProviderAPI(context, clientCertificateAlias) {
+    customHeaders: Map<String, String> = emptyMap(),
+) : ProviderAPI(context, clientCertificateAlias, customHeaders) {
 
     sealed class Stream(val tag: String) {
         data object AllItems : Stream("user/-/state/com.google/reading-list")
@@ -288,8 +289,8 @@ private constructor(
 
     suspend fun getSubscriptionList(): GoogleReaderDTO.SubscriptionList? =
         retryableGetRequestWithResult<GoogleReaderDTO.SubscriptionList>(
-                "reader/api/0/subscription/list"
-            )
+            "reader/api/0/subscription/list"
+        )
             .getOrNull()
 
     suspend fun getReadItemIds(
@@ -299,16 +300,16 @@ private constructor(
         continuationId: String? = null,
     ): GoogleReaderDTO.ItemIds? =
         retryableGetRequestWithResult<GoogleReaderDTO.ItemIds>(
-                query = "reader/api/0/stream/items/ids",
-                params =
-                    mutableListOf<Pair<String, String>>().apply {
-                        if (useIt) add("s" to Stream.AllItems.tag)
-                        add(Pair(if (useIt) "it" else "s", Stream.Read.tag))
-                        add(Pair("ot", since.toString()))
-                        limit?.let { add(Pair("n", limit)) }
-                        continuationId?.let { add(Pair("c", continuationId)) }
-                    },
-            )
+            query = "reader/api/0/stream/items/ids",
+            params =
+                mutableListOf<Pair<String, String>>().apply {
+                    if (useIt) add("s" to Stream.AllItems.tag)
+                    add(Pair(if (useIt) "it" else "s", Stream.Read.tag))
+                    add(Pair("ot", since.toString()))
+                    limit?.let { add(Pair("n", limit)) }
+                    continuationId?.let { add(Pair("c", continuationId)) }
+                },
+        )
             .getOrNull()
 
     suspend fun getItemIdsForFeed(
@@ -319,16 +320,16 @@ private constructor(
         continuationId: String? = null,
     ): GoogleReaderDTO.ItemIds? =
         retryableGetRequestWithResult<GoogleReaderDTO.ItemIds>(
-                query = "reader/api/0/stream/items/ids",
-                params =
-                    mutableListOf<Pair<String, String>>().apply {
-                        add(Pair("s", Stream.Feed(feedId).tag))
-                        if (filterRead) add(Pair("xt", Stream.Read.tag))
-                        limit?.let { add(Pair("n", limit)) }
-                        since?.let { add(Pair("ot", since.toString())) }
-                        continuationId?.let { add(Pair("c", continuationId)) }
-                    },
-            )
+            query = "reader/api/0/stream/items/ids",
+            params =
+                mutableListOf<Pair<String, String>>().apply {
+                    add(Pair("s", Stream.Feed(feedId).tag))
+                    if (filterRead) add(Pair("xt", Stream.Read.tag))
+                    limit?.let { add(Pair("n", limit)) }
+                    since?.let { add(Pair("ot", since.toString())) }
+                    continuationId?.let { add(Pair("c", continuationId)) }
+                },
+        )
             .getOrNull()
 
     suspend fun getItemIdsForCategory(
@@ -339,16 +340,16 @@ private constructor(
         continuationId: String? = null,
     ): GoogleReaderDTO.ItemIds? =
         retryableGetRequestWithResult<GoogleReaderDTO.ItemIds>(
-                query = "reader/api/0/stream/items/ids",
-                params =
-                    mutableListOf<Pair<String, String>>().apply {
-                        add(Pair("s", Stream.Category(categoryId).tag))
-                        if (filterRead) add(Pair("xt", Stream.Read.tag))
-                        limit?.let { add(Pair("n", limit)) }
-                        since?.let { add(Pair("ot", since.toString())) }
-                        continuationId?.let { add(Pair("c", continuationId)) }
-                    },
-            )
+            query = "reader/api/0/stream/items/ids",
+            params =
+                mutableListOf<Pair<String, String>>().apply {
+                    add(Pair("s", Stream.Category(categoryId).tag))
+                    if (filterRead) add(Pair("xt", Stream.Read.tag))
+                    limit?.let { add(Pair("n", limit)) }
+                    since?.let { add(Pair("ot", since.toString())) }
+                    continuationId?.let { add(Pair("c", continuationId)) }
+                },
+        )
             .getOrNull()
 
     suspend fun getUnreadItemIds(
@@ -357,16 +358,16 @@ private constructor(
         continuationId: String? = null,
     ): GoogleReaderDTO.ItemIds? =
         retryableGetRequestWithResult<GoogleReaderDTO.ItemIds>(
-                query = "reader/api/0/stream/items/ids",
-                params =
-                    mutableListOf<Pair<String, String>>().apply {
-                        add(Pair("s", Stream.AllItems.tag))
-                        add(Pair("xt", Stream.Read.tag))
-                        limit?.let { add(Pair("n", limit)) }
-                        since?.let { add(Pair("ot", since.toString())) }
-                        continuationId?.let { add(Pair("c", continuationId)) }
-                    },
-            )
+            query = "reader/api/0/stream/items/ids",
+            params =
+                mutableListOf<Pair<String, String>>().apply {
+                    add(Pair("s", Stream.AllItems.tag))
+                    add(Pair("xt", Stream.Read.tag))
+                    limit?.let { add(Pair("n", limit)) }
+                    since?.let { add(Pair("ot", since.toString())) }
+                    continuationId?.let { add(Pair("c", continuationId)) }
+                },
+        )
             .getOrNull()
 
     suspend fun getStarredItemIds(
@@ -375,15 +376,15 @@ private constructor(
         continuationId: String? = null,
     ): GoogleReaderDTO.ItemIds? =
         retryableGetRequestWithResult<GoogleReaderDTO.ItemIds>(
-                query = "reader/api/0/stream/items/ids",
-                params =
-                    mutableListOf<Pair<String, String>>().apply {
-                        add(Pair("s", Stream.Starred.tag))
-                        limit?.let { add(Pair("n", limit)) }
-                        since?.let { add(Pair("ot", since.toString())) }
-                        continuationId?.let { add(Pair("c", continuationId)) }
-                    },
-            )
+            query = "reader/api/0/stream/items/ids",
+            params =
+                mutableListOf<Pair<String, String>>().apply {
+                    add(Pair("s", Stream.Starred.tag))
+                    limit?.let { add(Pair("n", limit)) }
+                    since?.let { add(Pair("ot", since.toString())) }
+                    continuationId?.let { add(Pair("c", continuationId)) }
+                },
+        )
             .getOrNull()
 
     suspend fun getItemsContents(ids: List<String>?) =
@@ -538,10 +539,11 @@ private constructor(
             httpUsername: String? = null,
             httpPassword: String? = null,
             clientCertificateAlias: String? = null,
+            customHeaders: Map<String, String> = emptyMap(),
             syncLogger: SyncLogger,
         ): GoogleReaderAPI =
             instances.getOrPut(
-                "$serverUrl$username$password$httpUsername$httpPassword$clientCertificateAlias"
+                "$serverUrl$username$password$httpUsername$httpPassword$clientCertificateAlias$customHeaders"
             ) {
                 GoogleReaderAPI(
                     context,
@@ -552,6 +554,7 @@ private constructor(
                     httpPassword,
                     syncLogger,
                     clientCertificateAlias,
+                    customHeaders,
                 )
             }
 
