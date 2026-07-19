@@ -122,8 +122,11 @@ constructor(
                     .firstOrNull()
                     ?.state
 
+            // 仅进程内正在运行时用 UPDATE 保留现场，
+            // 其他状态全部 CANCEL_AND_REENQUEUE 以重置 lastEnqueueTime，
+            // 避免系统时钟曾被修改导致的永久性 future schedule 污染
             val policy =
-                if (workState == WorkInfo.State.ENQUEUED || workState == WorkInfo.State.RUNNING)
+                if (workState == WorkInfo.State.RUNNING)
                     ExistingPeriodicWorkPolicy.UPDATE
                 else ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
 

@@ -13,6 +13,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
@@ -69,9 +70,22 @@ constructor(
             syncOnlyWhenCharging: SyncOnlyWhenChargingPreference,
             syncOnlyOnWiFi: SyncOnlyOnWiFiPreference,
         ) {
+            val workState =
+                workManager
+                    .getWorkInfosForUniqueWork(WORK_NAME_PERIODIC)
+                    .get()
+                    .firstOrNull()
+                    ?.state
+            // 仅进程内正在运行时用 UPDATE 保留现场，
+            // 其他状态全部 CANCEL_AND_REENQUEUE 以重置 lastEnqueueTime
+            val policy =
+                if (workState == WorkInfo.State.RUNNING)
+                    ExistingPeriodicWorkPolicy.UPDATE
+                else ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+
             workManager.enqueueUniquePeriodicWork(
                 WORK_NAME_PERIODIC,
-                ExistingPeriodicWorkPolicy.UPDATE,
+                policy,
                 PeriodicWorkRequestBuilder<WidgetUpdateWorker>(syncInterval.value, TimeUnit.MINUTES)
                     .setConstraints(
                         Constraints.Builder()
