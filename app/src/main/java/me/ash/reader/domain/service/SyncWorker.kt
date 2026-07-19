@@ -8,6 +8,7 @@ import dagger.assisted.AssistedInject
 import java.util.concurrent.TimeUnit
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.infrastructure.rss.ReaderCacheHelper
+import timber.log.Timber
 
 @HiltWorker
 class SyncWorker
@@ -16,6 +17,7 @@ constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
     private val rssService: RssService,
+    private val accountService: AccountService,
     private val readerCacheHelper: ReaderCacheHelper,
     private val workManager: WorkManager,
 ) : CoroutineWorker(context, workerParams) {
@@ -23,17 +25,33 @@ constructor(
     override suspend fun doWork(): Result {
         val data = inputData
         val accountId = data.getInt("accountId", -1)
-        require(accountId != -1)
+        if (accountId == -1) return Result.failure()
         val feedId = data.getString("feedId")
         val groupId = data.getString("groupId")
 
-        return rssService
-            .get()
+        // 按任务携带的 accountId 分发到对应类型的服务，
+        // 避免周期任务在切换账户后仍按“当前账户”类型分发而永久失败
+        val account = accountService.getAccountById(accountId) ?: return Result.failure()
+        val service = rssService.get(account.type.id)
+
+        return service
             .sync(accountId = accountId, feedId = feedId, groupId = groupId)
+            .let { result ->
+                // 达到重试上限后放弃本轮并返回 failure：
+                // 周期任务会被 WorkManager 重置（resetPeriodic），
+                // 下一个同步间隔照常运行，而不是陷入无限指数退避
+                if (result is Result.Retry && runAttemptCount >= MAX_RETRY_ATTEMPTS) {
+                    Timber.e("Sync failed after $runAttemptCount attempts, giving up this round")
+                    Result.failure()
+                } else result
+            }
             .also {
-                rssService.get().clearKeepArchivedArticles().forEach {
-                    readerCacheHelper.deleteCacheFor(articleId = it.id)
-                }
+                runCatching {
+                        service.clearKeepArchivedArticles().forEach {
+                            readerCacheHelper.deleteCacheFor(articleId = it.id)
+                        }
+                    }
+                    .onFailure { Timber.e(it, "Failed to clear archived articles") }
                 workManager
                     .beginUniqueWork(
                         uniqueWorkName = POST_SYNC_WORK_NAME,
@@ -55,6 +73,10 @@ constructor(
 
     companion object {
         private const val SYNC_WORK_NAME_PERIODIC = "ReadYou"
+
+        // 最大退避重试次数（首次运行 runAttemptCount 为 0，
+        // 之后每次退避重试 +1），超过后本轮放弃，等待下个周期
+        const val MAX_RETRY_ATTEMPTS = 2
         @Deprecated("do not use")
         private const val READER_WORK_NAME_PERIODIC = "FETCH_FULL_CONTENT_PERIODIC"
         private const val POST_SYNC_WORK_NAME = "POST_SYNC_WORK"

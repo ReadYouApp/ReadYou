@@ -36,6 +36,13 @@ constructor(
                 }
             }
 
-        return if (deferredList.awaitAll().any { !it }) Result.retry() else Result.success()
+        return when {
+            deferredList.awaitAll().all { it } -> Result.success()
+            // 达到重试上限后返回 success 放弃本轮，
+            // 让 POST_SYNC_WORK 唯一链正常结束（KEEP 策略下不阻塞后续同步的新链），
+            // 缺失的全文会在下次同步后的新链中再次尝试抓取
+            runAttemptCount >= SyncWorker.MAX_RETRY_ATTEMPTS -> Result.success()
+            else -> Result.retry()
+        }
     }
 }

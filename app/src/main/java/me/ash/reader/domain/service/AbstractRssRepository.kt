@@ -187,22 +187,26 @@ abstract class AbstractRssRepository(
 
     fun initSync() {
         accountService.getCurrentAccount().let {
-            val syncOnStart = it.syncOnStart.value
-            if (syncOnStart) {
+            if (it.syncOnStart.value) {
                 doSyncOneTime(it.id!!)
             }
-            if (it.syncInterval.value != SyncIntervalPreference.Manually.value) {
-                SyncWorker.enqueuePeriodicWork(account = it, workManager = workManager)
-                WidgetUpdateWorker.enqueuePeriodicWork(
-                    workManager = workManager,
-                    syncInterval = it.syncInterval,
-                    syncOnlyWhenCharging = it.syncOnlyWhenCharging,
-                    syncOnlyOnWiFi = it.syncOnlyOnWiFi,
-                )
-            } else {
-                SyncWorker.cancelPeriodicWork(workManager)
-                WidgetUpdateWorker.cancelPeriodicWork(workManager)
-            }
+            reschedulePeriodicWork(it)
+        }
+    }
+
+    /** 按账户的同步设置重排（或取消）周期性同步任务，设置变更后应立即调用以生效 */
+    fun reschedulePeriodicWork(account: Account = accountService.getCurrentAccount()) {
+        if (account.syncInterval.value != SyncIntervalPreference.Manually.value) {
+            SyncWorker.enqueuePeriodicWork(account = account, workManager = workManager)
+            WidgetUpdateWorker.enqueuePeriodicWork(
+                workManager = workManager,
+                syncInterval = account.syncInterval,
+                syncOnlyWhenCharging = account.syncOnlyWhenCharging,
+                syncOnlyOnWiFi = account.syncOnlyOnWiFi,
+            )
+        } else {
+            SyncWorker.cancelPeriodicWork(workManager)
+            WidgetUpdateWorker.cancelPeriodicWork(workManager)
         }
     }
 
