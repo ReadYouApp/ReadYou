@@ -6,6 +6,7 @@ import androidx.work.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CancellationException
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.infrastructure.rss.ReaderCacheHelper
 import timber.log.Timber
@@ -23,6 +24,19 @@ constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
+        return try {
+            doWorkInternal()
+        } catch (ce: CancellationException) {
+            // 留给 WorkManager 处理协程取消，不能吃掉
+            throw ce
+        } catch (e: Exception) {
+            Timber.e(e, "SyncWorker.doWork crashed")
+            if (runAttemptCount >= MAX_RETRY_ATTEMPTS) Result.failure()
+            else Result.retry()
+        }
+    }
+
+    private suspend fun doWorkInternal(): Result {
         val data = inputData
         val accountId = data.getInt("accountId", -1)
         if (accountId == -1) return Result.failure()
@@ -45,30 +59,36 @@ constructor(
                     Result.failure()
                 } else result
             }
-            .also {
-                runCatching {
-                        service.clearKeepArchivedArticles().forEach {
-                            readerCacheHelper.deleteCacheFor(articleId = it.id)
-                        }
-                    }
-                    .onFailure { Timber.e(it, "Failed to clear archived articles") }
-                workManager
-                    .beginUniqueWork(
-                        uniqueWorkName = POST_SYNC_WORK_NAME,
-                        existingWorkPolicy = ExistingWorkPolicy.KEEP,
-                        OneTimeWorkRequestBuilder<ReaderWorker>()
-                            .addTag(READER_TAG)
-                            .addTag(ONETIME_WORK_TAG)
-                            .setBackoffCriteria(
-                                backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                                backoffDelay = 30,
-                                timeUnit = TimeUnit.SECONDS,
-                            )
-                            .build(),
-                    )
-                    .then(OneTimeWorkRequestBuilder<WidgetUpdateWorker>().build())
-                    .enqueue()
+            .let { result ->
+                if (result is Result.Success) {
+                    runCatching { doPostSync(service, accountId) }
+                        .onFailure { Timber.e(it, "Failed to run post-sync tasks") }
+                }
+                result
             }
+    }
+
+    private suspend fun doPostSync(service: AbstractRssRepository, accountId: Int) {
+        service.clearKeepArchivedArticles(accountId).forEach {
+            readerCacheHelper.deleteCacheFor(articleId = it.id)
+        }
+        workManager
+            .beginUniqueWork(
+                uniqueWorkName = POST_SYNC_WORK_NAME,
+                existingWorkPolicy = ExistingWorkPolicy.KEEP,
+                OneTimeWorkRequestBuilder<ReaderWorker>()
+                    .addTag(READER_TAG)
+                    .addTag(ONETIME_WORK_TAG)
+                    .setInputData(workDataOf("accountId" to accountId))
+                    .setBackoffCriteria(
+                        backoffPolicy = BackoffPolicy.EXPONENTIAL,
+                        backoffDelay = 30,
+                        timeUnit = TimeUnit.SECONDS,
+                    )
+                    .build(),
+            )
+            .then(OneTimeWorkRequestBuilder<WidgetUpdateWorker>().build())
+            .enqueue()
     }
 
     companion object {
@@ -106,56 +126,46 @@ constructor(
                         .addTag(SYNC_TAG)
                         .addTag(ONETIME_WORK_TAG)
                         .setInputData(inputData)
+                        .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                         .build(),
                 )
                 .enqueue()
         }
 
         fun enqueuePeriodicWork(account: Account, workManager: WorkManager) {
-            val syncInterval = account.syncInterval
-            val syncOnlyWhenCharging = account.syncOnlyWhenCharging
-            val syncOnlyOnWiFi = account.syncOnlyOnWiFi
-            val workState =
-                workManager
-                    .getWorkInfosForUniqueWork(SYNC_WORK_NAME_PERIODIC)
-                    .get()
-                    .firstOrNull()
-                    ?.state
-
-            // 仅进程内正在运行时用 UPDATE 保留现场，
-            // 其他状态全部 CANCEL_AND_REENQUEUE 以重置 lastEnqueueTime，
-            // 避免系统时钟曾被修改导致的永久性 future schedule 污染
-            val policy =
-                if (workState == WorkInfo.State.RUNNING)
-                    ExistingPeriodicWorkPolicy.UPDATE
-                else ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
-
             workManager.enqueueUniquePeriodicWork(
                 SYNC_WORK_NAME_PERIODIC,
-                policy,
-                PeriodicWorkRequestBuilder<SyncWorker>(syncInterval.value, TimeUnit.MINUTES)
-                    .setConstraints(
-                        Constraints.Builder()
-                            .setRequiresCharging(syncOnlyWhenCharging.value)
-                            .setRequiredNetworkType(
-                                if (syncOnlyOnWiFi.value) NetworkType.UNMETERED
-                                else NetworkType.CONNECTED
-                            )
-                            .build()
-                    )
-                    .setBackoffCriteria(
-                        backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                        backoffDelay = 30,
-                        timeUnit = TimeUnit.SECONDS,
-                    )
-                    .setInputData(workDataOf("accountId" to account.id))
-                    .addTag(SYNC_TAG)
-                    .addTag(PERIODIC_WORK_TAG)
-                    .setInitialDelay(syncInterval.value, TimeUnit.MINUTES)
-                    .build(),
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                buildPeriodicWorkRequest(account),
             )
-
             workManager.cancelUniqueWork(READER_WORK_NAME_PERIODIC)
         }
+
+        private fun buildPeriodicWorkRequest(
+            account: Account,
+        ): PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<SyncWorker>(
+                account.syncInterval.value,
+                TimeUnit.MINUTES,
+            )
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiresCharging(account.syncOnlyWhenCharging.value)
+                        .setRequiredNetworkType(
+                            if (account.syncOnlyOnWiFi.value) NetworkType.UNMETERED
+                            else NetworkType.CONNECTED
+                        )
+                        .build()
+                )
+                .setBackoffCriteria(
+                    backoffPolicy = BackoffPolicy.EXPONENTIAL,
+                    backoffDelay = 30,
+                    timeUnit = TimeUnit.SECONDS,
+                )
+                .setInputData(workDataOf("accountId" to account.id))
+                .addTag(SYNC_TAG)
+                .addTag(PERIODIC_WORK_TAG)
+                .setInitialDelay(0, TimeUnit.MINUTES)
+                .build()
     }
 }

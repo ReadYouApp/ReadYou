@@ -9,8 +9,10 @@ import com.rometools.rome.feed.synd.SyndFeed
 import java.util.Date
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.article.ArchivedArticle
@@ -149,9 +151,8 @@ abstract class AbstractRssRepository(
         articleDao.markAsStarredByArticleId(accountId, articleId, isStarred)
     }
 
-    suspend fun clearKeepArchivedArticles(): List<Article> {
-        val accountId = accountService.getCurrentAccountId()
-        val currentAccount = accountService.getCurrentAccount()
+    suspend fun clearKeepArchivedArticles(accountId: Int): List<Article> {
+        val currentAccount = accountService.getAccountById(accountId)!!
         val keepArchived = currentAccount.keepArchived
         if (keepArchived != KeepArchivedPreference.Always) {
             val archivedArticles =
@@ -186,11 +187,14 @@ abstract class AbstractRssRepository(
     }
 
     fun initSync() {
-        accountService.getCurrentAccount().let {
-            if (it.syncOnStart.value) {
-                doSyncOneTime(it.id!!)
+        val accounts = runBlocking { accountService.getAccounts().first() }
+        accounts.forEach { account ->
+            if (account.id == accountService.getCurrentAccountId()) {
+                if (account.syncOnStart.value) {
+                    doSyncOneTime(account.id!!)
+                }
             }
-            reschedulePeriodicWork(it)
+            reschedulePeriodicWork(account)
         }
     }
 

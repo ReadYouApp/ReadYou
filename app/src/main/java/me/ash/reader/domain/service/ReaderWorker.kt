@@ -22,15 +22,24 @@ constructor(
     @Assisted workerParams: WorkerParameters,
     private val rssService: RssService,
     private val cacheHelper: ReaderCacheHelper,
+    private val accountService: AccountService,
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
+        val accountId = inputData.getInt("accountId", -1)
+        val accountTypeId = if (accountId != -1) {
+            accountService.getAccountById(accountId)?.type?.id ?: return Result.failure()
+        } else {
+            // 兼容未传 accountId 的旧调用方（例如已入队的旧任务）
+            accountService.getCurrentAccount().type.id
+        }
+
         val semaphore = Semaphore(2)
 
         val deferredList =
             withContext(Dispatchers.IO) {
-                val rssService = rssService.get()
-                val articleList = rssService.queryUnreadFullContentArticles()
+                val repo = rssService.get(accountTypeId)
+                val articleList = repo.queryUnreadFullContentArticles()
                 articleList.map {
                     async { semaphore.withPermit { cacheHelper.checkOrFetchFullContent(it) } }
                 }

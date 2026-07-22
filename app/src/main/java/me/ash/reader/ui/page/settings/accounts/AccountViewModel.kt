@@ -89,6 +89,8 @@ class AccountViewModel @Inject constructor(
     fun delete(accountId: Int, callback: () -> Unit = {}) {
         viewModelScope.launch(ioDispatcher) {
             accountService.delete(accountId)
+            // 删除账户后，为目标账户重建周期同步任务
+            rssService.get().reschedulePeriodicWork()
             withContext(mainDispatcher) {
                 callback()
             }
@@ -109,9 +111,10 @@ class AccountViewModel @Inject constructor(
         addAccountJob = applicationScope.launch(ioDispatcher) {
             val addAccount = accountService.addAccount(account)
             try {
-                val rssService = rssService.get(addAccount.type.id)
-                if (rssService.validCredentials(account)) {
-                    rssService.doSyncOneTime()
+                val rssRepo = rssService.get(addAccount.type.id)
+                if (rssRepo.validCredentials(account)) {
+                    rssRepo.doSyncOneTime()
+                    rssRepo.initSync()
                     withContext(mainDispatcher) {
                         callback(addAccount, null)
                     }

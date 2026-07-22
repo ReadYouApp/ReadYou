@@ -7,6 +7,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Build
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
 import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
@@ -204,4 +207,16 @@ fun Context.getCustomTabsPackages(): List<String> {
         }
         return@mapNotNull null
     }.toList()
+}
+
+/** 检查应用是否已被豁免电池优化 */
+fun Context.isIgnoringBatteryOptimizations(): Boolean {
+    val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+    return powerManager.isIgnoringBatteryOptimizations(packageName)
+}
+
+/** 跳转到系统电池优化设置页，引导用户豁免本应用 */
+fun Context.openBatteryOptimizationSettings() {
+    val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+    startActivity(intent)
 }
