@@ -54,6 +54,12 @@ class AccountViewModel @Inject constructor(
         applicationScope.launch(ioDispatcher) {
             accountService.update(accountId, block)
             rssService.get(accountId).clearAuthorization()
+            // 同步设置（间隔/仅 WiFi/仅充电）变更后立即重排周期任务，无需重启应用
+            if (accountId == accountService.getCurrentAccountId()) {
+                accountService.getAccountById(accountId)?.let {
+                    rssService.get(it.type.id).reschedulePeriodicWork(it)
+                }
+            }
         }
     }
 
@@ -83,6 +89,8 @@ class AccountViewModel @Inject constructor(
     fun delete(accountId: Int, callback: () -> Unit = {}) {
         viewModelScope.launch(ioDispatcher) {
             accountService.delete(accountId)
+            // 删除账户后，为目标账户重建周期同步任务
+            rssService.get().reschedulePeriodicWork()
             withContext(mainDispatcher) {
                 callback()
             }
@@ -103,9 +111,10 @@ class AccountViewModel @Inject constructor(
         addAccountJob = applicationScope.launch(ioDispatcher) {
             val addAccount = accountService.addAccount(account)
             try {
-                val rssService = rssService.get(addAccount.type.id)
-                if (rssService.validCredentials(account)) {
-                    rssService.doSyncOneTime()
+                val rssRepo = rssService.get(addAccount.type.id)
+                if (rssRepo.validCredentials(account)) {
+                    rssRepo.doSyncOneTime()
+                    rssRepo.initSync()
                     withContext(mainDispatcher) {
                         callback(addAccount, null)
                     }
@@ -126,6 +135,9 @@ class AccountViewModel @Inject constructor(
     fun switchAccount(targetAccount: Account, callback: () -> Unit = {}) {
         viewModelScope.launch(ioDispatcher) {
             accountService.switch(targetAccount)
+            // 切换账户后立即以新账户的设置重排周期任务，
+            // 避免周期任务继续携带旧账户的 accountId 运行
+            rssService.get(targetAccount.type.id).reschedulePeriodicWork(targetAccount)
             withContext(mainDispatcher) {
                 callback()
             }

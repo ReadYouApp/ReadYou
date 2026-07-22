@@ -1,6 +1,10 @@
 package me.ash.reader.infrastructure.android
 
 import android.app.Application
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -106,6 +110,25 @@ class AndroidApp : Application(), Configuration.Provider {
             checkUpdate()
         }
         Coil.setImageLoader(imageLoader)
+        registerNetworkCallback()
+    }
+
+    private fun registerNetworkCallback() {
+        val connectivityManager =
+            getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                applicationScope.launch {
+                    rssService.get().initSync()
+                }
+            }
+        }
+        val request =
+            NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
+        connectivityManager.registerNetworkCallback(request, networkCallback)
     }
 
     /** Override the [Configuration.Builder] to provide the [HiltWorkerFactory]. */

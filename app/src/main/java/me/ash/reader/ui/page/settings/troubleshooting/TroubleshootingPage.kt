@@ -64,6 +64,8 @@ import me.ash.reader.ui.component.base.Subtitle
 import me.ash.reader.ui.ext.DateFormat
 import me.ash.reader.ui.ext.MimeType
 import me.ash.reader.ui.ext.collectAsStateValue
+import me.ash.reader.ui.ext.isIgnoringBatteryOptimizations
+import me.ash.reader.ui.ext.openBatteryOptimizationSettings
 import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.ext.toString
@@ -181,6 +183,29 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
                         nextScheduledMillis = it.nextScheduleTimeMillis,
                     )
                 }
+
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Subtitle(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.battery_optimization),
+                    )
+                }
+                item {
+                    val isExempted = context.isIgnoringBatteryOptimizations()
+                    SettingItem(
+                        title = stringResource(R.string.battery_optimization),
+                        desc = if (isExempted)
+                            stringResource(R.string.battery_optimization_exempted)
+                        else
+                            stringResource(R.string.battery_optimization_restricted),
+                        onClick = {
+                            if (!isExempted) {
+                                context.openBatteryOptimizationSettings()
+                            }
+                        },
+                    ) {}
+                }
                 if (syncLogList.isNotEmpty()) {
                     item {
                         Subtitle(
@@ -262,11 +287,20 @@ fun WorkInfo(
     nextScheduledMillis: Long,
     modifier: Modifier = Modifier,
 ) {
-    val date = remember(nextScheduledMillis) { Date(nextScheduledMillis) }
+    val date = remember(nextScheduledMillis) {
+        val oneYearLater = System.currentTimeMillis() + 365L * 24 * 60 * 60 * 1000
+        if (nextScheduledMillis <= 0L || nextScheduledMillis >= oneYearLater * 1000) "N/A"
+        else {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+            sdf.format(java.util.Date(nextScheduledMillis))
+        }
+    }
     Column(modifier = modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
         Text(tags.toString(), style = MaterialTheme.typography.bodyLarge)
         Text(state.toString(), style = MaterialTheme.typography.bodySmall)
-        if (tags.contains(PERIODIC_WORK_TAG) && state != WorkInfo.State.FAILED) {
+        // 只有 ENQUEUED 的 nextScheduleTimeMillis 才有意义，
+        // 其他状态（CANCELLED/SUCCEEDED/FAILED/RUNNING）都是 Long.MAX_VALUE → 292278994 年 Aug 17
+        if (tags.contains(PERIODIC_WORK_TAG) && state == WorkInfo.State.ENQUEUED) {
             Text("Next scheduled time: $date", style = MaterialTheme.typography.bodySmall)
         }
     }
