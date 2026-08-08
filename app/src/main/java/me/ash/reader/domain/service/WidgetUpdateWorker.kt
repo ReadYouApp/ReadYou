@@ -17,7 +17,6 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import java.util.concurrent.TimeUnit
 import me.ash.reader.infrastructure.preference.SyncIntervalPreference
 import me.ash.reader.infrastructure.preference.SyncOnlyOnWiFiPreference
 import me.ash.reader.infrastructure.preference.SyncOnlyWhenChargingPreference
@@ -26,6 +25,7 @@ import me.ash.reader.ui.widget.ArticleCardWidgetReceiver
 import me.ash.reader.ui.widget.ArticleListWidget
 import me.ash.reader.ui.widget.ArticleListWidgetReceiver
 import me.ash.reader.ui.widget.WidgetRepository
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class WidgetUpdateWorker

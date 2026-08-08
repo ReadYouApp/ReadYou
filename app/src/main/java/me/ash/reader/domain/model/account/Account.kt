@@ -4,8 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import me.ash.reader.domain.model.account.security.DESUtils
-import me.ash.reader.infrastructure.preference.*
-import java.util.*
+import me.ash.reader.infrastructure.preference.KeepArchivedPreference
+import me.ash.reader.infrastructure.preference.SyncBlockList
+import me.ash.reader.infrastructure.preference.SyncBlockListPreference
+import me.ash.reader.infrastructure.preference.SyncIntervalPreference
+import me.ash.reader.infrastructure.preference.SyncOnStartPreference
+import me.ash.reader.infrastructure.preference.SyncOnlyOnWiFiPreference
+import me.ash.reader.infrastructure.preference.SyncOnlyWhenChargingPreference
+import java.util.Date
 
 /**
  * In the application, at least one account exists and different accounts

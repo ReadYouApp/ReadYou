@@ -15,7 +15,12 @@ import me.ash.reader.ui.theme.palette.colorspace.zcam.Izazbz.Companion.toIzazbz
 import me.ash.reader.ui.theme.palette.util.square
 import me.ash.reader.ui.theme.palette.util.toDegrees
 import me.ash.reader.ui.theme.palette.util.toRadians
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.exp
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 data class Zcam(
     val hz: Double = Double.NaN,

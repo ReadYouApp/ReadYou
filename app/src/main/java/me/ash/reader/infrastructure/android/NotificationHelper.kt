@@ -11,8 +11,6 @@ import androidx.core.graphics.drawable.toBitmapOrNull
 import coil.imageLoader
 import coil.request.ImageRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.Random
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,6 +24,8 @@ import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.ui.page.common.ExtraName
 import me.ash.reader.ui.page.common.NotificationGroupName
 import timber.log.Timber
+import java.util.Random
+import javax.inject.Inject
 
 class NotificationHelper
 @Inject

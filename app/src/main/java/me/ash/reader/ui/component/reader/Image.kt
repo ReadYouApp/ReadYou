@@ -25,11 +25,11 @@ import coil.request.ImageRequest
 import coil.size.Precision
 import coil.size.Size
 import coil.size.pxOrElse
-import kotlin.math.abs
-import kotlin.math.roundToInt
 import me.ash.reader.ui.ext.extractDomain
 import org.jsoup.helper.StringUtil
 import org.jsoup.nodes.Element
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 @Composable
 internal fun ArticleImage(

@@ -1,7 +1,7 @@
 package me.ash.reader.domain.model.general
 
-import me.ash.reader.domain.model.general.MarkAsReadConditions.*
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 /**
  * Mark as read conditions.

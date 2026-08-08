@@ -13,8 +13,8 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
-import java.text.Bidi
 import me.ash.reader.R
+import java.text.Bidi
 
 // TODO: Rename file to Typography.kt and add @Stable
 

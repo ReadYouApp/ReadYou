@@ -37,7 +37,6 @@ import me.ash.reader.ui.component.base.Tips
 import me.ash.reader.ui.ext.DataStoreKey
 import me.ash.reader.ui.ext.dataStore
 import me.ash.reader.ui.ext.put
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.svg.SVGString
 import me.ash.reader.ui.svg.WELCOME
 

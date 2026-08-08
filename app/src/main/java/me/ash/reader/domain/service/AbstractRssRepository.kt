@@ -6,8 +6,6 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.rometools.rome.feed.synd.SyndFeed
-import java.util.Date
-import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +26,8 @@ import me.ash.reader.infrastructure.preference.SyncIntervalPreference
 import me.ash.reader.infrastructure.rss.RssHelper
 import me.ash.reader.ui.ext.decodeHTML
 import me.ash.reader.ui.ext.spacerDollar
+import java.util.Date
+import java.util.UUID
 
 abstract class AbstractRssRepository(
     private val articleDao: ArticleDao,

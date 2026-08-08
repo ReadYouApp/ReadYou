@@ -21,7 +21,6 @@
 package me.ash.reader.ui.component.reader
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.lazy.LazyListScope
 import me.ash.reader.R
 

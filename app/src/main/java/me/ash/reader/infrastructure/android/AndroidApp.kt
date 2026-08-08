@@ -7,7 +7,6 @@ import androidx.work.WorkManager
 import coil.Coil
 import coil.ImageLoader
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,7 @@ import me.ash.reader.ui.ext.getLatestApk
 import me.ash.reader.ui.ext.isGitHub
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import javax.inject.Inject
 
 /** The Application class, where the Dagger components is generated. */
 @HiltAndroidApp

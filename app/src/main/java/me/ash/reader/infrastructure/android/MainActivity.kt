@@ -24,8 +24,6 @@ import androidx.profileinstaller.ProfileInstallerInitializer
 import androidx.work.WorkManager
 import coil.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.reflect.Field
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.ash.reader.domain.data.FilterStateUseCase
@@ -44,8 +42,10 @@ import me.ash.reader.ui.page.common.ExtraName
 import me.ash.reader.ui.page.home.feeds.subscribe.SubscribeViewModel
 import me.ash.reader.ui.page.nav3.AppEntry
 import me.ash.reader.ui.page.nav3.key.Route
-import me.ash.reader.ui.page.nav3.key.Route.*
+import me.ash.reader.ui.page.nav3.key.Route.Reading
 import me.ash.reader.ui.theme.AppTheme
+import java.lang.reflect.Field
+import javax.inject.Inject
 
 /** The Single-Activity Architecture. */
 @AndroidEntryPoint

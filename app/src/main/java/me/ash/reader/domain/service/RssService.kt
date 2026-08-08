@@ -18,6 +18,7 @@ constructor(
     private val localRssService: LocalRssService,
     private val feverRssService: FeverRssService,
     private val googleReaderRssService: GoogleReaderRssService,
+    private val minifluxRssService: MinifluxRssService,
 ) {
 
     private val currentServiceFlow =
@@ -38,6 +39,7 @@ constructor(
             AccountType.Fever.id -> feverRssService
             AccountType.GoogleReader.id -> googleReaderRssService
             AccountType.FreshRSS.id -> googleReaderRssService
+            AccountType.Miniflux.id -> minifluxRssService
             AccountType.Inoreader.id -> localRssService
             AccountType.Feedly.id -> localRssService
             else -> localRssService

@@ -62,7 +62,7 @@
 - [x] Fever
 - [x] Google Reader
 - [x] FreshRSS
-- [ ] Miniflux
+- [x] Miniflux
 - [ ] Tiny Tiny RSS
 - [ ] Inoreader
 - [ ] Feedly

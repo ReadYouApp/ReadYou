@@ -2,10 +2,8 @@ package me.ash.reader.infrastructure.android
 
 import android.content.Context
 import android.content.Intent
-import android.os.Looper
 import android.util.Log
 import me.ash.reader.infrastructure.exception.BusinessException
-import me.ash.reader.ui.ext.showToastLong
 import java.lang.Thread.UncaughtExceptionHandler
 
 /**

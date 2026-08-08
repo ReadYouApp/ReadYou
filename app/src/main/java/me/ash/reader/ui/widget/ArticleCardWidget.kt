@@ -34,7 +34,6 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -43,6 +42,7 @@ import me.ash.reader.R
 import me.ash.reader.infrastructure.android.MainActivity
 import me.ash.reader.ui.ext.collectAsStateValue
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleCardWidgetReceiver : GlanceAppWidgetReceiver() {
@@ -82,7 +82,10 @@ class ArticleCardWidget() : GlanceAppWidget() {
                     }
                 }
             }
-            .onFailure { Timber.e(it) }
+            .onFailure {
+                if (it is kotlinx.coroutines.CancellationException) throw it
+                Timber.e(it)
+            }
     }
 
     @SuppressLint("RestrictedApi")

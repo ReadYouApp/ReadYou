@@ -107,6 +107,14 @@ fun AddAccountsPage(
                         },
                     ) {}
                     SettingItem(
+                        title = "Miniflux",
+                        desc = stringResource(R.string.server_url),
+                        icon = Icons.Rounded.RssFeed,
+                        onClick = {
+                            additionViewModel.showAddMinifluxAccountDialog()
+                        },
+                    ) {}
+                    SettingItem(
                         title = stringResource(R.string.fever),
                         desc = stringResource(R.string.fever_desc),
                         iconPainter = painterResource(id = R.drawable.ic_fever),
@@ -128,6 +136,7 @@ fun AddAccountsPage(
     AddFeverAccountDialog(onBack, navigateToAccountDetails)
     AddGoogleReaderAccountDialog(onBack, navigateToAccountDetails)
     AddFreshRSSAccountDialog(onBack, navigateToAccountDetails)
+    AddMinifluxAccountDialog(onBack, navigateToAccountDetails)
 }
 
 @Preview

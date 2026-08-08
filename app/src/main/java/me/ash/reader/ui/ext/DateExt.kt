@@ -88,3 +88,13 @@ private fun String.parseToDate(
 }
 
 fun Date.isFuture(staticDate: Date = Date()): Boolean = this.time > staticDate.time
+
+fun String.toRFC3339Date(): Date? = try {
+    Date.from(java.time.Instant.parse(this))
+} catch (_: Exception) {
+    try {
+        Date.from(java.time.OffsetDateTime.parse(this).toInstant())
+    } catch (_: Exception) {
+        null
+    }
+}

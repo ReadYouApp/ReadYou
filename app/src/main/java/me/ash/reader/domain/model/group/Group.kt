@@ -2,7 +2,6 @@ package me.ash.reader.domain.model.group
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 /**
