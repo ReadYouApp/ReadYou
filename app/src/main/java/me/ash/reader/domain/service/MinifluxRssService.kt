@@ -148,16 +148,28 @@ constructor(
 
     override suspend fun deleteGroup(group: Group, onlyDeleteNoStarred: Boolean?) {
         val minifluxAPI = getMinifluxAPI()
-        val categoryId = group.id.dollarLast().toLong()
-        minifluxAPI.deleteCategory(categoryId)
-        groupDao.delete(group)
+        val categoryId = group.id.dollarLast().toLongOrNull()
+        if (categoryId != null) {
+            try {
+                minifluxAPI.deleteCategory(categoryId)
+            } catch (e: Exception) {
+                if (e is me.ash.reader.infrastructure.exception.MinifluxAPIException && e.statusCode != 404) throw e
+            }
+        }
+        super.deleteGroup(group, onlyDeleteNoStarred)
     }
 
     override suspend fun deleteFeed(feed: Feed, onlyDeleteNoStarred: Boolean?) {
         val minifluxAPI = getMinifluxAPI()
-        val feedId = feed.id.dollarLast().toLong()
-        minifluxAPI.removeFeed(feedId)
-        feedDao.delete(feed)
+        val feedId = feed.id.dollarLast().toLongOrNull()
+        if (feedId != null) {
+            try {
+                minifluxAPI.removeFeed(feedId)
+            } catch (e: Exception) {
+                if (e is me.ash.reader.infrastructure.exception.MinifluxAPIException && e.statusCode != 404) throw e
+            }
+        }
+        super.deleteFeed(feed, onlyDeleteNoStarred)
     }
 
     override suspend fun moveFeed(originGroupId: String, feed: Feed) {

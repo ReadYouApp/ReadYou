@@ -181,7 +181,11 @@ class MinifluxAPI private constructor(
 
     /** DELETE /v1/feeds/{id} */
     suspend fun removeFeed(feedId: Long) {
-        executeRequest<Unit>("DELETE", "/v1/feeds/$feedId")
+        try {
+            executeRequest<Unit>("DELETE", "/v1/feeds/$feedId")
+        } catch (e: MinifluxAPIException) {
+            if (e.statusCode != 404) throw e
+        }
     }
 
     /** PUT /v1/feeds/{id}/refresh */
