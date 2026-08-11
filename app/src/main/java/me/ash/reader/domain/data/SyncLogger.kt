@@ -2,15 +2,15 @@ package me.ash.reader.domain.data
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import me.ash.reader.infrastructure.di.ApplicationScope
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import me.ash.reader.infrastructure.di.ApplicationScope
 
 /**
  * Manages logging throwables to a directory, ensuring the number of log files does not exceed a

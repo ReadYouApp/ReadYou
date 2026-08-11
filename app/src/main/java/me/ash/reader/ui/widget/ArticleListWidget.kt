@@ -47,14 +47,14 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import me.ash.reader.R
 import me.ash.reader.infrastructure.android.MainActivity
 import me.ash.reader.ui.ext.collectAsStateValue
+import java.io.File
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleListWidgetReceiver : GlanceAppWidgetReceiver() {

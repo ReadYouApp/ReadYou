@@ -1,10 +1,22 @@
 package me.ash.reader.infrastructure.db
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import me.ash.reader.domain.model.account.*
+import me.ash.reader.domain.model.account.Account
+import me.ash.reader.domain.model.account.AccountTypeConverters
+import me.ash.reader.domain.model.account.KeepArchivedConverters
+import me.ash.reader.domain.model.account.SyncBlockListConverters
+import me.ash.reader.domain.model.account.SyncIntervalConverters
+import me.ash.reader.domain.model.account.SyncOnStartConverters
+import me.ash.reader.domain.model.account.SyncOnlyOnWiFiConverters
+import me.ash.reader.domain.model.account.SyncOnlyWhenChargingConverters
 import me.ash.reader.domain.model.account.security.DESUtils
 import me.ash.reader.domain.model.article.ArchivedArticle
 import me.ash.reader.domain.model.article.Article
@@ -14,9 +26,13 @@ import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
-import me.ash.reader.infrastructure.preference.*
+import me.ash.reader.infrastructure.preference.KeepArchivedPreference
+import me.ash.reader.infrastructure.preference.SyncIntervalPreference
+import me.ash.reader.infrastructure.preference.SyncOnStartPreference
+import me.ash.reader.infrastructure.preference.SyncOnlyOnWiFiPreference
+import me.ash.reader.infrastructure.preference.SyncOnlyWhenChargingPreference
 import me.ash.reader.ui.ext.toInt
-import java.util.*
+import java.util.Date
 
 @Database(
     entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class],

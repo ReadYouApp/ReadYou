@@ -12,7 +12,7 @@ import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.spacerDollar
 import java.io.InputStream
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class OPMLDataSource @Inject constructor(

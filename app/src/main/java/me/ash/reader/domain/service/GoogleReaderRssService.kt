@@ -8,11 +8,6 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import com.rometools.rome.feed.synd.SyndFeed
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.Calendar
-import java.util.Date
-import javax.inject.Inject
-import kotlin.collections.chunked
-import kotlin.collections.toSet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -59,6 +54,9 @@ import me.ash.reader.ui.ext.dollarLast
 import me.ash.reader.ui.ext.isFuture
 import me.ash.reader.ui.ext.spacerDollar
 import timber.log.Timber
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
 
 private const val TAG = "GoogleReaderRssService"
 

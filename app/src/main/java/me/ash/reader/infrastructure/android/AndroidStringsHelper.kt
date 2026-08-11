@@ -3,7 +3,7 @@ package me.ash.reader.infrastructure.android
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.ash.reader.ui.ext.formatAsString
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class AndroidStringsHelper @Inject constructor(

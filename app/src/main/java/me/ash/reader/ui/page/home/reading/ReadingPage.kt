@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
-import kotlin.math.abs
 import kotlinx.coroutines.launch
 import me.ash.reader.R
 import me.ash.reader.infrastructure.android.TextToSpeechManager
@@ -54,6 +53,7 @@ import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
 import me.ash.reader.ui.page.adaptive.NavigationAction
 import me.ash.reader.ui.page.adaptive.ReaderState
 import me.ash.reader.ui.page.home.reading.tts.TtsButton
+import kotlin.math.abs
 
 private const val UPWARD = 1
 private const val DOWNWARD = -1

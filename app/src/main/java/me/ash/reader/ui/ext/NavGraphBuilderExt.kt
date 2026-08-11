@@ -8,7 +8,7 @@
 
 package me.ash.reader.ui.ext
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry

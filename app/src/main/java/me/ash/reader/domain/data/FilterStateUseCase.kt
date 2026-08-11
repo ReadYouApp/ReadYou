@@ -1,6 +1,5 @@
 package me.ash.reader.domain.data
 
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +12,7 @@ import me.ash.reader.domain.repository.FeedDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.preference.SettingsProvider
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton

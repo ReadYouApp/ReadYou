@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rometools.rome.feed.synd.SyndFeed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.InputStream
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,6 +23,8 @@ import me.ash.reader.infrastructure.android.AndroidStringsHelper
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.rss.RssHelper
 import me.ash.reader.ui.ext.formatUrl
+import java.io.InputStream
+import javax.inject.Inject
 
 @HiltViewModel
 class SubscribeViewModel

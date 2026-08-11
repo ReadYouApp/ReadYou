@@ -27,6 +27,7 @@ fun LazyItemScope.AccountConnection(
         AccountType.Fever.id -> FeverConnection(account)
         AccountType.GoogleReader.id -> GoogleReaderConnection(account)
         AccountType.FreshRSS.id -> FreshRSSConnection(account)
+        AccountType.Miniflux.id -> MinifluxConnection(account)
         AccountType.Feedly.id -> {}
         AccountType.Inoreader.id -> {}
     }

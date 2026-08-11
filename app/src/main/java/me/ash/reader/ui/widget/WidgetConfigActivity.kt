@@ -53,7 +53,6 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.lifecycleScope
 import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import me.ash.reader.R
@@ -61,6 +60,7 @@ import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import me.ash.reader.infrastructure.preference.SettingsProvider
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.theme.AppTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WidgetConfigActivity : ComponentActivity() {

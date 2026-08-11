@@ -30,7 +30,10 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import me.ash.reader.ui.component.swipe.DragEvent.*
+import me.ash.reader.ui.component.swipe.DragEvent.DragCancelled
+import me.ash.reader.ui.component.swipe.DragEvent.DragDelta
+import me.ash.reader.ui.component.swipe.DragEvent.DragStarted
+import me.ash.reader.ui.component.swipe.DragEvent.DragStopped
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 import kotlin.math.sign

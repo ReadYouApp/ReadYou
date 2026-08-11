@@ -31,8 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.Dispatchers
 import me.ash.reader.R
-import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.infrastructure.net.Download
+import me.ash.reader.infrastructure.preference.LocalNewVersionLog
+import me.ash.reader.infrastructure.preference.LocalNewVersionNumber
+import me.ash.reader.infrastructure.preference.LocalNewVersionPublishDate
+import me.ash.reader.infrastructure.preference.LocalNewVersionSize
+import me.ash.reader.infrastructure.preference.OpenLinkPreference
+import me.ash.reader.infrastructure.preference.SkipVersionNumberPreference
 import me.ash.reader.ui.component.base.RYDialog
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.installLatestApk

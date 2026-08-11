@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import me.ash.reader.R
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.account.AccountType
@@ -38,7 +37,6 @@ import me.ash.reader.ui.component.base.RYDialog
 import me.ash.reader.ui.component.base.RYOutlineTextField
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.showToast
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.accounts.AccountViewModel
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)

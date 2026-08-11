@@ -14,7 +14,11 @@ import me.ash.reader.infrastructure.di.MainDispatcher
 import me.ash.reader.infrastructure.net.Download
 import me.ash.reader.infrastructure.net.NetworkDataSource
 import me.ash.reader.infrastructure.net.downloadToFileWithProgress
-import me.ash.reader.infrastructure.preference.*
+import me.ash.reader.infrastructure.preference.NewVersionDownloadUrlPreference
+import me.ash.reader.infrastructure.preference.NewVersionLogPreference
+import me.ash.reader.infrastructure.preference.NewVersionNumberPreference
+import me.ash.reader.infrastructure.preference.NewVersionPublishDatePreference
+import me.ash.reader.infrastructure.preference.NewVersionSizePreference
 import me.ash.reader.infrastructure.preference.NewVersionSizePreference.formatSize
 import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.getLatestApk

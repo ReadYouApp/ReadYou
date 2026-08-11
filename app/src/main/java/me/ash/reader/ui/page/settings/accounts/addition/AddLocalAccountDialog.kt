@@ -18,8 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -36,7 +34,6 @@ import me.ash.reader.ui.component.base.RYDialog
 import me.ash.reader.ui.component.base.RYOutlinedTextField2
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.showToast
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.settings.accounts.AccountViewModel
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)

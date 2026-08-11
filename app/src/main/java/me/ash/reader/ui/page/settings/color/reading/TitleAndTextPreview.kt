@@ -1,7 +1,10 @@
 package me.ash.reader.ui.page.settings.color.reading
 
-import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,7 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 import me.ash.reader.R
-import me.ash.reader.infrastructure.preference.*
+import me.ash.reader.infrastructure.preference.LocalReadingFonts
+import me.ash.reader.infrastructure.preference.LocalReadingSubheadAlign
+import me.ash.reader.infrastructure.preference.LocalReadingSubheadBold
+import me.ash.reader.infrastructure.preference.LocalReadingSubheadUpperCase
+import me.ash.reader.infrastructure.preference.LocalReadingTextLineHeight
+import me.ash.reader.infrastructure.preference.LocalReadingTitleAlign
+import me.ash.reader.infrastructure.preference.LocalReadingTitleBold
+import me.ash.reader.infrastructure.preference.LocalReadingTitleUpperCase
 import me.ash.reader.ui.component.reader.bodyStyle
 import me.ash.reader.ui.component.reader.h3Style
 import me.ash.reader.ui.component.reader.textHorizontalPadding

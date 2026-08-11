@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import java.util.concurrent.Executors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -44,6 +43,7 @@ import me.ash.reader.ui.component.reader.MediumContentWidth
 import me.ash.reader.ui.page.home.flow.FlowPage
 import me.ash.reader.ui.page.home.reading.ReadingPage
 import timber.log.Timber
+import java.util.concurrent.Executors
 
 @Parcelize data class ArticleData(val articleId: String, val listIndex: Int? = null) : Parcelable
 

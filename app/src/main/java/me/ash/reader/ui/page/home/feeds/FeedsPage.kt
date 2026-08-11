@@ -58,7 +58,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.eventFlow
 import androidx.work.WorkInfo
-import kotlin.collections.set
 import kotlinx.coroutines.launch
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.LocalFeedsFilterBarPadding
@@ -75,11 +74,9 @@ import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
 import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.ext.collectAsStateValue
-import me.ash.reader.ui.ext.currentAccountId
 import me.ash.reader.ui.ext.findActivity
 import me.ash.reader.ui.ext.getCurrentVersion
 import me.ash.reader.ui.ext.surfaceColorAtElevation
-import me.ash.reader.ui.page.common.RouteName
 import me.ash.reader.ui.page.home.feeds.accounts.AccountsTab
 import me.ash.reader.ui.page.home.feeds.drawer.feed.FeedOptionDrawer
 import me.ash.reader.ui.page.home.feeds.drawer.group.GroupOptionDrawer

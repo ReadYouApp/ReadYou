@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Looper
 import androidx.datastore.preferences.core.intPreferencesKey
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,6 +29,8 @@ import me.ash.reader.ui.ext.getDefaultGroupId
 import me.ash.reader.ui.ext.put
 import me.ash.reader.ui.ext.showToast
 import me.ash.reader.ui.ext.spacerDollar
+import java.util.UUID
+import javax.inject.Inject
 
 class AccountService
 @Inject

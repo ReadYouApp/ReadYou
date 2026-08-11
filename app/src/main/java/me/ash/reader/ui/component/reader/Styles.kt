@@ -38,7 +38,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.ash.reader.infrastructure.preference.*
+import me.ash.reader.infrastructure.preference.LocalReadingFonts
+import me.ash.reader.infrastructure.preference.LocalReadingImageHorizontalPadding
+import me.ash.reader.infrastructure.preference.LocalReadingImageRoundedCorners
+import me.ash.reader.infrastructure.preference.LocalReadingSubheadAlign
+import me.ash.reader.infrastructure.preference.LocalReadingSubheadBold
+import me.ash.reader.infrastructure.preference.LocalReadingTextAlign
+import me.ash.reader.infrastructure.preference.LocalReadingTextBold
+import me.ash.reader.infrastructure.preference.LocalReadingTextFontSize
+import me.ash.reader.infrastructure.preference.LocalReadingTextHorizontalPadding
+import me.ash.reader.infrastructure.preference.LocalReadingTextLetterSpacing
 import me.ash.reader.ui.ext.alphaLN
 
 val MediumContentWidth = 600.dp

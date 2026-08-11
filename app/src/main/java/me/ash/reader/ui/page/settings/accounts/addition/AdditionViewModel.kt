@@ -86,6 +86,22 @@ class AdditionViewModel @Inject constructor(
             )
         }
     }
+
+    fun showAddMinifluxAccountDialog() {
+        _additionUiState.update {
+            it.copy(
+                addMinifluxAccountDialogVisible = true,
+            )
+        }
+    }
+
+    fun hideAddMinifluxAccountDialog() {
+        _additionUiState.update {
+            it.copy(
+                addMinifluxAccountDialogVisible = false,
+            )
+        }
+    }
 }
 
 data class AdditionUiState(
@@ -93,4 +109,5 @@ data class AdditionUiState(
     val addFeverAccountDialogVisible: Boolean = false,
     val addGoogleReaderAccountDialogVisible: Boolean = false,
     val addFreshRSSAccountDialogVisible: Boolean = false,
+    val addMinifluxAccountDialogVisible: Boolean = false,
 )

@@ -2,9 +2,6 @@ package me.ash.reader.infrastructure.rss.provider.greader
 
 import android.content.Context
 import androidx.annotation.CheckResult
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.text.hexToLong
-import kotlin.text.startsWith
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import me.ash.reader.domain.data.SyncLogger
@@ -26,6 +23,7 @@ import okhttp3.Request
 import okhttp3.executeAsync
 import okio.IOException
 import timber.log.Timber
+import java.util.concurrent.ConcurrentHashMap
 
 private const val TAG = "GoogleReaderAPI"
 

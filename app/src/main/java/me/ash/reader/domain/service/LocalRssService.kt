@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.Date
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,6 +23,8 @@ import me.ash.reader.infrastructure.di.DefaultDispatcher
 import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.infrastructure.rss.RssHelper
 import timber.log.Timber
+import java.util.Date
+import javax.inject.Inject
 
 private const val TAG = "LocalRssService"
 

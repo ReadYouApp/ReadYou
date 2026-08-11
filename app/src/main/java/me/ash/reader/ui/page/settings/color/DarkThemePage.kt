@@ -1,6 +1,11 @@
 package me.ash.reader.ui.page.settings.color
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -18,7 +23,11 @@ import me.ash.reader.infrastructure.preference.DarkThemePreference
 import me.ash.reader.infrastructure.preference.LocalAmoledDarkTheme
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import me.ash.reader.infrastructure.preference.not
-import me.ash.reader.ui.component.base.*
+import me.ash.reader.ui.component.base.DisplayText
+import me.ash.reader.ui.component.base.FeedbackIconButton
+import me.ash.reader.ui.component.base.RYScaffold
+import me.ash.reader.ui.component.base.RYSwitch
+import me.ash.reader.ui.component.base.Subtitle
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.theme.palette.onLight
 

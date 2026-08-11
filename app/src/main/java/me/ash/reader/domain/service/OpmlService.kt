@@ -17,7 +17,7 @@ import me.ash.reader.infrastructure.rss.OPMLDataSource
 import me.ash.reader.ui.ext.currentAccountId
 import me.ash.reader.ui.ext.getDefaultGroupId
 import java.io.InputStream
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 /**

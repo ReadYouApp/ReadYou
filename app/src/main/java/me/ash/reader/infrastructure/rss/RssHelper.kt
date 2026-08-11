@@ -10,11 +10,7 @@ import com.rometools.rome.feed.synd.SyndFeed
 import com.rometools.rome.feed.synd.SyndImageImpl
 import com.rometools.rome.io.SyndFeedInput
 import com.rometools.rome.io.XmlReader
-import java.io.ByteArrayInputStream
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.nio.charset.Charset
-import java.util.*
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.article.Article
@@ -33,6 +29,12 @@ import okhttp3.executeAsync
 import okhttp3.internal.commonIsSuccessful
 import okio.IOException
 import org.jsoup.Jsoup
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
+import javax.inject.Inject
 
 val enclosureRegex = """<enclosure\s+url="([^"]+)"\s+type=".*"\s*/>""".toRegex()
 val imgRegex = """img.*?src=(["'])((?!data).*?)\1""".toRegex(RegexOption.DOT_MATCHES_ALL)
