@@ -84,7 +84,7 @@ fun LazyItemScope.FreshRSSConnection(
         onDismissRequest = { serverUrlDialogVisible = false },
         onConfirm = {
             if (securityKey.serverUrl?.isNotBlank() == true) {
-                securityKey.serverUrl = serverUrlValue
+                securityKey.serverUrl = serverUrlValue?.let { if (it.endsWith("/")) it else "$it/" }
                 save(account, viewModel, securityKey)
                 serverUrlDialogVisible = false
             }
