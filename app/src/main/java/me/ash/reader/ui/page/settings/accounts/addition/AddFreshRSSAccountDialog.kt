@@ -66,6 +66,7 @@ fun AddFreshRSSAccountDialog(
     var freshRSSUsername by rememberSaveable { mutableStateOf("") }
     var freshRSSPassword by rememberSaveable { mutableStateOf("") }
     var freshRSSClientCertificateAlias by rememberSaveable { mutableStateOf("") }
+    var freshRSSCustomHeaders by rememberSaveable { mutableStateOf("") }
 
     RYDialog(
         modifier = Modifier.padding(horizontal = 44.dp),
@@ -143,6 +144,18 @@ fun AddFreshRSSAccountDialog(
                     freshRSSClientCertificateAlias = it
                 }
                 Spacer(modifier = Modifier.height(10.dp))
+                RYOutlineTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    requestFocus = false,
+                    readOnly = accountUiState.isLoading,
+                    value = freshRSSCustomHeaders,
+                    onValueChange = { freshRSSCustomHeaders = it },
+                    label = stringResource(R.string.custom_headers),
+                    placeholder = stringResource(R.string.custom_headers_hint),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    singleLine = false,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
             }
         },
         confirmButton = {
@@ -165,6 +178,7 @@ fun AddFreshRSSAccountDialog(
                                 username = freshRSSUsername,
                                 password = freshRSSPassword,
                                 clientCertificateAlias = freshRSSClientCertificateAlias,
+                                customHeaders = freshRSSCustomHeaders.ifBlank { null },
                             ).toString(),
                         )
                     ) { account, exception ->

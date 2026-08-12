@@ -287,6 +287,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="client_certificate">Client certificate (optional)</string>
+    <string name="custom_headers">Custom headers (optional)</string>
+    <string name="custom_headers_hint">One per line: Key: Value</string>
     <string name="connection">Connection</string>
     <string name="system_default">System</string>
     <string name="initial_open_app">App when link is clicked</string>
