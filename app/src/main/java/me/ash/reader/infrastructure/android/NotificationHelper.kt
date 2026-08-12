@@ -63,6 +63,8 @@ constructor(
                     }
                 }
 
+            val inboxStyle = NotificationCompat.InboxStyle()
+            articles.forEach { inboxStyle.addLine(it.title) }
             notificationManager.notify(
                 feed.id.hashCode(),
                 NotificationCompat.Builder(context, NotificationGroupName.ARTICLE_UPDATE)
@@ -71,9 +73,10 @@ constructor(
                         context.resources.getQuantityText(R.plurals.unread_desc, articles.size)
                     )
                     .setSmallIcon(R.drawable.ic_notification)
-                    .setStyle(NotificationCompat.InboxStyle().setSummaryText(feed.name))
+                    .setStyle(inboxStyle)
                     .setGroup(feed.id)
                     .setGroupSummary(true)
+                    .setAutoCancel(true)
                     .build(),
             )
 
@@ -101,7 +104,7 @@ constructor(
                         )
                         .setGroup(feed.id)
                 notificationManager.notify(
-                    Random().nextInt() + article.id.hashCode(),
+                    article.id.hashCode(),
                     builder.build(),
                 )
             }

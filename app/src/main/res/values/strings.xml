@@ -332,6 +332,10 @@
     <string name="troubleshooting">Troubleshooting</string>
     <string name="troubleshooting_desc">Bug report, app preferences</string>
     <string name="bug_report">Bug report</string>
+    <string name="battery_optimization">Background running</string>
+    <string name="battery_optimization_desc">Allow background running to keep periodic sync reliable</string>
+    <string name="battery_optimization_exempted">Background running allowed</string>
+    <string name="battery_optimization_restricted">System restricts background running, sync may be unreliable</string>
     <string name="issue_tracer_url" translatable="false">https://github.com/ReadYouApp/ReadYou/issues</string>
     <string name="app_preferences">App preferences</string>
     <string name="import_from_protobuf_file">Import from protobuf file</string>

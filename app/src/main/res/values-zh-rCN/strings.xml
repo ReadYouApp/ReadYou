@@ -291,6 +291,10 @@
     <string name="troubleshooting">故障排除</string>
     <string name="troubleshooting_desc">错误报告、应用选项</string>
     <string name="bug_report">错误报告</string>
+    <string name="battery_optimization">后台运行</string>
+    <string name="battery_optimization_desc">允许后台运行可确保定时同步不受系统省电限制影响</string>
+    <string name="battery_optimization_exempted">已允许后台运行</string>
+    <string name="battery_optimization_restricted">系统限制了后台运行，定时同步可能失效</string>
     <string name="app_preferences">应用程序偏好设置</string>
     <string name="import_from_protobuf_file">导入 protobuf 文件</string>
     <string name="export_as_protobuf_file">导出为 protobuf 文件</string>

@@ -321,7 +321,8 @@ constructor(
             //                withContext(mainDispatcher) {
             //                    context.showToast(e.message)
             //                }
-            ListenableWorker.Result.failure()
+            // 返回 retry 与其他账户类型保持一致，由 SyncWorker 统一控制重试上限
+            ListenableWorker.Result.retry()
         }
     }
 
