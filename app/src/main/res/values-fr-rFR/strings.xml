@@ -346,6 +346,11 @@
     <string name="list_widget_label">Vue liste</string>
     <string name="card_widget_label">Vue carte</string>"
     <string name="widget_description">Voir les derniers articles non lus à partir de sources sélectionnées</string>
+    <string name="disable">Désactiver</string>
+    <string name="add_keyword_filter">Ajouter un mot-clé filtré</string>
+    <string name="keyword">Mot-clé</string>
+    <string name="keyword_filtering_title">Filtrage par mot-clé</string>
+    <string name="keyword_filtering_desc">Ajouter un nouveau filtre</string>
     <string name="apply">Appliquer</string>
     <string name="notifications">Notifications</string>
     <string name="disabled">Désactivé</string>
@@ -354,6 +359,5 @@
     <string name="open_in_browser_desc">Ouvrir les articles dans le navigateur</string>
     <string name="parse_full_content_desc">Récupérer les articles complets depuis les pages wev</string>
     <string name="enable">Activer</string>
-    <string name="disable">Désactiver</string>
     <string name="group_configuration_description">Configurer \"%1$s\" pour les flux dans \"%2$s\"</string>
 </resources>
