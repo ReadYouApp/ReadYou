@@ -82,6 +82,8 @@ The following are the progress made so far and the goals to be worked on in the 
 
 F-Droid releases can not upgrade to other releases and it is compiled, signed and distributed uniformly by [F-Droid](https://f-droid.org/docs/FAQ_-_General/).
 
+Github releases can be check with the SHA-256 signing certificate : `721e4043c439bd70c90f46ae166ddc233fc75c1235bf8cb27b99a4df09cc3b99`
+
 ## Nightly
 
 We offer Nightly versions for testing purposes. These versions include the latest features and improvements but may not be as stable as our regular releases. Please note that Nightly builds might have bugs and are not recommended for everyday use.
