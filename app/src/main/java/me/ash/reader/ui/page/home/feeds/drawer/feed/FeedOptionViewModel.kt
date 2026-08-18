@@ -128,6 +128,15 @@ constructor(
         }
     }
 
+    fun changeAutoTranslatePreset() {
+        viewModelScope.launch(ioDispatcher) {
+            _feedOptionUiState.value.feed?.let {
+                rssService.get().updateFeed(it.copy(isTranslate = !it.isTranslate))
+                fetchFeed(it.id)
+            }
+        }
+    }
+
     fun delete(callback: () -> Unit = {}) {
         _feedOptionUiState.value.feed?.let {
             applicationScope.launch(ioDispatcher) {

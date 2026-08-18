@@ -16,6 +16,7 @@ import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.TipsAndUpdates
 import androidx.compose.material.icons.outlined.TouchApp
+import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +52,7 @@ fun SettingsPage(
     navigateToColorAndStyle: () -> Unit,
     navigateToInteraction: () -> Unit,
     navigateToLanguages: () -> Unit,
+    navigateToTranslation: () -> Unit,
     navigateToTroubleshooting: () -> Unit,
     navigateToTipsAndSupport: () -> Unit,
 ) {
@@ -133,6 +135,14 @@ fun SettingsPage(
                         desc = Locale.getDefault().toDisplayName(),
                         icon = Icons.Outlined.Language,
                         onClick = navigateToLanguages
+                    )
+                }
+                item {
+                    SelectableSettingGroupItem(
+                        title = stringResource(R.string.translation),
+                        desc = stringResource(R.string.translation_desc),
+                        icon = Icons.Outlined.Translate,
+                        onClick = navigateToTranslation
                     )
                 }
                 item {

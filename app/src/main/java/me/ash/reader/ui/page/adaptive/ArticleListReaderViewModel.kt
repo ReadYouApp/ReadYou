@@ -46,6 +46,7 @@ import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.infrastructure.preference.PullToLoadNextFeedPreference
 import me.ash.reader.infrastructure.preference.SettingsProvider
 import me.ash.reader.infrastructure.rss.ReaderCacheHelper
+import me.ash.reader.infrastructure.translation.TranslationService
 import timber.log.Timber
 
 private const val TAG = "FlowViewModel"
@@ -66,6 +67,7 @@ constructor(
     val textToSpeechManager: TextToSpeechManager,
     private val imageDownloader: AndroidImageDownloader,
     private val articleListUseCase: ArticlePagingListUseCase,
+    val translationService: TranslationService,
     workManager: WorkManager,
 ) : ViewModel() {
 
@@ -308,9 +310,23 @@ constructor(
                             author = article.author,
                             link = article.link,
                             publishedDate = article.date,
+                            isTranslated = false,
+                            isTranslating = false,
+                            originalContent = null,
+                            detectedLanguage = null,
+                            needsDownloadConfirmation = false,
+                            pendingSourceLanguage = null,
+                            isDownloadingModel = false,
+                            translationProgress = 0f,
                         )
                         .prefetchArticleId()
                         .renderContent(this)
+                }
+                // Detect article language in background for same-language guard
+                detectArticleLanguage()
+                // Auto-translate if feed has isTranslate enabled
+                if (feed.isTranslate && settingsProvider.settings.translateArticle.value) {
+                    translateContent()
                 }
             }
         }
@@ -319,6 +335,19 @@ constructor(
     fun clearReadingData() {
         _readingUiState.update { ReadingUiState() }
         _readerState.update { ReaderState() }
+    }
+
+    /**
+     * Detect the language of the current article content in the background.
+     * Updates ReaderState.detectedLanguage so the UI can hide the translate button
+     * when the article is already in the target language.
+     */
+    private fun detectArticleLanguage() {
+        viewModelScope.launch {
+            val content = _readerState.value.content.text ?: return@launch
+            val detected = translationService.identifyHtmlLanguage(content)
+            _readerState.update { it.copy(detectedLanguage = detected) }
+        }
     }
 
     suspend fun ReaderState.renderContent(articleWithFeed: ArticleWithFeed): ReaderState {
@@ -336,15 +365,39 @@ constructor(
         return copy(content = contentState)
     }
 
-    fun renderDescriptionContent() {
+    fun renderDescriptionContent(translateTitle: Boolean = false) {
+        val wasTranslated = _readerState.value.isTranslated
         _readerState.update {
             it.copy(
-                content = ReaderState.Description(content = currentArticle?.rawDescription ?: "")
+                content = ReaderState.Description(content = currentArticle?.rawDescription ?: ""),
+                // Reset translation state — content source changed
+                isTranslated = false,
+                isTranslating = false,
+                originalContent = null,
+                title = it.originalTitle ?: it.title,
+                originalTitle = null,
+                translationProgress = 0f,
             )
+        }
+        // Auto-translate the new content if translation was active
+        if (wasTranslated) {
+            translateContent(translateTitle)
         }
     }
 
-    fun renderFullContent() {
+    fun renderFullContent(translateTitle: Boolean = false) {
+        val wasTranslated = _readerState.value.isTranslated
+        // Reset translation state before loading new content
+        _readerState.update {
+            it.copy(
+                isTranslated = false,
+                isTranslating = false,
+                originalContent = null,
+                title = it.originalTitle ?: it.title,
+                originalTitle = null,
+                translationProgress = 0f,
+            )
+        }
         val fetchJob =
             viewModelScope.launch {
                 readerCacheHelper
@@ -352,6 +405,10 @@ constructor(
                     .onSuccess { content ->
                         _readerState.update {
                             it.copy(content = ReaderState.FullContent(content = content))
+                        }
+                        // Auto-translate after full content is loaded
+                        if (wasTranslated) {
+                            translateContent(translateTitle)
                         }
                     }
                     .onFailure { th ->
@@ -388,6 +445,220 @@ constructor(
 
     private fun setLoading() {
         _readerState.update { it.copy(content = ReaderState.Loading) }
+    }
+
+    fun translateContent(translateTitle: Boolean = true) {
+        val currentContent = _readerState.value.content.text ?: return
+        val articleId = _readerState.value.articleId
+        val targetLang = translationService.getTargetLanguageTag()
+
+        // Check cache first
+        if (articleId != null) {
+            val cached = translationService.getCachedTranslation(articleId, targetLang)
+            if (cached != null) {
+                _readerState.update {
+                    it.copy(
+                        originalContent = if (it.originalContent == null) it.content else it.originalContent,
+                        originalTitle = if (it.originalTitle == null) it.title else it.originalTitle,
+                        content = when (it.content) {
+                            is ReaderState.Description -> ReaderState.Description(cached)
+                            is ReaderState.FullContent -> ReaderState.FullContent(cached)
+                            else -> it.content
+                        },
+                        isTranslated = true,
+                        isTranslating = false,
+                    )
+                }
+                // Translate title from cache path too
+                if (translateTitle && !_readerState.value.originalTitle.isNullOrBlank()) {
+                    viewModelScope.launch {
+                        // Detect language from original content (longer text = reliable detection)
+                        val sourceLanguage = translationService.identifyHtmlLanguage(currentContent)
+                        if (sourceLanguage != "und" && sourceLanguage != targetLang) {
+                            translationService.translateText(
+                                text = _readerState.value.originalTitle!!,
+                                sourceLanguage = sourceLanguage,
+                                targetLanguage = targetLang,
+                            ).onSuccess { translatedTitle ->
+                                _readerState.update { it.copy(title = translatedTitle) }
+                            }
+                        }
+                    }
+                }
+                return
+            }
+        }
+
+        _readerState.update {
+            it.copy(
+                isTranslating = true,
+                originalContent = if (it.originalContent == null) it.content else it.originalContent,
+                originalTitle = if (it.originalTitle == null) it.title else it.originalTitle,
+            )
+        }
+
+        viewModelScope.launch {
+            // Identify source language (strip HTML first to avoid entity confusion)
+            val sourceLanguage = translationService.identifyHtmlLanguage(currentContent)
+            if (sourceLanguage == "und" || sourceLanguage == targetLang) {
+                _readerState.update { it.copy(isTranslating = false) }
+                return@launch
+            }
+
+            // Check if models are already downloaded
+            val modelsReady = translationService.areModelsDownloaded(sourceLanguage, targetLang)
+            if (!modelsReady) {
+                // Ask user for confirmation before downloading
+                _readerState.update {
+                    it.copy(
+                        isTranslating = false,
+                        needsDownloadConfirmation = true,
+                        pendingSourceLanguage = sourceLanguage,
+                    )
+                }
+                return@launch
+            }
+
+            // Models are ready, translate directly
+            translationService.translateHtml(
+                htmlContent = currentContent,
+                targetLanguage = targetLang,
+                articleId = articleId,
+                onProgress = { progress ->
+                    _readerState.update { it.copy(translationProgress = progress) }
+                },
+            )
+                .onSuccess { translated ->
+                    // Translate title if enabled
+                    val translatedTitle = if (translateTitle && !_readerState.value.title.isNullOrBlank()) {
+                        translationService.translateText(
+                            text = _readerState.value.title!!,
+                            sourceLanguage = sourceLanguage,
+                            targetLanguage = targetLang,
+                        ).getOrDefault(_readerState.value.title!!)
+                    } else {
+                        _readerState.value.title
+                    }
+                    _readerState.update {
+                        it.copy(
+                            content = when (it.content) {
+                                is ReaderState.Description -> ReaderState.Description(translated)
+                                is ReaderState.FullContent -> ReaderState.FullContent(translated)
+                                else -> it.content
+                            },
+                            title = translatedTitle,
+                            isTranslated = true,
+                            isTranslating = false,
+                            translationProgress = 0f,
+                        )
+                    }
+                }
+                .onFailure {
+                    _readerState.update { it.copy(isTranslating = false, translationProgress = 0f) }
+                }
+        }
+    }
+
+    /**
+     * Called when user confirms the model download dialog.
+     * Downloads models and then translates.
+     */
+    fun confirmDownloadAndTranslate(translateTitle: Boolean = true) {
+        val currentContent = _readerState.value.content.text ?: return
+        val sourceLanguage = _readerState.value.pendingSourceLanguage ?: return
+        val targetLang = translationService.getTargetLanguageTag()
+        val articleId = _readerState.value.articleId
+
+        _readerState.update {
+            it.copy(
+                needsDownloadConfirmation = false,
+                pendingSourceLanguage = null,
+                isTranslating = true,
+                isDownloadingModel = true,
+            )
+        }
+
+        viewModelScope.launch {
+            translationService.downloadAndTranslateHtml(
+                htmlContent = currentContent,
+                sourceLanguage = sourceLanguage,
+                targetLanguage = targetLang,
+                articleId = articleId,
+                onProgress = { progress ->
+                    _readerState.update { it.copy(translationProgress = progress) }
+                },
+            )
+                .onSuccess { translated ->
+                    // Translate title if enabled
+                    val translatedTitle = if (translateTitle && !_readerState.value.title.isNullOrBlank()) {
+                        translationService.translateText(
+                            text = _readerState.value.title!!,
+                            sourceLanguage = sourceLanguage,
+                            targetLanguage = targetLang,
+                        ).getOrDefault(_readerState.value.title!!)
+                    } else {
+                        _readerState.value.title
+                    }
+                    _readerState.update {
+                        it.copy(
+                            content = when (it.content) {
+                                is ReaderState.Description -> ReaderState.Description(translated)
+                                is ReaderState.FullContent -> ReaderState.FullContent(translated)
+                                else -> it.content
+                            },
+                            title = translatedTitle,
+                            isTranslated = true,
+                            isTranslating = false,
+                            isDownloadingModel = false,
+                            translationProgress = 0f,
+                        )
+                    }
+                }
+                .onFailure {
+                    _readerState.update { it.copy(isTranslating = false, isDownloadingModel = false, translationProgress = 0f) }
+                }
+        }
+    }
+
+    /**
+     * Called when user cancels the model download dialog.
+     */
+    fun cancelTranslation() {
+        _readerState.update {
+            it.copy(
+                needsDownloadConfirmation = false,
+                pendingSourceLanguage = null,
+                isTranslating = false,
+                isDownloadingModel = false,
+                translationProgress = 0f,
+                // Restore original content and title
+                content = it.originalContent ?: it.content,
+                originalContent = null,
+                title = it.originalTitle ?: it.title,
+                originalTitle = null,
+            )
+        }
+    }
+
+    fun showOriginalContent() {
+        val original = _readerState.value.originalContent ?: return
+        _readerState.update {
+            it.copy(
+                content = original,
+                isTranslated = false,
+                originalContent = null,
+                title = it.originalTitle ?: it.title,
+                originalTitle = null,
+            )
+        }
+    }
+
+    fun toggleTranslation(translateTitle: Boolean = true) {
+        if (_readerState.value.isTranslated) {
+            showOriginalContent()
+        } else {
+            translateContent(translateTitle)
+        }
     }
 
     fun ReaderState.prefetchArticleId(): ReaderState {
@@ -465,6 +736,15 @@ data class ReaderState(
     val listIndex: Int? = null,
     val nextArticle: PrefetchResult? = null,
     val previousArticle: PrefetchResult? = null,
+    val isTranslated: Boolean = false,
+    val isTranslating: Boolean = false,
+    val originalContent: ContentState? = null,
+    val originalTitle: String? = null,
+    val detectedLanguage: String? = null,
+    val needsDownloadConfirmation: Boolean = false,
+    val pendingSourceLanguage: String? = null,
+    val isDownloadingModel: Boolean = false,
+    val translationProgress: Float = 0f,
 ) {
     data class PrefetchResult(val articleId: String, val index: Int)
 

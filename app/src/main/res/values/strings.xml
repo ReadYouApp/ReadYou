@@ -386,4 +386,27 @@
     <string name="parse_full_content_desc">Fetch full articles from webpages</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
+
+    <!-- Translation -->
+    <string name="translate">Translate</string>
+    <string name="translation">Translation</string>
+    <string name="translation_desc">Translate articles, manage language models</string>
+    <string name="translate_article">Translate articles</string>
+    <string name="translate_title">Translate titles</string>
+    <string name="auto_translate">Auto-translate</string>
+    <string name="show_original">Show original</string>
+    <string name="translating">Translating…</string>
+    <string name="translation_model_downloading">Downloading language model…</string>
+    <string name="translation_model_download_failed">Language model download failed</string>
+    <string name="downloaded_models">Downloaded models</string>
+    <string name="delete_model">Delete model</string>
+    <string name="no_downloaded_models">No downloaded models</string>
+    <string name="translate_target_language">Target language</string>
+    <string name="translate_wifi_only">Download over Wi-Fi only</string>
+    <string name="manage_models">Manage models</string>
+    <string name="delete_model_desc">Delete downloaded language model</string>
+    <string name="delete_model_title">Delete Model</string>
+    <string name="delete_model_confirmation">Are you sure you want to delete the %1$s model?</string>
+    <string name="download_model_title">Download Translation Models</string>
+    <string name="download_model_message">Translation models (~30 MB each) need to be downloaded to translate this article. Continue?</string>
 </resources>

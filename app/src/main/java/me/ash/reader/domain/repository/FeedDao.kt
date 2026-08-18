@@ -86,6 +86,19 @@ interface FeedDao {
 
     @Query(
         """
+        UPDATE feed SET isTranslate = :isTranslate
+        WHERE id = :feedId
+        AND accountId = :accountId
+        """
+    )
+    suspend fun updateIsTranslateByFeedId(
+        accountId: Int,
+        feedId: String,
+        isTranslate: Boolean,
+    )
+
+    @Query(
+        """
         SELECT * FROM feed
         WHERE groupId = :groupId
         AND accountId = :accountId
@@ -189,6 +202,7 @@ interface FeedDao {
                         isNotification = existing.isNotification,
                         isFullContent = existing.isFullContent,
                         isBrowser = existing.isBrowser,
+                        isTranslate = existing.isTranslate,
                     )
                 if (updated == existing) {
                     null
