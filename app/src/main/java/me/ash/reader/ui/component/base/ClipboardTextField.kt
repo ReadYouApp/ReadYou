@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.base
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -21,6 +22,7 @@ fun ClipboardTextField(
     isPassword: Boolean = false,
     errorText: String = "",
     imeAction: ImeAction = ImeAction.Done,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onConfirm: (String) -> Unit = {},
 ) {
     Column(modifier = Modifier) {
@@ -37,8 +39,12 @@ fun ClipboardTextField(
                 if (imeAction != ImeAction.Default || imeAction != ImeAction.None) {
                     KeyboardActionHandler { onConfirm(state.text.toString()) }
                 } else null,
-            keyboardOptions = KeyboardOptions(imeAction = imeAction),
+            keyboardOptions = keyboardOptions.withImeAction(imeAction),
         )
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun KeyboardOptions.withImeAction(imeAction: ImeAction): KeyboardOptions =
+    copy(imeAction = imeAction)
