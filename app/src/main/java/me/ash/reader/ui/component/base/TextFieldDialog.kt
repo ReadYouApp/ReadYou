@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.DialogProperties
 import me.ash.reader.R
@@ -41,6 +42,7 @@ fun TextFieldDialog(
     onDismissRequest: () -> Unit = {},
     onConfirm: (String) -> Unit = {},
     imeAction: ImeAction = if (singleLine) ImeAction.Done else ImeAction.Default,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
 ) {
     val focusManager = LocalFocusManager.current
     val textFieldState = rememberTextFieldState(value)
@@ -66,6 +68,7 @@ fun TextFieldDialog(
                 isPassword = isPassword,
                 errorText = errorText,
                 imeAction = imeAction,
+                capitalization = capitalization,
                 onConfirm = onConfirm,
             )
         },
