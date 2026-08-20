@@ -64,9 +64,9 @@
     <string name="mark_as_unstar">Yıldızsız olarak işaretle</string>
     <string name="one_day">1g</string>
     <string name="three_days">3g</string>
-    <string name="in_coding">Kodlama aşamasında</string>
+    <string name="in_coding">Devam ediyor</string>
     <string name="accounts">Hesaplar</string>
-    <string name="accounts_desc">Yerel, FreshRSS</string>
+    <string name="accounts_desc">Yerel, hizmetler, kendin barındırma</string>
     <string name="color_and_style">Renk ve stil</string>
     <string name="languages">Dil</string>
     <string name="use_device_languages">Cihaz dilini kullan</string>
@@ -121,8 +121,8 @@
     <string name="images">Resimler</string>
     <string name="rounded_corners">Yuvarlatılmış köşeler</string>
     <string name="videos">Videolar</string>
-    <string name="align_start">Sola hizala</string>
-    <string name="align_end">Sağa hizala</string>
+    <string name="align_start">Başa hizala</string>
+    <string name="align_end">Sona hizala</string>
     <string name="center_text">Metni ortala</string>
     <string name="external_fonts">Harici yazı tipleri</string>
     <string name="title">Başlık</string>
@@ -242,7 +242,7 @@
     <string name="self_hosted">Kendin barındırma</string>
     <string name="add_accounts_desc">Yerel, hizmetler, kendin barındırma</string>
     <string name="add">Ekle</string>
-    <string name="accounts_tips">Değiştirmek için besleme sayfasındaki hesap adına dokunabilirsiniz</string>
+    <string name="accounts_tips">Besleme sayfasındaki hesap adına dokunarak hesaplar arasında geçiş yapabilirsiniz</string>
     <string name="switch_account">Değiştir</string>
     <string name="username">Kullanıcı adı</string>
     <string name="password">Parola</string>
@@ -290,7 +290,7 @@
     <string name="shared_content">Paylaşılan içerik</string>
     <string name="only_link">Yalnızca bağlantı</string>
     <string name="title_and_link">Başlık ve bağlantı</string>
-    <string name="keep_archived_tips">Arşivlenen ögeler okundu olarak işaretlenen, yıldızlanmayan ve etiketlenmeyen makalelerdir. \"Arşivlenmiş makaleleri sakla\" ayarı yalnızca bu aygıtlarda etkilidir. Daha eski arşivlenmiş makaleler bu aygıtlardan silinecektir. Makalelerin silinmesi geri alınamaz.</string>
+    <string name="keep_archived_tips">Arşivlenen ögeler okundu olarak işaretlenen, yıldızlanmayan ve etiketlenmeyen makalelerdir. \"Arşivlenmiş makaleleri sakla\" ayarı yalnızca bu aygıtta etkilidir. Daha eski arşivlenmiş makaleler bu aygıttan silinecektir. Makalelerin silinmesi geri alınamaz.</string>
     <string name="troubleshooting">Sorun giderme</string>
     <string name="troubleshooting_desc">Hata bildirimi, uygulama tercihleri</string>
     <string name="bug_report">Hata bildirimi</string>
@@ -325,7 +325,7 @@
     <string name="no_unread_articles">Okunmamış makale yok</string>
     <string name="apply">Uygula</string>
     <string name="notifications">Bildirimler</string>
-    <string name="all_deny_open_in_browser_toast">\"%1$s\" grubundaki tüm makaleleri varsayılan tarayıcıda açma işlemi engellendi.</string>
+    <string name="all_deny_open_in_browser_toast">\"%1$s\" grubundaki tüm makaleleri varsayılan tarayıcıda açma işlemi engellendi</string>
     <string name="client_certificate">İstemci sertifikası (isteğe bağlı)</string>
     <string name="content_renderer">İçerik Oluşturucu</string>
     <string name="only_available_on_webview">Yalnızca WebView içerik işleyicisi kullanılırken kullanılabilir</string>
