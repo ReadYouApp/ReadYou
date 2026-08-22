@@ -87,6 +87,7 @@ class SettingsProvider @Inject constructor(
             LocalFeedsFilterBarStyle provides settings.feedsFilterBarStyle,
             LocalFeedsFilterBarPadding provides settings.feedsFilterBarPadding,
             LocalFeedsFilterBarTonalElevation provides settings.feedsFilterBarTonalElevation,
+            LocalFlowSingleColumn provides settings.flowSingleColumn,
 
             // Flow page
             LocalFlowTopBarTonalElevation provides settings.flowTopBarTonalElevation,

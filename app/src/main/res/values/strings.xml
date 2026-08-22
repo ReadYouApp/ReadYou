@@ -187,6 +187,8 @@
     <string name="article_list">Article list</string>
     <string name="group_list">Group list</string>
     <string name="always_expand">Always expand</string>
+    <string name="single_column_layout">Single column layout</string>
+    <string name="layout">Layout</string>
     <string name="top">Top</string>
     <string name="mark_as_read_button_position">\"Mark as read\" button position</string>
     <string name="top_bar">Top bar</string>

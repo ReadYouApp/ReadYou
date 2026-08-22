@@ -14,7 +14,9 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -24,11 +26,13 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.drop
 import me.ash.reader.ui.motion.materialSharedAxisXIn
 import me.ash.reader.ui.motion.materialSharedAxisXOut
 import me.ash.reader.ui.page.adaptive.ArticleData
 import me.ash.reader.ui.page.adaptive.ArticleListReaderPage
 import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
+import me.ash.reader.infrastructure.preference.LocalFlowSingleColumn
 import me.ash.reader.ui.page.home.feeds.FeedsPage
 import me.ash.reader.ui.page.home.feeds.subscribe.SubscribeViewModel
 import me.ash.reader.ui.page.nav3.key.Route
@@ -69,13 +73,26 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
         if (backStack.size == 1) backStack[0] = Route.Feeds else backStack.removeLastOrNull()
     }
 
-    val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+    val forceSingleColumn = LocalFlowSingleColumn.current
+    val isLandscape = LocalConfiguration.current.screenWidthDp > LocalConfiguration.current.screenHeightDp
+    val computedDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+    val scaffoldDirective = if (forceSingleColumn.value && !isLandscape) {
+        computedDirective.copy(maxHorizontalPartitions = 1)
+    } else {
+        computedDirective
+    }
 
     val navigator =
         rememberListDetailPaneScaffoldNavigator<ArticleData>(
             scaffoldDirective = scaffoldDirective,
             isDestinationHistoryAware = false,
         )
+
+    LaunchedEffect(navigator) {
+        snapshotFlow { forceSingleColumn.value }
+            .drop(1)
+            .collect { navigator.navigateTo(ListDetailPaneScaffoldRole.List) }
+    }
 
     SharedTransitionLayout {
         NavDisplay(
