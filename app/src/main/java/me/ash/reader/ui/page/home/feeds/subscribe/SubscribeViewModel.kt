@@ -144,7 +144,7 @@ constructor(
                 return@launch
             }
             val groups = groupsFlow.value
-            val firstGroupId = groups.firstOrNull()?.id ?: return@launch
+            val firstGroupId = groups.firstOrNull()?.id ?: ""
 
             val job =
                 viewModelScope.launch {

@@ -62,6 +62,7 @@ object OkHttpClientModule {
         context = context,
         cacheDirectory = context.cacheDir.resolve("http")
     ).newBuilder()
+        .addInterceptor(UserAgentInterceptor)
         .addNetworkInterceptor(UserAgentInterceptor)
         .build()
 }
@@ -82,6 +83,7 @@ fun cachingHttpClient(
     }
 
     builder
+        .addInterceptor(UserAgentInterceptor)
         .connectTimeout(connectTimeoutSecs, TimeUnit.SECONDS)
         .readTimeout(readTimeoutSecs, TimeUnit.SECONDS)
         .followRedirects(true)
@@ -165,13 +167,21 @@ fun OkHttpClient.Builder.setupSsl(
 object UserAgentInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
+        val existingUa = request.header("User-Agent")
+        val userAgent = if (existingUa.isNullOrBlank() || existingUa.startsWith("okhttp", ignoreCase = true)) {
+            USER_AGENT_STRING
+        } else {
+            existingUa
+        }
         return chain.proceed(
-            chain.request()
+            request
                 .newBuilder()
-                .header("User-Agent", USER_AGENT_STRING)
+                .header("User-Agent", userAgent)
                 .build()
         )
     }
 }
 
-const val USER_AGENT_STRING = BuildConfig.USER_AGENT_STRING
+const val USER_AGENT_STRING =
+    "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36"

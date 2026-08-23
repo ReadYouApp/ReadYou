@@ -87,4 +87,62 @@ class RssHelperTest {
         """
         Assert.assertEquals(imageUrlString, rssHelper.findThumbnail(case))
     }
+
+    @Test
+    fun testParseRss20Feed() {
+        val sampleFeedXml = """
+            <?xml version="1.0"?>
+            <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+             <channel>
+                <title>Phoronix</title>
+                <link>https://www.phoronix.com/</link>
+                <description>Linux Hardware Reviews, Performance Benchmarks</description>
+                <language>en-us</language>
+              <item>
+               <title>Sample Linux Article</title>
+               <link>https://www.phoronix.com/news/sample-linux-article</link>
+               <guid>https://www.phoronix.com/news/sample-linux-article</guid>
+               <description>Sample article description.</description>
+               <pubDate>Sun, 23 Aug 2026 07:41:04 -0400</pubDate>
+               <dc:creator>Michael Larabel</dc:creator>
+              </item>
+             </channel>
+            </rss>
+        """.trimIndent()
+
+        val inputStream = java.io.ByteArrayInputStream(sampleFeedXml.toByteArray(Charsets.UTF_8))
+        val syndFeed = com.rometools.rome.io.SyndFeedInput().build(com.rometools.rome.io.XmlReader(inputStream, "text/xml; charset=UTF-8"))
+        Assert.assertEquals("Phoronix", syndFeed.title)
+        Assert.assertEquals(1, syndFeed.entries.size)
+        Assert.assertEquals("Sample Linux Article", syndFeed.entries[0].title)
+        Assert.assertEquals("Michael Larabel", syndFeed.entries[0].author)
+    }
+
+    @Test
+    fun testRealSearchFeedPhoronix() {
+        val client = okhttp3.OkHttpClient.Builder()
+            .addNetworkInterceptor(me.ash.reader.infrastructure.di.UserAgentInterceptor)
+            .build()
+        val helper = RssHelper(mockContext, kotlinx.coroutines.Dispatchers.IO, client)
+        kotlinx.coroutines.runBlocking {
+            val result = helper.searchFeed("https://www.phoronix.com/rss.php")
+            Assert.assertNotNull(result.feed)
+            Assert.assertEquals("Phoronix", result.feed.title)
+            Assert.assertEquals("https://www.phoronix.com/rss.php", result.feedLink)
+        }
+    }
+
+    @Test
+    fun testRealDiscoverFeedPhoronix() {
+        val client = okhttp3.OkHttpClient.Builder()
+            .addNetworkInterceptor(me.ash.reader.infrastructure.di.UserAgentInterceptor)
+            .build()
+        val helper = RssHelper(mockContext, kotlinx.coroutines.Dispatchers.IO, client)
+        kotlinx.coroutines.runBlocking {
+            val result = helper.searchFeed("https://www.phoronix.com")
+            Assert.assertNotNull(result.feed)
+            Assert.assertEquals("Phoronix", result.feed.title)
+            Assert.assertEquals("https://www.phoronix.com/rss.php", result.feedLink)
+        }
+    }
 }

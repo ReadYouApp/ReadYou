@@ -55,22 +55,28 @@ constructor(
     suspend fun searchFeed(feedLink: String): SearchFeedResult {
         return withContext(ioDispatcher) {
             val directResponse = response(okHttpClient, feedLink)
-            if (!directResponse.commonIsSuccessful) throw IOException(directResponse.message)
             val directBody = directResponse.body.bytes()
             val directHttpContentType = toHttpContentType(directResponse.header("Content-Type"))
 
-            val parsedDirectFeed = runCatching { parseFeed(directBody, directHttpContentType) }.getOrNull()
+            val parsedDirectFeed = if (directResponse.commonIsSuccessful) {
+                runCatching { parseFeed(directBody, directHttpContentType) }.getOrNull()
+            } else null
 
             val resolvedFeedLink =
                 if (parsedDirectFeed != null) feedLink
                 else discoverFeedLink(feedLink, directBody)
-                    ?: throw IOException("Unable to detect RSS feed URL")
-
+                    ?: throw IOException(
+                        if (!directResponse.commonIsSuccessful) {
+                            "HTTP ${directResponse.code}: ${directResponse.message}"
+                        } else {
+                            "Unable to detect RSS feed URL"
+                        }
+                    )
 
             val feed = parsedDirectFeed ?: run {
                 val discoveredResponse = response(okHttpClient, resolvedFeedLink)
                 if (!discoveredResponse.commonIsSuccessful) {
-                    throw IOException(discoveredResponse.message)
+                    throw IOException("HTTP ${discoveredResponse.code}: ${discoveredResponse.message}")
                 }
                 parseFeed(
                     discoveredResponse.body.bytes(),
@@ -167,10 +173,14 @@ constructor(
         feed: Feed,
         latestLink: String?,
         preDate: Date = Date(),
-    ): List<Article> =
-        try {
+    ): List<Article> {
+        return try {
             val accountId = context.currentAccountId
             val response = response(okHttpClient, feed.url)
+            if (!response.commonIsSuccessful) {
+                Log.w("RLog", "queryRssXml[${feed.name}]: HTTP ${response.code} ${response.message}")
+                return emptyList()
+            }
             val contentType = response.header("Content-Type")
 
             val httpContentType =
@@ -194,6 +204,7 @@ constructor(
             Log.e("RLog", "queryRssXml[${feed.name}]: ${e.message}")
             listOf()
         }
+    }
 
     fun buildArticleFromSyndEntry(
         feed: Feed,
@@ -282,14 +293,14 @@ constructor(
         return imgRegex.find(text)?.groupValues?.get(2)?.takeIf { !it.startsWith("data:") }
     }
 
-    suspend fun queryRssIconLink(feedLink: String?): String? {
-        if (feedLink.isNullOrEmpty()) return null
+    suspend fun queryRssIconLink(feedLink: String?): String? = runCatching {
+        if (feedLink.isNullOrEmpty()) return@runCatching null
         val iconFinder = BestIconFinder(okHttpClient)
         val domain = feedLink.extractDomain()
-        return iconFinder.findBestIcon(domain ?: feedLink).also {
+        iconFinder.findBestIcon(domain ?: feedLink).also {
             Log.i("RLog", "queryRssIconByLink: get $it from $domain")
         }
-    }
+    }.getOrNull()
 
     suspend fun saveRssIcon(feedDao: FeedDao, feed: Feed, iconLink: String) {
         feedDao.update(feed.copy(icon = iconLink))

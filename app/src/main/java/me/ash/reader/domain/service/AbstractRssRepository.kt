@@ -63,7 +63,7 @@ abstract class AbstractRssRepository(
         val feed =
             Feed(
                 id = accountId.spacerDollar(UUID.randomUUID().toString()),
-                name = searchedFeed.title.decodeHTML()!!,
+                name = searchedFeed.title?.decodeHTML() ?: feedLink,
                 url = feedLink,
                 groupId = groupId,
                 accountId = accountId,

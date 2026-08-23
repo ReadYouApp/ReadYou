@@ -10,15 +10,15 @@ class BestIconFinder(private val client: OkHttpClient) {
 
     private val defaultFormats = listOf("apple-touch-icon", "svg", "png", "ico", "gif", "jpg")
 
-    suspend fun findBestIcon(siteUrl: String): String? {
+    suspend fun findBestIcon(siteUrl: String): String? = runCatching {
         val url = normalizeUrl(siteUrl)
         val icons = fetchIcons(url)
-        return selectBestIcon(icons)
-    }
+        selectBestIcon(icons)
+    }.getOrNull()
 
     private fun normalizeUrl(url: String): String {
         return if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            "http://$url"
+            "https://$url"
         } else {
             url
         }
@@ -34,7 +34,7 @@ class BestIconFinder(private val client: OkHttpClient) {
             defaultIconUrls(url)
         }
 
-        return links.mapNotNull { fetchIconDetails(it) }
+        return links.take(4).mapNotNull { fetchIconDetails(it) }
     }
 
     private suspend fun fetchHtml(url: String): String {
