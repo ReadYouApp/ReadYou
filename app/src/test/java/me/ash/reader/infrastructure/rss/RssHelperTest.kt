@@ -87,4 +87,60 @@ class RssHelperTest {
         """
         Assert.assertEquals(imageUrlString, rssHelper.findThumbnail(case))
     }
+
+    @Test
+    fun testDetectHtmlCharsetFromHeaderWithComma() {
+        val bytes = "<html><body>Test</body></html>".toByteArray(Charsets.ISO_8859_1)
+        val charset = rssHelper.detectHtmlCharset("text/html, charset=iso-8859-1", bytes)
+        Assert.assertEquals(Charsets.ISO_8859_1, charset)
+    }
+
+    @Test
+    fun testDetectHtmlCharsetFromMetaCharset() {
+        val html = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="iso-8859-1">
+                <title>Test</title>
+            </head>
+            <body>Perplexity a lancé son abonnement</body>
+            </html>
+        """.trimIndent()
+        val bytes = html.toByteArray(Charsets.ISO_8859_1)
+        val charset = rssHelper.detectHtmlCharset("text/html", bytes)
+        Assert.assertEquals(Charsets.ISO_8859_1, charset)
+
+        val decoded = String(bytes, charset)
+        Assert.assertTrue(decoded.contains("Perplexity a lancé son abonnement"))
+        Assert.assertFalse(decoded.contains("\uFFFD"))
+    }
+
+    @Test
+    fun testDetectHtmlCharsetFromMetaHttpEquiv() {
+        val html = """
+            <html>
+            <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+            </head>
+            <body>Déjà vu été français</body>
+            </html>
+        """.trimIndent()
+        val win1252 = java.nio.charset.Charset.forName("windows-1252")
+        val bytes = html.toByteArray(win1252)
+        val charset = rssHelper.detectHtmlCharset(null, bytes)
+        Assert.assertEquals(win1252, charset)
+
+        val decoded = String(bytes, charset)
+        Assert.assertTrue(decoded.contains("Déjà vu été français"))
+    }
+
+    @Test
+    fun testFrenchCharactersDecodingAccuracy() {
+        val originalFrenchText = "Club des développeurs : Actualités, cours, tutoriels & événements d'ingénierie"
+        val bytes = originalFrenchText.toByteArray(Charsets.ISO_8859_1)
+        val charset = rssHelper.detectHtmlCharset("text/html, charset=iso-8859-1", bytes)
+        val decoded = String(bytes, charset)
+        Assert.assertEquals(originalFrenchText, decoded)
+    }
 }

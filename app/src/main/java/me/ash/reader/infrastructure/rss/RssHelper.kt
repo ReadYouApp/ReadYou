@@ -90,7 +90,9 @@ constructor(
 
     private fun toHttpContentType(contentType: String?): String =
         contentType?.let {
-            if (it.contains("charset=", ignoreCase = true)) it else "$it; charset=UTF-8"
+            if (it.contains("charset=", ignoreCase = true)) {
+                it.replace(',', ';')
+            } else "$it; charset=UTF-8"
         } ?: "text/xml; charset=UTF-8"
 
     private fun parseFeed(body: ByteArray, httpContentType: String): SyndFeed =
@@ -112,44 +114,58 @@ constructor(
         return (preferred ?: fallback)?.absUrl("href")?.takeIf { it.isNotBlank() }
     }
 
+    fun detectHtmlCharset(contentTypeHeader: String?, bodyBytes: ByteArray): Charset {
+        // 1. Check HTTP Content-Type header (handles semicolons, commas, and quotes)
+        if (!contentTypeHeader.isNullOrBlank()) {
+            val match = Regex("""(?i)charset\s*=\s*["']?([a-zA-Z0-9_-]+)""").find(contentTypeHeader)
+            if (match != null) {
+                val charsetName = match.groupValues[1].trim('\'', '"', ';', ' ')
+                runCatching { return Charset.forName(charsetName) }
+            }
+        }
+
+        // 2. Check BOM (Byte Order Mark)
+        if (bodyBytes.size >= 3 && bodyBytes[0] == 0xEF.toByte() && bodyBytes[1] == 0xBB.toByte() && bodyBytes[2] == 0xBF.toByte()) {
+            return Charsets.UTF_8
+        }
+        if (bodyBytes.size >= 2 && bodyBytes[0] == 0xFE.toByte() && bodyBytes[1] == 0xFF.toByte()) {
+            return Charsets.UTF_16BE
+        }
+        if (bodyBytes.size >= 2 && bodyBytes[0] == 0xFF.toByte() && bodyBytes[1] == 0xFE.toByte()) {
+            return Charsets.UTF_16LE
+        }
+
+        // 3. Inspect HTML <head> for <meta charset="..."> or <meta http-equiv="content-type" content="...">
+        val previewLength = minOf(bodyBytes.size, 4096)
+        val asciiPreview = String(bodyBytes, 0, previewLength, Charsets.ISO_8859_1)
+
+        val metaCharsetMatch = Regex("""(?i)<meta[^>]+charset\s*=\s*["']?([a-zA-Z0-9_-]+)""").find(asciiPreview)
+        if (metaCharsetMatch != null) {
+            val charsetName = metaCharsetMatch.groupValues[1].trim('\'', '"', ';', ' ')
+            runCatching { return Charset.forName(charsetName) }
+        }
+
+        val metaHttpEquivMatch = Regex("""(?i)<meta[^>]+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)""").find(asciiPreview)
+            ?: Regex("""(?i)http-equiv\s*=\s*["']?content-type["']?[^>]+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)""").find(asciiPreview)
+        if (metaHttpEquivMatch != null) {
+            val charsetName = metaHttpEquivMatch.groupValues[1].trim('\'', '"', ';', ' ')
+            runCatching { return Charset.forName(charsetName) }
+        }
+
+        // 4. Default to UTF-8
+        return Charsets.UTF_8
+    }
+
     @Throws(Exception::class)
     suspend fun parseFullContent(link: String, title: String): String {
         return withContext(ioDispatcher) {
             val response = response(okHttpClient, link)
             if (response.commonIsSuccessful) {
                 val responseBody = response.body
-                val charset = responseBody.contentType()?.charset()
-                val content =
-                    responseBody.source().use {
-                        if (charset != null) {
-                            return@use it.readString(charset)
-                        }
-
-                        val peekContent = it.peek().readString(Charsets.UTF_8)
-
-                        val charsetFromMeta =
-                            runCatching {
-                                    val element =
-                                        Jsoup.parse(peekContent, link)
-                                            .selectFirst("meta[http-equiv=content-type]")
-                                    return@runCatching if (element == null) Charsets.UTF_8
-                                    else {
-                                        element
-                                            .attr("content")
-                                            .substringAfter("charset=")
-                                            .removeSurrounding("\"")
-                                            .lowercase()
-                                            .let { Charset.forName(it) }
-                                    }
-                                }
-                                .getOrDefault(Charsets.UTF_8)
-
-                        if (charsetFromMeta == Charsets.UTF_8) {
-                            peekContent
-                        } else {
-                            it.readString(charsetFromMeta)
-                        }
-                    }
+                val contentTypeHeader = response.header("Content-Type")
+                val bytes = responseBody.bytes()
+                val charset = detectHtmlCharset(contentTypeHeader, bytes)
+                val content = String(bytes, charset)
 
                 val articleContent = Readability.parseToElement(content, link)
                 articleContent?.let {
