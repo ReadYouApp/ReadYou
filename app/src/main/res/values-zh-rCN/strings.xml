@@ -32,6 +32,11 @@
     <string name="searching">搜索中…</string>
     <string name="subscribe">订阅</string>
     <string name="already_subscribed">已有订阅</string>
+    <string name="subscribe_error_network">无法连接到服务器，请检查网络连接，并确认该站点可以访问。</string>
+    <string name="subscribe_error_http">服务器拒绝了该订阅地址（HTTP %1$d）。</string>
+    <string name="subscribe_error_feed_not_found">在此地址未找到 RSS/Atom 订阅源。</string>
+    <string name="subscribe_error_parse">此地址看起来是订阅源，但内容无法解析。</string>
+    <string name="subscribe_error_fallback">添加订阅失败，请重试。</string>
     <string name="clear">清空</string>
     <string name="paste">粘贴</string>
     <string name="feed_or_site_url">订阅源或站点链接</string>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom">
+  <id>tag:status.example.com,2005:/history</id>
+  <link rel="alternate" type="text/html" href="https://status.example.com"/>
+  <link rel="self" type="application/atom+xml" href="https://status.example.com/history.atom"/>
+  <title>Example Status - Incident History</title>
+  <updated>2026-09-03T09:04:16Z</updated>
+  <author>
+    <name>Example</name>
+  </author>
+  <entry>
+    <id>tag:status.example.com,2005:Incident/31327560</id>
+    <published>2026-09-01T16:01:21Z</published>
+    <updated>2026-09-01T16:01:21Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.example.com/incidents/jk2dy5h9yp3m"/>
+    <title>Delays in commit processing</title>
+    <content type="html">&lt;p&gt; &lt;small&gt;Sep &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;16:01&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt; &lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved. &lt;/p&gt; &lt;p&gt; &lt;small&gt;Sep &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;15:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt; &lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating reports of degraded performance. &lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.example.com,2005:Incident/31316411</id>
+    <published>2026-08-31T09:58:14Z</published>
+    <updated>2026-08-31T09:58:14Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.example.com/incidents/7fxts6gmq5gr"/>
+    <title>Elevated rate of errors</title>
+    <content type="html">&lt;p&gt; &lt;small&gt;Aug &lt;var data-var='date'&gt;31&lt;/var&gt;, &lt;var data-var='time'&gt;09:58&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt; &lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved. &lt;br /&gt;&lt;br /&gt;We will continue monitoring to ensure stability. &lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.example.com,2005:Incident/31285481</id>
+    <published>2026-08-27T19:44:08Z</published>
+    <updated>2026-08-31T22:46:13Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.example.com/incidents/5bn0vk444m1w"/>
+    <title>Disruption with billing</title>
+    <content type="html">&lt;p&gt; &lt;small&gt;Aug &lt;var data-var='date'&gt;27&lt;/var&gt;, &lt;var data-var='time'&gt;19:44&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt; &lt;strong&gt;Resolved&lt;/strong&gt; - On August 26, billing experienced degraded performance. &lt;br /&gt;&lt;br /&gt;This was caused by a concentrated workload. &lt;/p&gt;</content>
+  </entry>
+</feed>

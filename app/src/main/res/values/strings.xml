@@ -38,6 +38,11 @@
     <string name="searching">Searching…</string>
     <string name="subscribe">Subscribe</string>
     <string name="already_subscribed">Already subscribed</string>
+    <string name="subscribe_error_network">Couldn\'t connect to the server. Check your network connection and make sure this site is reachable.</string>
+    <string name="subscribe_error_http">The server rejected this feed URL (HTTP %1$d).</string>
+    <string name="subscribe_error_feed_not_found">No RSS/Atom feed was found at this URL.</string>
+    <string name="subscribe_error_parse">This URL looks like a feed, but its content could not be parsed.</string>
+    <string name="subscribe_error_fallback">Failed to add this feed. Please try again.</string>
     <string name="clear">Clear</string>
     <string name="paste">Paste</string>
     <string name="feed_or_site_url">Feed or site URL</string>

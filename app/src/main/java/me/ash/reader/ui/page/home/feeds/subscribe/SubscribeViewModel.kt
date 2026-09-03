@@ -169,8 +169,24 @@ constructor(
                                     selectedGroupId = firstGroupId,
                                 )
                         }
-                        .onFailure {
-                            _subscribeState.value = currentState.copy(errorMessage = it.message)
+                        .onFailure { throwable ->
+                            val errorMessage =
+                                when (val error = throwable.toSubscribeError()) {
+                                    is SubscribeError.Text ->
+                                        androidStringsHelper.getString(
+                                            error.resId,
+                                            *error.formatArgs.toTypedArray(),
+                                        )
+
+                                    is SubscribeError.Raw ->
+                                        error.message.ifBlank {
+                                            androidStringsHelper.getString(
+                                                R.string.subscribe_error_fallback
+                                            )
+                                        }
+                                }
+                            _subscribeState.value =
+                                currentState.copy(errorMessage = errorMessage)
                         }
                 }
 
