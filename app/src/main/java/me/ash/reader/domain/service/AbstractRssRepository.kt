@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import me.ash.reader.domain.model.account.Account
 import me.ash.reader.domain.model.article.ArchivedArticle
 import me.ash.reader.domain.model.article.Article
@@ -71,6 +72,7 @@ abstract class AbstractRssRepository(
                 isBrowser = isBrowser,
                 isNotification = isNotification,
                 isFullContent = isFullContent,
+                position = nextFeedPosition(accountId, groupId),
             )
         val articles =
             searchedFeed.entries.map { rssHelper.buildArticleFromSyndEntry(feed, accountId, it) }
@@ -81,9 +83,51 @@ abstract class AbstractRssRepository(
     open suspend fun addGroup(destFeed: Feed?, newGroupName: String): String {
         accountService.getCurrentAccountId().let { accountId ->
             return accountId.spacerDollar(UUID.randomUUID().toString()).also {
-                groupDao.insert(Group(id = it, name = newGroupName, accountId = accountId))
+                groupDao.insert(
+                    Group(
+                        id = it,
+                        name = newGroupName,
+                        accountId = accountId,
+                        position = nextGroupPosition(accountId),
+                    )
+                )
             }
         }
+    }
+
+    internal suspend fun nextFeedPosition(accountId: Int, groupId: String): Int =
+        (feedDao.queryAll(accountId).filter { it.groupId == groupId }.maxOfOrNull { it.position }
+            ?: -1) + 1
+
+    internal suspend fun nextGroupPosition(accountId: Int): Int =
+        (groupDao.queryAll(accountId).maxOfOrNull { it.position } ?: -1) + 1
+
+    /**
+     * Reorders groups so their list order matches [orderedGroupIds].
+     */
+    open suspend fun reorderGroups(orderedGroupIds: List<String>) {
+        if (orderedGroupIds.isEmpty()) return
+        val accountId = accountService.getCurrentAccountId()
+        val localGroups = groupDao.queryAll(accountId).associateBy { it.id }
+        groupDao.updateAll(
+            orderedGroupIds.mapIndexedNotNull { index, id ->
+                localGroups[id]?.copy(position = index)
+            }
+        )
+    }
+
+    /**
+     * Reorders feeds inside [groupId] so their order matches [orderedFeedIds].
+     */
+    open suspend fun reorderFeeds(groupId: String, orderedFeedIds: List<String>) {
+        if (orderedFeedIds.isEmpty()) return
+        val accountId = accountService.getCurrentAccountId()
+        val localFeeds = feedDao.queryAll(accountId).associateBy { it.id }
+        feedDao.updateAll(
+            orderedFeedIds.mapIndexedNotNull { index, id ->
+                localFeeds[id]?.takeIf { it.groupId == groupId }?.copy(position = index)
+            }
+        )
     }
 
     abstract suspend fun sync(
@@ -207,11 +251,22 @@ abstract class AbstractRssRepository(
     }
 
     fun pullGroups(): Flow<MutableList<Group>> =
-        groupDao.queryAllGroup(accountService.getCurrentAccountId()).flowOn(dispatcherIO)
+        groupDao
+            .queryAllGroup(accountService.getCurrentAccountId())
+            .map { it.apply { sortBy { group -> group.position } } }
+            .flowOn(dispatcherIO)
 
     fun pullFeeds(): Flow<MutableList<GroupWithFeed>> =
         groupDao
             .queryAllGroupWithFeedAsFlow(accountService.getCurrentAccountId())
+            .map { groupWithFeeds ->
+                groupWithFeeds.apply {
+                    sortBy { it.group.position }
+                    forEach { groupWithFeed ->
+                        groupWithFeed.feeds.sortBy { feed -> feed.position }
+                    }
+                }
+            }
             .flowOn(dispatcherIO)
 
     fun pullArticles(
@@ -306,7 +361,14 @@ abstract class AbstractRssRepository(
         feedDao.queryByLink(accountService.getCurrentAccountId(), url).isNotEmpty()
 
     suspend fun queryAllGroupWithFeeds(): List<GroupWithFeed> =
-        groupDao.queryAllGroupWithFeed(accountService.getCurrentAccountId())
+        groupDao
+            .queryAllGroupWithFeed(accountService.getCurrentAccountId())
+            .sortedBy { it.group.position }
+            .map { groupWithFeed ->
+                groupWithFeed.copy(
+                    feeds = groupWithFeed.feeds.sortedBy { it.position }.toMutableList()
+                )
+            }
 
     open suspend fun renameGroup(group: Group) {
         groupDao.update(group)
@@ -317,7 +379,13 @@ abstract class AbstractRssRepository(
     }
 
     open suspend fun moveFeed(originGroupId: String, feed: Feed) {
-        updateFeed(feed)
+        val movedFeed =
+            if (originGroupId != feed.groupId) {
+                feed.copy(position = nextFeedPosition(feed.accountId, feed.groupId))
+            } else {
+                feed
+            }
+        updateFeed(movedFeed)
     }
 
     open suspend fun changeFeedUrl(feed: Feed) {

@@ -80,9 +80,30 @@ interface GroupDao {
 
     @Transaction
     suspend fun insertOrUpdate(groups: List<Group>) {
-        val localGroupIds = queryByIds(groups.map { it.id }).map { it.id }
-        val (newGroups, groupsToUpdate) = groups.partition { it.id !in localGroupIds }
-        insertAll(newGroups)
-        updateAll(groupsToUpdate)
+        val localGroups = queryByIds(groups.map { it.id }).associateBy { it.id }
+        val (newGroups, groupsToUpdate) = groups.partition { !localGroups.contains(it.id) }
+
+        if (newGroups.isNotEmpty()) {
+            val accountId = newGroups.first().accountId
+            val basePosition = queryAll(accountId).maxOfOrNull { it.position } ?: -1
+            var cursor = basePosition
+            insertAll(
+                newGroups.map { group ->
+                    if (group.position == 0) {
+                        cursor += 1
+                        group.copy(position = cursor)
+                    } else {
+                        group
+                    }
+                }
+            )
+        }
+
+        updateAll(
+            groupsToUpdate.mapNotNull { new ->
+                val existing = localGroups[new.id] ?: return@mapNotNull null
+                if (existing == new) null else new.copy(position = existing.position)
+            }
+        )
     }
 }

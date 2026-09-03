@@ -22,8 +22,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CreateNewFolder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.SwapVert
 import androidx.compose.material.icons.rounded.UnfoldLess
 import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material.rememberModalBottomSheetState
@@ -73,6 +75,7 @@ import me.ash.reader.ui.component.FilterBar
 import me.ash.reader.ui.component.base.DisplayText
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
+import me.ash.reader.ui.component.base.TextFieldDialog
 import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.currentAccountId
@@ -102,6 +105,9 @@ fun FeedsPage(
     navigateToAccountDetail: (Int) -> Unit,
 ) {
     var accountTabVisible by remember { mutableStateOf(false) }
+    var reorderMode by remember { mutableStateOf(false) }
+    var newGroupDialogVisible by remember { mutableStateOf(false) }
+    var newGroupContent by remember { mutableStateOf("") }
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -228,7 +234,21 @@ fun FeedsPage(
             )
         },
         content = {
-            PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {
+            if (reorderMode) {
+                FeedsReorderMode(
+                    groupWithFeedList = groupWithFeedList,
+                    onDone = { orderedGroups ->
+                        if (orderedGroups.isNotEmpty()) {
+                            feedsViewModel.reorderGroups(orderedGroups.map { it.group.id })
+                            orderedGroups.forEach { gwf ->
+                                feedsViewModel.reorderFeeds(gwf.group.id, gwf.feeds.map { it.id })
+                            }
+                        }
+                        reorderMode = false
+                    },
+                )
+            } else {
+                PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {
                 LazyColumn(modifier = Modifier.fillMaxSize().drawVerticalScrollIndicator(listState), state = listState) {
                     item {
                         DisplayText(text = feedsUiState.account?.name ?: "", desc = "") {
@@ -260,21 +280,43 @@ fun FeedsPage(
                                 color = MaterialTheme.colorScheme.primary,
                                 style = MaterialTheme.typography.labelLarge,
                             )
-                            IconButton(
-                                onClick = {
-                                    if (hasGroupVisible) collapseAllGroups() else expandAllGroups()
-                                },
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .size(28.dp),
-                            ) {
-                                Icon(
-                                    imageVector =
-                                        if (hasGroupVisible) Icons.Rounded.UnfoldLess
-                                        else Icons.Rounded.UnfoldMore,
-                                    contentDescription = stringResource(R.string.unfold_less),
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(
+                                    onClick = { newGroupDialogVisible = true },
+                                    modifier = Modifier.size(28.dp),
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Add,
+                                        contentDescription = stringResource(R.string.create_new_group),
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { reorderMode = true },
+                                    modifier = Modifier.size(28.dp),
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.SwapVert,
+                                        contentDescription = stringResource(R.string.reorder),
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
+                                IconButton(
+                                    onClick = {
+                                        if (hasGroupVisible) collapseAllGroups() else expandAllGroups()
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .size(28.dp),
+                                ) {
+                                    Icon(
+                                        imageVector =
+                                            if (hasGroupVisible) Icons.Rounded.UnfoldLess
+                                            else Icons.Rounded.UnfoldMore,
+                                        contentDescription = stringResource(R.string.unfold_less),
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
@@ -329,9 +371,11 @@ fun FeedsPage(
                     }
                 }
             }
+            }
         },
         bottomBar = {
-            FilterBar(
+            if (!reorderMode) {
+                FilterBar(
                 modifier =
                     with(sharedTransitionScope) {
                         Modifier.sharedElement(
@@ -347,10 +391,29 @@ fun FeedsPage(
             ) {
                 feedsViewModel.changeFilter(filterState.copy(filter = it))
             }
+            }
         },
     )
 
     SubscribeDialog(subscribeViewModel = subscribeViewModel)
+
+    TextFieldDialog(
+        visible = newGroupDialogVisible,
+        title = stringResource(R.string.create_new_group),
+        icon = Icons.Outlined.CreateNewFolder,
+        value = newGroupContent,
+        placeholder = stringResource(R.string.name),
+        onValueChange = { newGroupContent = it },
+        onDismissRequest = {
+            newGroupDialogVisible = false
+            newGroupContent = ""
+        },
+        onConfirm = { name ->
+            feedsViewModel.addGroup(name)
+            newGroupDialogVisible = false
+            newGroupContent = ""
+        },
+    )
 
     GroupOptionDrawer(drawerState = groupDrawerState)
     FeedOptionDrawer(drawerState = feedDrawerState)

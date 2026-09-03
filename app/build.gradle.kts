@@ -137,6 +137,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     androidTestImplementation(libs.compose.ui.test.junit4)
     implementation(libs.compose.material3)
+    implementation(libs.reorderable)
 
     // Coil
     implementation(libs.coil.base)

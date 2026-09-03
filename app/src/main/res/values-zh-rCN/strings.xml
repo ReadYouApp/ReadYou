@@ -59,6 +59,8 @@
     <string name="change_url">更改链接</string>
     <string name="rename_toast">已重命名为 \"%1$s\"</string>
     <string name="create_new_group">新建分组</string>
+    <string name="reorder">排序</string>
+    <string name="reorder_tips">拖动手柄调整顺序</string>
     <string name="name">名称</string>
     <string name="open_with">打开 %1$s</string>
     <string name="options">选项</string>

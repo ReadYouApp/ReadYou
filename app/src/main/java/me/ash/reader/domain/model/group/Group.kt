@@ -16,4 +16,6 @@ data class Group(
     val name: String,
     @ColumnInfo(index = true)
     val accountId: Int,
+    @ColumnInfo(defaultValue = "0")
+    val position: Int = 0,
 )
