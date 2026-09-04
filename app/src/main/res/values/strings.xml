@@ -70,6 +70,11 @@
     <string name="feed_url_placeholder" translatable="false">http://example.com/feed.rss</string>
     <string name="rename_toast">Renamed to \"%1$s\"</string>
     <string name="create_new_group">Create new group</string>
+    <string name="reorder">Reorder</string>
+    <string name="reorder_tips">Drag the handle to reorder</string>
+    <string name="reorder_exit_title">Unsaved changes</string>
+    <string name="reorder_exit_message">You have unsaved changes. Do you want to save them before leaving?</string>
+    <string name="discard">Discard</string>
     <string name="name">Name</string>
     <string name="open_with">Open %1$s</string>
     <string name="options">Options</string>

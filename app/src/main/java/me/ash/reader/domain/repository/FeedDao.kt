@@ -178,7 +178,27 @@ interface FeedDao {
         val localFeeds = queryByIds(feeds.map { it.id }).associateBy { it.id }
         val (newFeeds, feedsToUpdate) = feeds.partition { !localFeeds.contains(it.id) }
 
-        if (newFeeds.isNotEmpty()) insertAll(newFeeds)
+        if (newFeeds.isNotEmpty()) {
+            val accountId = newFeeds.first().accountId
+            val groupMaxPositions =
+                queryAll(accountId)
+                    .groupBy { it.groupId }
+                    .mapValues { (_, feeds) -> feeds.maxOf { it.position } }
+                    .toMutableMap()
+            val groupCursors = mutableMapOf<String, Int>()
+            insertAll(
+                newFeeds.map { feed ->
+                    if (feed.position == 0) {
+                        val base = groupMaxPositions[feed.groupId] ?: -1
+                        val cursor = groupCursors.getOrPut(feed.groupId) { base }
+                        groupCursors[feed.groupId] = cursor + 1
+                        feed.copy(position = cursor + 1)
+                    } else {
+                        feed
+                    }
+                }
+            )
+        }
 
         feedsToUpdate
             .mapNotNull { new ->
@@ -189,6 +209,7 @@ interface FeedDao {
                         isNotification = existing.isNotification,
                         isFullContent = existing.isFullContent,
                         isBrowser = existing.isBrowser,
+                        position = existing.position,
                     )
                 if (updated == existing) {
                     null

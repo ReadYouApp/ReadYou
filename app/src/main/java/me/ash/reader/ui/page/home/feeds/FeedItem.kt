@@ -42,7 +42,8 @@ private fun FeedItemImpl(
     isLastItem: () -> Boolean = { false },
     onLongClickCallback: (String) -> Unit = {},
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongClick: () -> Unit = {},
+    trailing: @Composable () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     Row(
@@ -96,6 +97,7 @@ private fun FeedItemImpl(
                     },
                 )
             }
+            trailing()
         }
     }
 }
@@ -110,7 +112,8 @@ fun FeedItem(
     isExpanded: () -> Boolean,
     feedOptionViewModel: FeedOptionViewModel = hiltViewModel(),
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongClick: () -> Unit = {},
+    trailing: @Composable () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     RYExtensibleVisibility(visible = isExpanded()) {
@@ -123,7 +126,9 @@ fun FeedItem(
                 scope.launch {
                     feedOptionViewModel.fetchFeed(feedId = feedId)
                 }
-            })
+            },
+            trailing = trailing,
+        )
     }
 }
 

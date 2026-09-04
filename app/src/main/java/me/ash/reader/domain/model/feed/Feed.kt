@@ -1,6 +1,10 @@
 package me.ash.reader.domain.model.feed
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import me.ash.reader.domain.model.group.Group
 
 /**
@@ -35,7 +39,9 @@ data class Feed(
     val isFullContent: Boolean = false,
     @ColumnInfo(defaultValue = "0")
     val isBrowser: Boolean = false,
-    @Ignore val important: Int = 0
+    @Ignore val important: Int = 0,
+    @ColumnInfo(defaultValue = "0")
+    val position: Int = 0,
 ) {
     constructor(
         id: String,
@@ -46,7 +52,8 @@ data class Feed(
         accountId: Int,
         isNotification: Boolean,
         isFullContent: Boolean,
-        isBrowser: Boolean
+        isBrowser: Boolean,
+        position: Int = 0,
     ) : this(
         id = id,
         name = name,
@@ -57,6 +64,7 @@ data class Feed(
         isNotification = isNotification,
         isFullContent = isFullContent,
         isBrowser = isBrowser,
-        important = 0
+        important = 0,
+        position = position,
     )
 }

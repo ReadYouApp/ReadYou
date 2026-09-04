@@ -60,11 +60,14 @@ material3Adaptive = "1.3.0-alpha06"
 navigationevent = "1.0.0-beta01"
 composeBomStable = "2025.10.01"
 composeBomAlpha = "2025.10.01"
+reorderable = "3.1.0"
 
 [libraries]
 # AboutLibraries
 aboutlibraries-core = { group = "com.mikepenz", name = "aboutlibraries-core", version.ref = "aboutLibsRelease" }
 aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutLibsRelease" }
+# Reorderable (drag & drop lists)
+reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 
 # Compose
 compose-html = { group = "com.github.ireward", name = "compose-html", version.ref = "composeHtml" }

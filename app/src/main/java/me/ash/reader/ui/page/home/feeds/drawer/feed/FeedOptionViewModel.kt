@@ -17,11 +17,13 @@ import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.service.AccountService
 import me.ash.reader.domain.service.RssService
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.infrastructure.di.MainDispatcher
 import me.ash.reader.infrastructure.rss.RssHelper
+import me.ash.reader.ui.ext.getDefaultGroupId
 
 @OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
@@ -29,6 +31,7 @@ class FeedOptionViewModel
 @Inject
 constructor(
     val rssService: RssService,
+    private val accountService: AccountService,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @ApplicationScope private val applicationScope: CoroutineScope,
@@ -42,8 +45,19 @@ constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             rssService.flow().collectLatest {
-                it.pullGroups().collectLatest { groups ->
-                    _feedOptionUiState.update { it.copy(groups = groups) }
+                it.pullFeeds().collectLatest { groupWithFeeds ->
+                    // 与主列表一致：空的默认分组不作为移动目标出现
+                    val defaultGroupId = accountService.getCurrentAccountId().getDefaultGroupId()
+                    _feedOptionUiState.update { state ->
+                        state.copy(
+                            groups =
+                                groupWithFeeds
+                                    .filterNot { gwf ->
+                                        gwf.group.id == defaultGroupId && gwf.feeds.isEmpty()
+                                    }
+                                    .map { gwf -> gwf.group },
+                        )
+                    }
                 }
             }
         }

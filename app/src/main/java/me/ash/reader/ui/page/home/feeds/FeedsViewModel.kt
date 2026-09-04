@@ -76,6 +76,28 @@ class FeedsViewModel @Inject constructor(
         }
     }
 
+    fun addGroup(newGroupName: String) {
+        val name = newGroupName.trim()
+        if (name.isEmpty()) return
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().addGroup(null, name)
+        }
+    }
+
+    fun reorderGroups(orderedGroupIds: List<String>) {
+        if (orderedGroupIds.isEmpty()) return
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().reorderGroups(orderedGroupIds)
+        }
+    }
+
+    fun reorderFeeds(groupId: String, orderedFeedIds: List<String>) {
+        if (orderedFeedIds.isEmpty()) return
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().reorderFeeds(groupId, orderedFeedIds)
+        }
+    }
+
     fun commitDiffs() = diffMapHolder.commitDiffsToDb()
 
     fun changeFilter(filterState: FilterState) {

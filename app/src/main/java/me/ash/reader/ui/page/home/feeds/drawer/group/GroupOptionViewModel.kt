@@ -16,16 +16,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ash.reader.domain.model.group.Group
+import me.ash.reader.domain.service.AccountService
 import me.ash.reader.domain.service.RssService
 import me.ash.reader.infrastructure.di.ApplicationScope
 import me.ash.reader.infrastructure.di.IODispatcher
 import me.ash.reader.infrastructure.di.MainDispatcher
+import me.ash.reader.ui.ext.getDefaultGroupId
 import javax.inject.Inject
 
 @OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
 class GroupOptionViewModel @Inject constructor(
     val rssService: RssService,
+    private val accountService: AccountService,
     @MainDispatcher
     private val mainDispatcher: CoroutineDispatcher,
     @IODispatcher
@@ -39,8 +42,19 @@ class GroupOptionViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            rssService.get().pullGroups().collect { groups ->
-                _groupOptionUiState.update { it.copy(groups = groups) }
+            rssService.get().pullFeeds().collect { groupWithFeeds ->
+                // 与主列表一致：空的默认分组不作为移动目标出现
+                val defaultGroupId = accountService.getCurrentAccountId().getDefaultGroupId()
+                _groupOptionUiState.update { state ->
+                    state.copy(
+                        groups =
+                            groupWithFeeds
+                                .filterNot { gwf ->
+                                    gwf.group.id == defaultGroupId && gwf.feeds.isEmpty()
+                                }
+                                .map { gwf -> gwf.group },
+                    )
+                }
             }
         }
     }
