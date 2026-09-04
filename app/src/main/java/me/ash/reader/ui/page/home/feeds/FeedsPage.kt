@@ -1,6 +1,7 @@
 package me.ash.reader.ui.page.home.feeds
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.CreateNewFolder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Add
@@ -184,54 +186,85 @@ fun FeedsPage(
 
     BackHandler(true) { context.findActivity()?.moveTaskToBack(false) }
 
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
     RYScaffold(
         topBarTonalElevation = topBarTonalElevation.value.dp,
         //        containerTonalElevation = groupListTonalElevation.value.dp,
         topBar = {
-            TopAppBar(
-                modifier =
-                    Modifier.clickable(
-                        onClick = {
-                            scope.launch {
-                                if (listState.firstVisibleItemIndex != 0) {
-                                    listState.animateScrollToItem(0)
-                                }
-                            }
-                        },
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ),
-                title = {},
-                navigationIcon = {
-                    FeedbackIconButton(
-                        modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(R.string.settings),
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        showBadge = newVersion.whetherNeedUpdate(currentVersion, skipVersion),
-                    ) {
-                        navigateToSettings()
-                    }
-                },
-                actions = {
-                    if (subscribeViewModel.rssService.get().addSubscription) {
+            if (reorderMode) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.reorder),
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    },
+                    navigationIcon = {
                         FeedbackIconButton(
-                            imageVector = Icons.Rounded.Add,
-                            contentDescription = stringResource(R.string.subscribe),
+                            modifier = Modifier.size(20.dp),
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colorScheme.onSurface,
                         ) {
-                            subscribeViewModel.showDrawer()
+                            backDispatcher?.onBackPressed()
                         }
-                    }
-                },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor =
-                            MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                topBarTonalElevation.value.dp
-                            )
-                    ),
-            )
+                    },
+                    actions = {},
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor =
+                                MaterialTheme.colorScheme.surfaceColorAtElevation(
+                                    topBarTonalElevation.value.dp
+                                )
+                        ),
+                )
+            } else {
+                TopAppBar(
+                    modifier =
+                        Modifier.clickable(
+                            onClick = {
+                                scope.launch {
+                                    if (listState.firstVisibleItemIndex != 0) {
+                                        listState.animateScrollToItem(0)
+                                    }
+                                }
+                            },
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                        ),
+                    title = {},
+                    navigationIcon = {
+                        FeedbackIconButton(
+                            modifier = Modifier.size(20.dp),
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = stringResource(R.string.settings),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            showBadge = newVersion.whetherNeedUpdate(currentVersion, skipVersion),
+                        ) {
+                            navigateToSettings()
+                        }
+                    },
+                    actions = {
+                        if (subscribeViewModel.rssService.get().addSubscription) {
+                            FeedbackIconButton(
+                                imageVector = Icons.Rounded.Add,
+                                contentDescription = stringResource(R.string.subscribe),
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            ) {
+                                subscribeViewModel.showDrawer()
+                            }
+                        }
+                    },
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor =
+                                MaterialTheme.colorScheme.surfaceColorAtElevation(
+                                    topBarTonalElevation.value.dp
+                                )
+                        ),
+                )
+            }
         },
         content = {
             if (reorderMode) {
@@ -246,6 +279,7 @@ fun FeedsPage(
                         }
                         reorderMode = false
                     },
+                    onExit = { reorderMode = false },
                 )
             } else {
                 PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {

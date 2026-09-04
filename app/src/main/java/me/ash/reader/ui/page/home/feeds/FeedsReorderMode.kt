@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.feeds
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import me.ash.reader.R
 import me.ash.reader.domain.model.group.GroupWithFeed
+import me.ash.reader.ui.component.base.RYDialog
 import me.ash.reader.ui.theme.Shape32
 import sh.calvin.reorderable.ReorderableColumn
 import sh.calvin.reorderable.ReorderableItem
@@ -44,16 +46,41 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 /**
  * 排序编辑模式：分组可整体拖拽排序，展开的分组内订阅源也可拖拽排序。
  * 拖拽结果由 [onDone] 一次性带回（group id 顺序 + 各组 feed id 顺序），由调用方持久化。
+ * 按下系统返回键时：若存在未保存的改动则弹出确认框（保存 / 不保存），否则直接退出排序模式。
  */
 @Composable
 fun FeedsReorderMode(
     groupWithFeedList: List<GroupWithFeed>,
     onDone: (List<GroupWithFeed>) -> Unit,
+    onExit: () -> Unit,
 ) {
+    val originalGroupWithFeedList = remember { groupWithFeedList }
     var groups by remember {
         mutableStateOf(groupWithFeedList.map { it.copy(feeds = it.feeds.toMutableList()) })
     }
+    var showExitDialog by remember { mutableStateOf(false) }
     val hapticFeedback = LocalHapticFeedback.current
+
+    val isDirty =
+        remember(groups) {
+            groups.map { it.group.id } !=
+                originalGroupWithFeedList.map { it.group.id } ||
+                groups.any { gwf ->
+                    gwf.feeds.map { it.id } !=
+                        originalGroupWithFeedList
+                            .first { it.group.id == gwf.group.id }
+                            .feeds
+                            .map { it.id }
+                }
+        }
+
+    BackHandler {
+        if (isDirty) {
+            showExitDialog = true
+        } else {
+            onExit()
+        }
+    }
 
     fun moveFeed(groupId: String, fromIndex: Int, toIndex: Int) {
         if (fromIndex == toIndex) return
@@ -82,13 +109,6 @@ fun FeedsReorderMode(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Rounded.DragHandle,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
                     Text(
                         text = stringResource(R.string.reorder_tips),
                         style = MaterialTheme.typography.labelMedium,
@@ -202,5 +222,44 @@ fun FeedsReorderMode(
                 Spacer(modifier = Modifier.height(128.dp))
             }
         }
+    }
+
+    if (showExitDialog) {
+        RYDialog(
+            visible = showExitDialog,
+            onDismissRequest = { showExitDialog = false },
+            title = {
+                Text(
+                    text = stringResource(R.string.reorder_exit_title),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.reorder_exit_message),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showExitDialog = false
+                        onDone(groups)
+                    },
+                ) {
+                    Text(text = stringResource(R.string.save))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showExitDialog = false
+                        onExit()
+                    },
+                ) {
+                    Text(text = stringResource(R.string.discard))
+                }
+            },
+        )
     }
 }
