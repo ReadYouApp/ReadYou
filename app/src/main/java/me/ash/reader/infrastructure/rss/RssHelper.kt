@@ -37,6 +37,12 @@ import org.jsoup.Jsoup
 val enclosureRegex = """<enclosure\s+url="([^"]+)"\s+type=".*"\s*/>""".toRegex()
 val imgRegex = """img.*?src=(["'])((?!data).*?)\1""".toRegex(RegexOption.DOT_MATCHES_ALL)
 
+/** Thrown when the requested feed URL answers with a non-successful HTTP status code. */
+class FeedHttpException(message: String, val statusCode: Int) : IOException(message)
+
+/** Thrown when the requested URL is not a feed and no feed could be discovered on the page. */
+class FeedNotFoundException(message: String) : IOException(message)
+
 /** Some operations on RSS. */
 class RssHelper
 @Inject
@@ -55,7 +61,12 @@ constructor(
     suspend fun searchFeed(feedLink: String): SearchFeedResult {
         return withContext(ioDispatcher) {
             val directResponse = response(okHttpClient, feedLink)
-            if (!directResponse.commonIsSuccessful) throw IOException(directResponse.message)
+            if (!directResponse.commonIsSuccessful) {
+                throw FeedHttpException(
+                    message = "HTTP ${directResponse.code} ${directResponse.message}",
+                    statusCode = directResponse.code,
+                )
+            }
             val directBody = directResponse.body.bytes()
             val directHttpContentType = toHttpContentType(directResponse.header("Content-Type"))
 
@@ -64,13 +75,16 @@ constructor(
             val resolvedFeedLink =
                 if (parsedDirectFeed != null) feedLink
                 else discoverFeedLink(feedLink, directBody)
-                    ?: throw IOException("Unable to detect RSS feed URL")
+                    ?: throw FeedNotFoundException("Unable to detect RSS feed URL")
 
 
             val feed = parsedDirectFeed ?: run {
                 val discoveredResponse = response(okHttpClient, resolvedFeedLink)
                 if (!discoveredResponse.commonIsSuccessful) {
-                    throw IOException(discoveredResponse.message)
+                    throw FeedHttpException(
+                        message = "HTTP ${discoveredResponse.code} ${discoveredResponse.message}",
+                        statusCode = discoveredResponse.code,
+                    )
                 }
                 parseFeed(
                     discoveredResponse.body.bytes(),
