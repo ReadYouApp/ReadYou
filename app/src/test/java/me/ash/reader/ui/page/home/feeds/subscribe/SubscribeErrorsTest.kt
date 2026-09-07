@@ -3,6 +3,7 @@ package me.ash.reader.ui.page.home.feeds.subscribe
 import com.rometools.rome.io.ParsingFeedException
 import java.io.IOException
 import java.net.ConnectException
+import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
@@ -29,6 +30,7 @@ class SubscribeErrorsTest {
                 UnknownHostException("status.deepseek.com"),
                 ConnectException("refused"),
                 SocketTimeoutException("timeout"),
+                NoRouteToHostException("no route"),
             )
         errors.forEach {
             assertEquals(

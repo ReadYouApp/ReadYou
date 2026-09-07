@@ -3,6 +3,7 @@ package me.ash.reader.ui.page.home.feeds.subscribe
 import androidx.annotation.StringRes
 import com.rometools.rome.io.FeedException
 import java.net.ConnectException
+import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
@@ -35,6 +36,7 @@ fun Throwable.toSubscribeError(): SubscribeError =
         is UnknownHostException,
         is ConnectException,
         is SocketTimeoutException,
+        is NoRouteToHostException,
         -> SubscribeError.Text(R.string.subscribe_error_network)
         is SAXParseException, is FeedException,
         -> SubscribeError.Text(R.string.subscribe_error_parse)
