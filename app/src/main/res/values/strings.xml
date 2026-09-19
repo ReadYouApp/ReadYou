@@ -348,6 +348,8 @@
     <string name="about">About</string>
     <string name="mark_as_read_on_scroll">Mark as read on scroll</string>
     <string name="hide_empty_groups">Hide empty groups</string>
+    <string name="hide_duplicate_articles">Hide duplicate articles</string>
+    <string name="hide_duplicate_articles_desc">Only show the oldest article when the same feed has several with the same title</string>
     <string name="become_a_sponsor">Become a sponsor</string>
     <string name="sponsor_desc">We build and maintain this free, open source app in our free time. If you enjoy it, please consider supporting us with a small donation! ☕️</string>
     <string name="toolbars">Toolbars</string>

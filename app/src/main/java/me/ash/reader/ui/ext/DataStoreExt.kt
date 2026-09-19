@@ -192,6 +192,7 @@ sealed interface PreferencesKey {
         const val swipeEndAction = "swipeEndAction"
         const val markAsReadOnScroll = "markAsReadOnScroll"
         const val hideEmptyGroups = "hideEmptyGroups"
+        const val hideDuplicateArticles = "hideDuplicateArticles"
         const val pullToLoadNextFeed = "pullToLoadNextFeed"
         const val pullToSwitchArticle = "pullToSwitchArticle"
         const val openLink = "openLink"
@@ -268,6 +269,7 @@ sealed interface PreferencesKey {
                 IntKey(swipeEndAction),
                 BooleanKey(markAsReadOnScroll),
                 BooleanKey(hideEmptyGroups),
+                BooleanKey(hideDuplicateArticles),
                 BooleanKey(pullToLoadNextFeed),
                 BooleanKey(pullToSwitchArticle),
                 IntKey(openLink),
@@ -354,6 +356,7 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
         const val swipeEndAction = "swipeEndAction"
         const val markAsReadOnScroll = "markAsReadOnScroll"
         const val hideEmptyGroups = "hideEmptyGroups"
+        const val hideDuplicateArticles = "hideDuplicateArticles"
         const val pullToLoadNextFeed = "pullToLoadNextFeed"
         const val pullToSwitchArticle = "pullToSwitchArticle"
         const val openLink = "openLink"
@@ -500,6 +503,8 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
                     DataStoreKey(booleanPreferencesKey(markAsReadOnScroll), Boolean::class.java),
                 hideEmptyGroups to
                     DataStoreKey(booleanPreferencesKey(hideEmptyGroups), Boolean::class.java),
+                hideDuplicateArticles to
+                    DataStoreKey(booleanPreferencesKey(hideDuplicateArticles), Boolean::class.java),
                 pullToLoadNextFeed to
                     DataStoreKey(booleanPreferencesKey(pullToLoadNextFeed), Boolean::class.java),
                 pullToSwitchArticle to

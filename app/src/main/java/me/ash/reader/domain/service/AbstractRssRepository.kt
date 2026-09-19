@@ -220,6 +220,7 @@ abstract class AbstractRssRepository(
         isStarred: Boolean,
         isUnread: Boolean,
         sortAscending: Boolean = false,
+        hideDuplicates: Boolean = false,
     ): PagingSource<Int, ArticleWithFeed> {
         val accountId = accountService.getCurrentAccountId()
         Log.i(
@@ -241,10 +242,15 @@ abstract class AbstractRssRepository(
                             accountId,
                             groupId,
                             true,
-                            sortAscending = sortAscending,
+                            sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.queryArticleWithFeedByGroupIdWhenIsAll(accountId, groupId)
+                    else -> articleDao.queryArticleWithFeedByGroupIdWhenIsAll(
+                        accountId,
+                        groupId,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
 
             feedId != null ->
@@ -261,10 +267,15 @@ abstract class AbstractRssRepository(
                             accountId,
                             feedId,
                             true,
-                            sortAscending = sortAscending,
+                            sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.queryArticleWithFeedByFeedIdWhenIsAll(accountId, feedId)
+                    else -> articleDao.queryArticleWithFeedByFeedIdWhenIsAll(
+                        accountId,
+                        feedId,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
 
             else ->
@@ -274,16 +285,24 @@ abstract class AbstractRssRepository(
                         articleDao.queryArticleWithFeedWhenIsUnread(
                             accountId,
                             true,
-                            sortAscending = sortAscending,
+                            sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.queryArticleWithFeedWhenIsAll(accountId)
+                    else -> articleDao.queryArticleWithFeedWhenIsAll(
+                        accountId,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun pullImportant(isStarred: Boolean, isUnread: Boolean): Flow<Map<String, Int>> {
+    fun pullImportant(
+        isStarred: Boolean,
+        isUnread: Boolean,
+        hideDuplicates: Boolean = false,
+    ): Flow<Map<String, Int>> {
         val accountId = accountService.getCurrentAccountId()
         Log.i(
             "RLog",
@@ -291,8 +310,8 @@ abstract class AbstractRssRepository(
         )
         return when {
             isStarred -> articleDao.queryImportantCountWhenIsStarred(accountId, true)
-            isUnread -> articleDao.queryImportantCountWhenIsUnread(accountId, true)
-            else -> articleDao.queryImportantCountWhenIsAll(accountId)
+            isUnread -> articleDao.queryImportantCountWhenIsUnread(accountId, true, hideDuplicates)
+            else -> articleDao.queryImportantCountWhenIsAll(accountId, hideDuplicates)
         }
     }
 
@@ -417,6 +436,7 @@ abstract class AbstractRssRepository(
         isStarred: Boolean,
         isUnread: Boolean,
         sortAscending: Boolean = false,
+        hideDuplicates: Boolean = false,
     ): PagingSource<Int, ArticleWithFeed> {
         val accountId = accountService.getCurrentAccountId()
         Log.i(
@@ -441,9 +461,15 @@ abstract class AbstractRssRepository(
                             groupId,
                             true,
                             sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.searchArticleByGroupIdWhenAll(accountId, content, groupId)
+                    else -> articleDao.searchArticleByGroupIdWhenAll(
+                        accountId,
+                        content,
+                        groupId,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
 
             feedId != null ->
@@ -463,9 +489,15 @@ abstract class AbstractRssRepository(
                             feedId,
                             true,
                             sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.searchArticleByFeedIdWhenAll(accountId, content, feedId)
+                    else -> articleDao.searchArticleByFeedIdWhenAll(
+                        accountId,
+                        content,
+                        feedId,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
 
             else ->
@@ -477,9 +509,14 @@ abstract class AbstractRssRepository(
                             content,
                             true,
                             sortAscending,
+                            hideDuplicates,
                         )
 
-                    else -> articleDao.searchArticleWhenAll(accountId, content)
+                    else -> articleDao.searchArticleWhenAll(
+                        accountId,
+                        content,
+                        hideDuplicates = hideDuplicates,
+                    )
                 }
         }
     }

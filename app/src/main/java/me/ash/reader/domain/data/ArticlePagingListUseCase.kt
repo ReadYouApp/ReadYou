@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -72,8 +73,17 @@ constructor(
                 .combine(accountService.currentAccountIdFlow) { filterState, accountId ->
                     filterState
                 }
-                .collect { filterState ->
+                .combine(settingsProvider.settingsFlow) { filterState, settings ->
+                    filterState to settings
+                }
+                .distinctUntilChanged { (oldState, oldSettings), (newState, newSettings) ->
+                    oldState == newState &&
+                        oldSettings.hideDuplicateArticles == newSettings.hideDuplicateArticles &&
+                        oldSettings.flowSortUnreadArticles == newSettings.flowSortUnreadArticles
+                }
+                .collect { (filterState, settings) ->
                     val searchContent = filterState.searchContent
+                    val hideDuplicates = settings.hideDuplicateArticles.value
 
                     mutablePagerFlow.value =
                         PagerData(
@@ -90,8 +100,9 @@ constructor(
                                                 isStarred = filterState.filter.isStarred(),
                                                 isUnread = filterState.filter.isUnread(),
                                                 sortAscending =
-                                                    settingsProvider.settings.flowSortUnreadArticles
+                                                    settings.flowSortUnreadArticles
                                                         .value,
+                                                hideDuplicates = hideDuplicates,
                                             )
                                     } else {
                                         rssService
@@ -102,8 +113,9 @@ constructor(
                                                 isStarred = filterState.filter.isStarred(),
                                                 isUnread = filterState.filter.isUnread(),
                                                 sortAscending =
-                                                    settingsProvider.settings.flowSortUnreadArticles
+                                                    settings.flowSortUnreadArticles
                                                         .value,
+                                                hideDuplicates = hideDuplicates,
                                             )
                                     }
                                 }

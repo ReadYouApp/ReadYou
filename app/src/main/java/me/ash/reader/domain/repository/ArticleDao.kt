@@ -87,20 +87,31 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
-        AND feedId IN (
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND a.feedId IN (
             SELECT id FROM feed WHERE groupId = :groupId
         )
-        AND isUnread = :isUnread
+        AND a.isUnread = :isUnread
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleByGroupIdWhenIsUnread(
@@ -108,7 +119,8 @@ interface ArticleDao {
         text: String,
         groupId: String,
         isUnread: Boolean,
-        sortAscending: Boolean = false
+        sortAscending: Boolean = false,
+        hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -141,40 +153,62 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
-        AND feedId IN (
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND a.feedId IN (
             SELECT id FROM feed WHERE groupId = :groupId
         )
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleByGroupIdWhenAll(
-        accountId: Int, text: String, groupId: String, sortAscending: Boolean = false
+        accountId: Int, text: String, groupId: String, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
-        AND feedId = :feedId
-        AND isUnread = :isUnread
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND a.feedId = :feedId
+        AND a.isUnread = :isUnread
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleByFeedIdWhenIsUnread(
@@ -182,7 +216,8 @@ interface ArticleDao {
         text: String,
         feedId: String,
         isUnread: Boolean,
-        sortAscending: Boolean = false
+        sortAscending: Boolean = false,
+        hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -213,41 +248,63 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
-        AND feedId = :feedId 
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND a.feedId = :feedId
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleByFeedIdWhenAll(
-        accountId: Int, text: String, feedId: String, sortAscending: Boolean = false
+        accountId: Int, text: String, feedId: String, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
-        AND isUnread = :isUnread
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND a.isUnread = :isUnread
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleWhenIsUnread(
-        accountId: Int, text: String, isUnread: Boolean, sortAscending: Boolean = false
+        accountId: Int, text: String, isUnread: Boolean, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -273,20 +330,31 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE accountId = :accountId 
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
         AND (
-            title LIKE '%' || :text || '%'
-            OR shortDescription LIKE '%' || :text || '%'
-            OR fullContent LIKE '%' || :text || '%'
+            a.title LIKE '%' || :text || '%'
+            OR a.shortDescription LIKE '%' || :text || '%'
+            OR a.fullContent LIKE '%' || :text || '%'
+        )
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
         )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun searchArticleWhenAll(
-        accountId: Int, text: String, sortAscending: Boolean = false
+        accountId: Int, text: String, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
 
@@ -434,16 +502,28 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT feedId, COUNT(*) AS important
-        FROM article
-        WHERE isUnread = :isUnread
-        AND accountId = :accountId
-        GROUP BY feedId
+        SELECT a.feedId, COUNT(*) AS important
+        FROM article AS a
+        WHERE a.isUnread = :isUnread
+        AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
+        GROUP BY a.feedId
         """
     )
     fun queryImportantCountWhenIsUnread(
         accountId: Int,
         isUnread: Boolean,
+        hideDuplicates: Boolean = false,
     ): Flow<Map<@MapColumn("feedId") String, @MapColumn("important") Int>>
 
     @Transaction
@@ -464,28 +544,50 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT feedId, COUNT(*) AS important
-        FROM article
-        WHERE accountId = :accountId
-        GROUP BY feedId
+        SELECT a.feedId, COUNT(*) AS important
+        FROM article AS a
+        WHERE a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
+        GROUP BY a.feedId
         """
     )
-    fun queryImportantCountWhenIsAll(accountId: Int):
+    fun queryImportantCountWhenIsAll(accountId: Int, hideDuplicates: Boolean = false):
             Flow<Map<@MapColumn("feedId") String, @MapColumn("important") Int>>
 
 
     @Transaction
     @Query(
         """
-        SELECT * FROM article 
-        WHERE accountId = :accountId
+        SELECT * FROM article AS a
+        WHERE a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedWhenIsAll(
-        accountId: Int, sortAscending: Boolean = false
+        accountId: Int, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -506,16 +608,27 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article 
-        WHERE isUnread = :isUnread 
-        AND accountId = :accountId
+        SELECT * FROM article AS a
+        WHERE a.isUnread = :isUnread
+        AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedWhenIsUnread(
-        accountId: Int, isUnread: Boolean, sortAscending: Boolean = false
+        accountId: Int, isUnread: Boolean, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -530,13 +643,24 @@ interface ArticleDao {
         LEFT JOIN `group` AS c ON c.id = b.groupId
         WHERE c.id = :groupId
         AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
             CASE WHEN :sortAscending = 1 THEN a.date END ASC,
             CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByGroupIdWhenIsAll(
-        accountId: Int, groupId: String, sortAscending: Boolean = false
+        accountId: Int, groupId: String, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -574,28 +698,50 @@ interface ArticleDao {
         WHERE c.id = :groupId
         AND a.isUnread = :isUnread
         AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
             CASE WHEN :sortAscending = 1 THEN a.date END ASC,
             CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByGroupIdWhenIsUnread(
-        accountId: Int, groupId: String, isUnread: Boolean, sortAscending: Boolean = false
+        accountId: Int, groupId: String, isUnread: Boolean, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
     @Query(
         """
-        SELECT * FROM article
-        WHERE feedId = :feedId
-        AND accountId = :accountId
+        SELECT * FROM article AS a
+        WHERE a.feedId = :feedId
+        AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByFeedIdWhenIsAll(
-        accountId: Int, feedId: String, sortAscending: Boolean = false
+        accountId: Int, feedId: String, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
     @Transaction
@@ -617,17 +763,28 @@ interface ArticleDao {
     @Transaction
     @Query(
         """
-        SELECT * FROM article 
-        WHERE feedId = :feedId 
-        AND isUnread = :isUnread
-        AND accountId = :accountId
+        SELECT * FROM article AS a
+        WHERE a.feedId = :feedId
+        AND a.isUnread = :isUnread
+        AND a.accountId = :accountId
+        AND (
+            :hideDuplicates = 0
+            OR a.title = ''
+            OR NOT EXISTS (
+                SELECT 1 FROM article AS d
+                WHERE d.accountId = a.accountId
+                AND d.feedId = a.feedId
+                AND d.title = a.title
+                AND (d.date < a.date OR (d.date = a.date AND d.id < a.id))
+            )
+        )
         ORDER BY
-            CASE WHEN :sortAscending = 1 THEN date END ASC,
-            CASE WHEN :sortAscending = 0 THEN date END DESC
+            CASE WHEN :sortAscending = 1 THEN a.date END ASC,
+            CASE WHEN :sortAscending = 0 THEN a.date END DESC
         """
     )
     fun queryArticleWithFeedByFeedIdWhenIsUnread(
-        accountId: Int, feedId: String, isUnread: Boolean, sortAscending: Boolean = false
+        accountId: Int, feedId: String, isUnread: Boolean, sortAscending: Boolean = false, hideDuplicates: Boolean = false
     ): PagingSource<Int, ArticleWithFeed>
 
 

@@ -26,6 +26,7 @@ import me.ash.reader.infrastructure.preference.InitialPagePreference
 import me.ash.reader.infrastructure.preference.LocalArticleListSwipeEndAction
 import me.ash.reader.infrastructure.preference.LocalArticleListSwipeStartAction
 import me.ash.reader.infrastructure.preference.LocalHideEmptyGroups
+import me.ash.reader.infrastructure.preference.LocalHideDuplicateArticles
 import me.ash.reader.infrastructure.preference.LocalInitialFilter
 import me.ash.reader.infrastructure.preference.LocalInitialPage
 import me.ash.reader.infrastructure.preference.LocalMarkAsReadOnScroll
@@ -63,6 +64,7 @@ fun InteractionPage(
     val swipeToEndAction = LocalArticleListSwipeEndAction.current
     val markAsReadOnScroll = LocalMarkAsReadOnScroll.current
     val hideEmptyGroups = LocalHideEmptyGroups.current
+    val hideDuplicateArticles = LocalHideDuplicateArticles.current
     val sortUnreadArticles = LocalSortUnreadArticles.current
     val pullToSwitchArticle = LocalPullToSwitchArticle.current
     val openLink = LocalOpenLink.current
@@ -174,6 +176,18 @@ fun InteractionPage(
                     ) {
                         RYSwitch(activated = markAsReadOnScroll.value) {
                             markAsReadOnScroll.toggle(context, scope)
+                        }
+                    }
+
+                    SettingItem(
+                        title = stringResource(R.string.hide_duplicate_articles),
+                        desc = stringResource(R.string.hide_duplicate_articles_desc),
+                        onClick = {
+                            hideDuplicateArticles.toggle(context, scope)
+                        },
+                    ) {
+                        RYSwitch(activated = hideDuplicateArticles.value) {
+                            hideDuplicateArticles.toggle(context, scope)
                         }
                     }
 

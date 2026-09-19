@@ -17,7 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -95,20 +97,27 @@ class FeedsViewModel @Inject constructor(
                 .combine(accountFlow) { filter, account ->
                     filter
                 }
+                .combine(
+                    settingsProvider.settingsFlow
+                        .map { it.hideDuplicateArticles.value }
+                        .distinctUntilChanged()
+                ) { filter, hideDuplicates ->
+                    filter to hideDuplicates
+                }
                 .collect {
                     currentJob?.cancel()
-                    currentJob = when (it) {
-                        Filter.Unread -> pullUnreadFeeds()
+                    currentJob = when (it.first) {
+                        Filter.Unread -> pullUnreadFeeds(it.second)
                         Filter.Starred -> pullStarredFeeds()
-                        else -> pullAllFeeds()
+                        else -> pullAllFeeds(it.second)
                     }
                 }
         }
     }
 
-    private fun pullAllFeeds(): Job {
+    private fun pullAllFeeds(hideDuplicates: Boolean): Job {
         val articleCountMapFlow =
-            rssService.get().pullImportant(isStarred = false, isUnread = false)
+            rssService.get().pullImportant(isStarred = false, isUnread = false, hideDuplicates = hideDuplicates)
 
         return viewModelScope.launch {
             launch {
@@ -136,8 +145,9 @@ class FeedsViewModel @Inject constructor(
     }
 
     @OptIn(FlowPreview::class)
-    private fun pullUnreadFeeds(): Job {
-        val unreadCountMapFlow = rssService.get().pullImportant(isStarred = false, isUnread = true)
+    private fun pullUnreadFeeds(hideDuplicates: Boolean): Job {
+        val unreadCountMapFlow =
+            rssService.get().pullImportant(isStarred = false, isUnread = true, hideDuplicates = hideDuplicates)
 
         return viewModelScope.launch {
             diffMapHolder.diffMapSnapshotFlow

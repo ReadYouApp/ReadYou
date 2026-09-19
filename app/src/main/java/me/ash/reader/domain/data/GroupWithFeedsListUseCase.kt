@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -50,12 +51,18 @@ class GroupWithFeedsListUseCase @Inject constructor(
             filterStateUseCase.filterStateFlow.map { it.filter }
                 .combine(accountFlow) { filter, account ->
                     filter
+                }.combine(
+                    settingsProvider.settingsFlow
+                        .map { it.hideDuplicateArticles.value }
+                        .distinctUntilChanged()
+                ) { filter, hideDuplicates ->
+                    filter to hideDuplicates
                 }.collectLatest {
                     currentJob?.cancel()
-                    currentJob = when (it) {
-                        Filter.Unread -> pullUnreadFeeds()
+                    currentJob = when (it.first) {
+                        Filter.Unread -> pullUnreadFeeds(it.second)
                         Filter.Starred -> pullStarredFeeds()
-                        else -> pullAllFeeds()
+                        else -> pullAllFeeds(it.second)
                     }
                 }
         }
@@ -72,9 +79,9 @@ class GroupWithFeedsListUseCase @Inject constructor(
     private val hideEmptyGroups get() = settingsProvider.settings.hideEmptyGroups.value
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun pullAllFeeds(): Job {
+    private fun pullAllFeeds(hideDuplicates: Boolean): Job {
         val articleCountMapFlow =
-            rssService.get().pullImportant(isStarred = false, isUnread = false)
+            rssService.get().pullImportant(isStarred = false, isUnread = false, hideDuplicates = hideDuplicates)
 
         return applicationScope.launch {
             feedsFlow.combine(articleCountMapFlow) { groupWithFeedsList, articleCountMap ->
@@ -128,8 +135,9 @@ class GroupWithFeedsListUseCase @Inject constructor(
     }
 
     @OptIn(FlowPreview::class)
-    private fun pullUnreadFeeds(): Job {
-        val unreadCountMapFlow = rssService.get().pullImportant(isStarred = false, isUnread = true)
+    private fun pullUnreadFeeds(hideDuplicates: Boolean): Job {
+        val unreadCountMapFlow =
+            rssService.get().pullImportant(isStarred = false, isUnread = true, hideDuplicates = hideDuplicates)
         return applicationScope.launch {
             combine(
                 feedsFlow, unreadCountMapFlow, diffMapHolder.diffMapSnapshotFlow

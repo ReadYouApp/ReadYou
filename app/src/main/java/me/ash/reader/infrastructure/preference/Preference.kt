@@ -81,6 +81,7 @@ fun Preferences.toSettings(): Settings {
         swipeEndAction = SwipeEndActionPreference.fromPreferences(this),
         markAsReadOnScroll = MarkAsReadOnScrollPreference.fromPreferences(this),
         hideEmptyGroups = HideEmptyGroupsPreference.fromPreferences(this),
+        hideDuplicateArticles = HideDuplicateArticlesPreference.fromPreferences(this),
         pullToSwitchFeed = PullToLoadNextFeedPreference.fromPreference(this),
         pullToSwitchArticle = PullToSwitchArticlePreference.fromPreference(this),
         openLink = OpenLinkPreference.fromPreferences(this),
