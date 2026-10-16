@@ -104,8 +104,13 @@ internal class AppUriHandler(
                         }
                     }
                 } catch (_: Throwable) {
-                    showToast(getString(R.string.open_link_something_wrong))
-                    startActivity(intent)
+                    val fallbackIntent = intent.setPackage(null)
+                    if (fallbackIntent.resolveActivity(packageManager) != null) {
+                        showToast(getString(R.string.open_link_something_wrong))
+                        startActivity(fallbackIntent)
+                    } else {
+                        showToast(getString(R.string.open_link_no_app_found))
+                    }
                 }
             }
         }

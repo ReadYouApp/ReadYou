@@ -300,6 +300,7 @@
     <string name="always_ask">Always ask</string>
     <string name="open_link_specific_browser">Browser</string>
     <string name="open_link_something_wrong">\"Open link\" setting ignored because something went wrong</string>
+    <string name="open_link_no_app_found">No app found to open this link</string>
     <string name="open_link_ask_dialog_title">Open with…</string>
     <string name="include_additional_info">Include additional info</string>
     <string name="exclude">Exclude</string>
