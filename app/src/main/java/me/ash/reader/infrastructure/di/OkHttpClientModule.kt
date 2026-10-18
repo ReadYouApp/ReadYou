@@ -70,7 +70,7 @@ fun cachingHttpClient(
     context: Context,
     cacheDirectory: File? = null,
     cacheSize: Long = 10L * 1024L * 1024L,
-    trustAllCerts: Boolean = true,
+    trustAllCerts: Boolean = false,
     connectTimeoutSecs: Long = 30L,
     readTimeoutSecs: Long = 30L,
     clientCertificateAlias: String? = null,
