@@ -21,6 +21,8 @@ sealed class SyncIntervalPreference(
     object Every6Hours : SyncIntervalPreference(360L)
     object Every12Hours : SyncIntervalPreference(720L)
     object Every1Day : SyncIntervalPreference(1440L)
+    object Every3Days : SyncIntervalPreference(4320L)
+    object Every1Week : SyncIntervalPreference(10080L)
 
     fun put(accountId: Int, viewModel: AccountViewModel) {
         viewModel.update(accountId) { copy(syncInterval = this@SyncIntervalPreference) }
@@ -37,6 +39,8 @@ sealed class SyncIntervalPreference(
             Every6Hours -> context.getString(R.string.every_6_hours)
             Every12Hours -> context.getString(R.string.every_12_hours)
             Every1Day -> context.getString(R.string.every_1_day)
+            Every3Days -> context.getString(R.string.every_3_days)
+            Every1Week -> context.getString(R.string.every_1_week)
         }
 
     fun toPeriodicWorkRequestBuilder(): PeriodicWorkRequest.Builder =
@@ -55,6 +59,8 @@ sealed class SyncIntervalPreference(
             Every6Hours,
             Every12Hours,
             Every1Day,
+            Every3Days,
+            Every1Week,
         )
     }
 }

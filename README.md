@@ -1,4 +1,4 @@
-<div align="center">
+  <div align="center">
     <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/icon.png">
 </div>
 

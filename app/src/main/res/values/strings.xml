@@ -236,6 +236,8 @@
     <string name="every_6_hours">Every 6 hours</string>
     <string name="every_12_hours">Every 12 hours</string>
     <string name="every_1_day">Every day</string>
+    <string name="every_3_days">Every 3 days</string>
+    <string name="every_1_week">Every week</string>
     <string name="manually">Manually</string>
     <string name="always">Always</string>
     <string name="for_1_day">1 day</string>
