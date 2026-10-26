@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all">ทั้งหมด</string>
+    <string name="unread">ยังไม่ได้อ่าน</string>
+    <string name="starred">ติดดาว</string>
+    <string name="feeds">ฟีด</string>
+    <string name="syncing">กำลังซิงค์</string>
+    <string name="loading">กำลังโหลด</string>
+    <string name="expand_more">ขยาย</string>
+    <string name="unfold_more">ขยายทั้งหมด</string>
+    <string name="unfold_less">พับทั้งหมด</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="allow">อนุญาติ</string>
+    <string name="deny">ปฏิเสธ</string>
+    <string name="defaults">ค่าเริ่มต้น</string>
+    <string name="unknown">ไม่ทราบ</string>
+    <string name="empty">ว่างเปล่า</string>
+    <string name="back">ย้อนกลับ</string>
+    <string name="go_to">ไปที่</string>
+    <string name="settings">ตั้งค่า</string>
+    <string name="search">ค้นหา</string>
+    <string name="searching">กำลังค้นหา…</string>
+    <string name="subscribe">ติดตาม</string>
+    <string name="already_subscribed">กดติดตามแล้ว</string>
+    <string name="paste">วาง</string>
+</resources>
