@@ -10,6 +10,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.mock
+import com.rometools.rome.feed.synd.SyndEntry
+import com.rometools.rome.io.SyndFeedInput
+import java.io.StringReader
 
 internal const val enclosureUrlString1: String = "https://example.com/enclosure.jpg"
 internal const val enclosureUrlString2: String = "https://github.blog/wp-content/uploads/2024/03/github_copilot_header.png"
@@ -86,5 +89,80 @@ class RssHelperTest {
             <enclosure url="$imageUrlString" type="image/jpeg" length="0"/>
         """
         Assert.assertEquals(imageUrlString, rssHelper.findThumbnail(case))
+    }
+
+
+
+    private fun parseMediaEntry(mediaXml: String): SyndEntry {
+        val xml = """
+            <rss version="2.0"
+                 xmlns:media="http://search.yahoo.com/mrss/">
+                <channel>
+                    <title>Test feed</title>
+                    <link>https://example.com/</link>
+                    <description>Image selection tests</description>
+                    <item>
+                        <title>Test article</title>
+                        <link>https://example.com/article</link>
+                        $mediaXml
+                    </item>
+                </channel>
+            </rss>
+        """.trimIndent()
+
+        return StringReader(xml).use { reader ->
+            SyndFeedInput().build(reader).entries.single()
+        }
+    }
+
+    @Test
+    fun testPrefersMediaContentOverThumbnail() {
+        val entry = parseMediaEntry(
+            """
+                <media:thumbnail url="https://example.com/small.jpg" />
+                <media:content url="https://example.com/large.jpg"
+                               medium="image" type="image/jpeg" />
+            """.trimIndent()
+        )
+
+        Assert.assertEquals(
+            "https://example.com/large.jpg",
+            rssHelper.findThumbnail(entry)
+        )
+    }
+
+    @Test
+    fun testFallsBackToMediaThumbnail() {
+        val entry = parseMediaEntry(
+            """<media:thumbnail url="https://example.com/small.jpg" />"""
+        )
+
+        Assert.assertEquals(
+            "https://example.com/small.jpg",
+            rssHelper.findThumbnail(entry)
+        )
+    }
+
+    @Test
+    fun testUsesThumbnailInsteadOfVideoContent() {
+        val entry = parseMediaEntry(
+            """
+                <media:thumbnail url="https://example.com/small.jpg" />
+                <media:content url="https://example.com/video.mp4"
+                               medium="video" type="video/mp4" />
+            """.trimIndent()
+        )
+
+        Assert.assertEquals(
+            "https://example.com/small.jpg",
+            rssHelper.findThumbnail(entry)
+        )
+    }
+
+    @Test
+    fun testReturnsNullWithoutMediaImages() {
+        val entry = parseMediaEntry("")
+
+        Assert.assertNull(rssHelper.findThumbnail(entry))
     }
 }

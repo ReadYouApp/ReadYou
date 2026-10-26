@@ -248,25 +248,30 @@ constructor(
     }
 
     private fun findThumbnail(mediaModule: MediaEntryModule): String? {
+        
+        val imageUrl = mediaModule.mediaContents
+            .asSequence()
+            .filter { it.medium == "image" }
+            .mapNotNull { content ->
+                (content.reference as? UrlReference)?.url?.toString()
+            }
+            .firstOrNull{it.isNotBlank()}
+
+        if(imageUrl != null){
+            return imageUrl
+        }
+        
+        
         val candidates =
             buildList {
                     add(mediaModule.metadata)
-                    addAll(mediaModule.mediaGroups.map { mediaGroup -> mediaGroup.metadata })
-                    addAll(mediaModule.mediaContents.map { content -> content.metadata })
+                    addAll(mediaModule.mediaGroups.map { it.metadata })
+                    addAll(mediaModule.mediaContents.map { it.metadata })
                 }
                 .flatMap { it.thumbnail.toList() }
 
-        val thumbnail = candidates.firstOrNull()
+        return candidates.firstOrNull()?.url?.toString()
 
-        if (thumbnail != null) {
-            return thumbnail.url.toString()
-        } else {
-            val imageMedia = mediaModule.mediaContents.firstOrNull { it.medium == "image" }
-            if (imageMedia != null) {
-                return (imageMedia.reference as? UrlReference)?.url.toString()
-            }
-        }
-        return null
     }
 
     fun findThumbnail(text: String?): String? {
