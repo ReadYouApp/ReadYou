@@ -1,0 +1,16 @@
+<i>Read You</i> je sodoben in eleganten bralnik RSS z zasnovo <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You </a>.
+
+<b>Funkcije:</b>
+
+* Naročanje na vire prek povezav
+* Uvoz iz datotek OPML
+* Sinhronizacija člankov
+* Obvestila o posodobitvah člankov
+* Pridobivanje celotne vsebine člankov
+* Filtriranje neprebranih člankov in člankov, označenih z zvezdico
+* Združevanje virov v skupine
+* Jezikovne prilagoditve
+* Izvoz v obliki OPML
+* Iskanje člankov
+
+Kmalu še več …

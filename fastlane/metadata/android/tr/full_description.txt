@@ -1,4 +1,4 @@
-<i>Read You</i> <a href='https://m3.material.io/' target='_blank' rel='nofollow'> Material You </a> Tasarımı ile modern ve şık bir RSS okuyucu
+<i>Read You</i> <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You </a> Tasarımı ile modern ve şık bir RSS okuyucu
 
 <b>Özellikler:</b>
 

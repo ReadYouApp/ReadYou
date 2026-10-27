@@ -1,6 +1,6 @@
 <i>Read You</i> Sebuah pembaca RSS modern dan elegan dengan desain <a href='https://m3.material.io/' target='_blank' rel='nofollow'>Material You</a>
 
-<b>Fitur</b>
+<b>Fitur:</b>
 
 * Berlangganan ke Tautan Umpan
 * Impor dari OPML
