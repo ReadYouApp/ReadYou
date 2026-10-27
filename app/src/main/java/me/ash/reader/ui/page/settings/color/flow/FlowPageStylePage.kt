@@ -35,6 +35,7 @@ fun FlowPageStylePage(
     val articleListImage = LocalFlowArticleListImage.current
     val articleListDesc = LocalFlowArticleListDesc.current
     val articleListTime = LocalFlowArticleListTime.current
+    val articleListDateHeader = LocalFlowArticleListDateHeader.current
     val articleListStickyDate = LocalFlowArticleListDateStickyHeader.current
     val articleListTonalElevation = LocalFlowArticleListTonalElevation.current
     val articleListReadIndicator = LocalFlowArticleListReadIndicator.current
@@ -178,12 +179,26 @@ fun FlowPageStylePage(
                         }
                     }
                     SettingItem(
+                        title = stringResource(R.string.article_date_header),
+                        onClick = {
+                            (!articleListDateHeader).put(context, scope)
+                        },
+                    ) {
+                        RYSwitch(activated = articleListDateHeader.value) {
+                            (!articleListDateHeader).put(context, scope)
+                        }
+                    }
+                    SettingItem(
                         title = stringResource(R.string.article_date_sticky_header),
+                        enabled = articleListDateHeader.value,
                         onClick = {
                             (!articleListStickyDate).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListStickyDate.value) {
+                        RYSwitch(
+                            activated = articleListStickyDate.value,
+                            enable = articleListDateHeader.value,
+                        ) {
                             (!articleListStickyDate).put(context, scope)
                         }
                     }

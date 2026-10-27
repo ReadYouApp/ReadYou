@@ -157,6 +157,7 @@ sealed interface PreferencesKey {
         const val flowArticleListImage = "flowArticleListImage"
         const val flowArticleListDesc = "flowArticleListDescription"
         const val flowArticleListTime = "flowArticleListTime"
+        const val flowArticleListDateHeader = "flowArticleListDateHeader"
         const val flowArticleListDateStickyHeader = "flowArticleListDateStickyHeader"
         const val flowArticleListTonalElevation = "flowArticleListTonalElevation"
         const val flowArticleListReadIndicator = "flowArticleListReadStatusIndicator"
@@ -235,6 +236,7 @@ sealed interface PreferencesKey {
                 BooleanKey(flowArticleListImage),
                 BooleanKey(flowArticleListDesc),
                 BooleanKey(flowArticleListTime),
+                BooleanKey(flowArticleListDateHeader),
                 BooleanKey(flowArticleListDateStickyHeader),
                 IntKey(flowArticleListTonalElevation),
                 IntKey(flowArticleListReadIndicator),
@@ -319,6 +321,7 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
         const val flowArticleListImage = "flowArticleListImage"
         const val flowArticleListDesc = "flowArticleListDescription"
         const val flowArticleListTime = "flowArticleListTime"
+        const val flowArticleListDateHeader = "flowArticleListDateHeader"
         const val flowArticleListDateStickyHeader = "flowArticleListDateStickyHeader"
         const val flowArticleListTonalElevation = "flowArticleListTonalElevation"
         const val flowArticleListReadIndicator = "flowArticleListReadStatusIndicator"
@@ -429,6 +432,13 @@ data class DataStoreKey<T>(val key: Preferences.Key<T>, val type: Class<T>) {
                     DataStoreKey(booleanPreferencesKey(flowArticleListDesc), Boolean::class.java),
                 flowArticleListTime to
                     DataStoreKey(booleanPreferencesKey(flowArticleListTime), Boolean::class.java),
+
+                flowArticleListDateHeader to
+                        DataStoreKey(
+                            booleanPreferencesKey(flowArticleListDateHeader),
+                            Boolean::class.java
+                        ),
+
                 flowArticleListDateStickyHeader to
                     DataStoreKey(
                         booleanPreferencesKey(flowArticleListDateStickyHeader),

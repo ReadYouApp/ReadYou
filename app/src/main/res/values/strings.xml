@@ -183,6 +183,7 @@
     <string name="article_images">Article images</string>
     <string name="feed_names">Feed names</string>
     <string name="feed_favicons">Feed favicons</string>
+    <string name="article_date_header">Publication date header</string>
     <string name="article_date_sticky_header">Sticky publication date header</string>
     <string name="article_list">Article list</string>
     <string name="group_list">Group list</string>

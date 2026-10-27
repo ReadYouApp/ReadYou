@@ -39,6 +39,7 @@ data class Settings(
     val flowArticleListImage: FlowArticleListImagePreference = FlowArticleListImagePreference.default,
     val flowArticleListDesc: FlowArticleListDescPreference = FlowArticleListDescPreference.default,
     val flowArticleListTime: FlowArticleListTimePreference = FlowArticleListTimePreference.default,
+    val flowArticleListDateHeader: FlowArticleListDateHeaderPreference = FlowArticleListDateHeaderPreference.default,
     val flowArticleListDateStickyHeader: FlowArticleListDateStickyHeaderPreference = FlowArticleListDateStickyHeaderPreference.default,
     val flowArticleListTonalElevation: FlowArticleListTonalElevationPreference = FlowArticleListTonalElevationPreference.default,
     val flowArticleListReadIndicator: FlowArticleReadIndicatorPreference = FlowArticleReadIndicatorPreference.default,

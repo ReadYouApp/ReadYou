@@ -20,6 +20,7 @@ fun LazyListScope.ArticleList(
     diffMap: Map<String, Diff>,
     isShowFeedIcon: Boolean,
     isShowStickyHeader: Boolean,
+    isShowDateHeader: Boolean = true,
     articleListTonalElevation: Int,
     isSwipeEnabled: () -> Boolean = { false },
     isMenuEnabled: Boolean = true,
@@ -61,10 +62,12 @@ fun LazyListScope.ArticleList(
                 }
 
                 is ArticleFlowItem.Date -> {
-                    if (item.showSpacer) {
-                        Spacer(modifier = Modifier.height(32.dp))
+                    if (isShowDateHeader) {
+                        if (item.showSpacer) {
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
+                        StickyHeader(item.date, isShowFeedIcon, articleListTonalElevation)
                     }
-                    StickyHeader(item.date, isShowFeedIcon, articleListTonalElevation)
                 }
 
                 else -> {}
@@ -96,11 +99,13 @@ fun LazyListScope.ArticleList(
                 }
 
                 is ArticleFlowItem.Date -> {
-                    if (item.showSpacer) {
-                        item { Spacer(modifier = Modifier.height(32.dp)) }
-                    }
-                    stickyHeader(key = key(item), contentType = contentType(item)) {
-                        StickyHeader(item.date, isShowFeedIcon, articleListTonalElevation)
+                    if (isShowDateHeader) {
+                        if (item.showSpacer) {
+                            item { Spacer(modifier = Modifier.height(32.dp)) }
+                        }
+                        stickyHeader(key = key(item), contentType = contentType(item)) {
+                            StickyHeader(item.date, isShowFeedIcon, articleListTonalElevation)
+                        }
                     }
                 }
 

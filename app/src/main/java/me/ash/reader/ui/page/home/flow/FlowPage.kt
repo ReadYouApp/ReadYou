@@ -74,6 +74,7 @@ import me.ash.reader.R
 import me.ash.reader.domain.data.PagerData
 import me.ash.reader.domain.model.article.ArticleFlowItem
 import me.ash.reader.domain.model.article.ArticleWithFeed
+import me.ash.reader.infrastructure.preference.LocalFlowArticleListDateHeader
 import me.ash.reader.infrastructure.preference.LocalFlowArticleListDateStickyHeader
 import me.ash.reader.infrastructure.preference.LocalFlowArticleListFeedIcon
 import me.ash.reader.infrastructure.preference.LocalFlowArticleListTonalElevation
@@ -125,6 +126,7 @@ fun FlowPage(
     val keyboardController = LocalSoftwareKeyboardController.current
     val articleListTonalElevation = LocalFlowArticleListTonalElevation.current
     val articleListFeedIcon = LocalFlowArticleListFeedIcon.current
+    val articleListDateHeader = LocalFlowArticleListDateHeader.current
     val articleListDateStickyHeader = LocalFlowArticleListDateStickyHeader.current
     val topBarTonalElevation = LocalFlowTopBarTonalElevation.current
     val filterBarStyle = LocalFlowFilterBarStyle.current
@@ -669,6 +671,7 @@ fun FlowPage(
                                 pagingItems = pagingItems,
                                 diffMap = viewModel.diffMapHolder.diffMap,
                                 isShowFeedIcon = articleListFeedIcon.value,
+                                isShowDateHeader = articleListDateHeader.value,
                                 isShowStickyHeader = articleListDateStickyHeader.value,
                                 articleListTonalElevation = articleListTonalElevation.value,
                                 isSwipeEnabled = { listState.isScrollInProgress },

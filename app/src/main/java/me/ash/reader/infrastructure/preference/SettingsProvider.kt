@@ -95,6 +95,7 @@ class SettingsProvider @Inject constructor(
             LocalFlowArticleListImage provides settings.flowArticleListImage,
             LocalFlowArticleListDesc provides settings.flowArticleListDesc,
             LocalFlowArticleListTime provides settings.flowArticleListTime,
+            LocalFlowArticleListDateHeader provides settings.flowArticleListDateHeader,
             LocalFlowArticleListDateStickyHeader provides settings.flowArticleListDateStickyHeader,
             LocalFlowArticleListTonalElevation provides settings.flowArticleListTonalElevation,
             LocalFlowFilterBarStyle provides settings.flowFilterBarStyle,

@@ -44,6 +44,7 @@ fun Preferences.toSettings(): Settings {
         flowArticleListImage = FlowArticleListImagePreference.fromPreferences(this),
         flowArticleListDesc = FlowArticleListDescPreference.fromPreferences(this),
         flowArticleListTime = FlowArticleListTimePreference.fromPreferences(this),
+        flowArticleListDateHeader = FlowArticleListDateHeaderPreference.fromPreferences(this),
         flowArticleListDateStickyHeader = FlowArticleListDateStickyHeaderPreference.fromPreferences(
             this
         ),
