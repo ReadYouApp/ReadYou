@@ -3,8 +3,10 @@ package me.ash.reader.domain.data
 import android.content.Context
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshotFlow
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -55,7 +57,8 @@ class DiffMapHolder @Inject constructor(
 
     val shouldSyncWithRemote get() = currentAccount?.type != AccountType.Local
 
-    private val gson = Gson()
+    private val json = Json { ignoreUnknownKeys = true }
+    private val diffMapSerializer = MapSerializer(String.serializer(), Diff.serializer())
 
     private val cacheDir = context.cacheDir.resolve("diff")
     private var userCacheDir = cacheDir
@@ -210,7 +213,7 @@ class DiffMapHolder @Inject constructor(
     private fun writeDiffsToCache() {
         applicationScope.launch(ioDispatcher) {
             try {
-                val tmpJson = gson.toJson(diffMap)
+                val tmpJson = json.encodeToString(diffMapSerializer, diffMap)
                 userCacheDir.mkdirs()
                 cacheFile.createNewFile()
                 if (cacheFile.exists() && cacheFile.canWrite()) {
@@ -258,9 +261,8 @@ class DiffMapHolder @Inject constructor(
         applicationScope.launch(ioDispatcher) {
             if (cacheFile.exists() && cacheFile.canRead()) {
                 val tmpJson = cacheFile.readText()
-                val mapType = object : TypeToken<Map<String, Diff>>() {}.type
-                val diffMapFromCache = gson.fromJson<Map<String, Diff>>(
-                    tmpJson, mapType
+                val diffMapFromCache = json.decodeFromString(
+                    diffMapSerializer, tmpJson
                 )
                 diffMapFromCache?.let {
                     diffMap.clear()
@@ -282,6 +284,7 @@ class DiffMapHolder @Inject constructor(
     }
 }
 
+@Serializable
 data class Diff(
     val isUnread: Boolean, val articleId: String, val feedId: String
 ) {

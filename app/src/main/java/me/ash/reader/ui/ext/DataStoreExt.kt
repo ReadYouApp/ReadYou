@@ -12,8 +12,15 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.longOrNull
 import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -526,38 +533,52 @@ val ignorePreferencesOnExportAndImport =
 
 suspend fun Context.fromDataStoreToJSONString(): String {
     val preferences = dataStore.data.first()
-    val map: Map<String, Any?> =
+    val map: Map<String, JsonElement> =
         preferences
             .asMap()
             .mapKeys { it.key.name }
             .filterKeys { it !in ignorePreferencesOnExportAndImport }
-    return Gson().toJson(map)
+            .mapValues { (_, value) ->
+                when (value) {
+                    is Boolean -> JsonPrimitive(value)
+                    is Int -> JsonPrimitive(value)
+                    is Long -> JsonPrimitive(value)
+                    is Float -> JsonPrimitive(value)
+                    is Double -> JsonPrimitive(value)
+                    is String -> JsonPrimitive(value)
+                    else -> JsonNull
+                }
+            }
+    return Json.encodeToString(
+        MapSerializer(String.serializer(), JsonElement.serializer()), map
+    )
 }
 
 suspend fun String.fromJSONStringToDataStore(context: Context) {
-    val gson = Gson()
-    val type = object : TypeToken<Map<String, *>>() {}.type
-    val deserializedMap: Map<String, Any> = gson.fromJson(this, type)
+    val deserializedMap: Map<String, JsonElement> = Json.decodeFromString(
+        MapSerializer(String.serializer(), JsonElement.serializer()), this
+    )
     context.dataStore.edit { preferences ->
         deserializedMap
             .filterKeys { it !in ignorePreferencesOnExportAndImport }
-            .forEach { (keyString, value) ->
+            .forEach { (keyString, element) ->
                 val preferencesKey = PreferencesKey.keys[keyString]
+                val primitive = (element as? JsonPrimitive) ?: return@forEach
                 when (preferencesKey) {
                     is PreferencesKey.BooleanKey -> {
-                        if (value is Boolean) preferences[preferencesKey.key] = value
+                        primitive.booleanOrNull?.let { preferences[preferencesKey.key] = it }
                     }
                     is PreferencesKey.FloatKey -> {
-                        if (value is Number) preferences[preferencesKey.key] = value.toFloat()
+                        primitive.doubleOrNull?.let { preferences[preferencesKey.key] = it.toFloat() }
                     }
                     is PreferencesKey.IntKey -> {
-                        if (value is Number) preferences[preferencesKey.key] = value.toInt()
+                        primitive.longOrNull?.let { preferences[preferencesKey.key] = it.toInt() }
                     }
                     is PreferencesKey.LongKey -> {
-                        if (value is Number) preferences[preferencesKey.key] = value.toLong()
+                        primitive.longOrNull?.let { preferences[preferencesKey.key] = it }
                     }
                     is PreferencesKey.StringKey -> {
-                        if (value is String) preferences[preferencesKey.key] = value
+                        if (primitive.isString) preferences[preferencesKey.key] = primitive.content
                     }
                     null -> return@forEach
                 }

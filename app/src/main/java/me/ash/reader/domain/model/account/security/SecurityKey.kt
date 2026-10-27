@@ -1,15 +1,14 @@
 package me.ash.reader.domain.model.account.security
 
-import com.google.gson.Gson
+import kotlinx.serialization.json.Json
 
 abstract class SecurityKey {
 
-    fun <T> decode(value: String?, classOfT: Class<T>): T =
-        Gson().fromJson(DESUtils.decrypt(value?.ifEmpty { DESUtils.empty } ?: DESUtils.empty), classOfT)
+    @PublishedApi
+    internal val json: Json = Json { ignoreUnknownKeys = true }
 
-    override fun toString(): String {
-        return DESUtils.encrypt(Gson().toJson(this))
-    }
+    inline fun <reified T> decode(value: String?): T =
+        json.decodeFromString<T>(DESUtils.decrypt(value?.ifEmpty { DESUtils.empty } ?: DESUtils.empty))
 
     override fun equals(other: Any?): Boolean {
         return this.toString() == other.toString()

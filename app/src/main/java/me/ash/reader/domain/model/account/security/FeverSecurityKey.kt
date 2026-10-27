@@ -1,25 +1,25 @@
 package me.ash.reader.domain.model.account.security
 
-class FeverSecurityKey private constructor() : SecurityKey() {
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 
-    var serverUrl: String? = null
-    var username: String? = null
-    var password: String? = null
-    var clientCertificateAlias: String? = null
+@Serializable
+class FeverSecurityKey(
+    var serverUrl: String? = null,
+    var username: String? = null,
+    var password: String? = null,
+    var clientCertificateAlias: String? = null,
+) : SecurityKey() {
 
-    constructor(serverUrl: String?, username: String?, password: String?, clientCertificateAlias: String?) : this() {
-        this.serverUrl = serverUrl
-        this.username = username
-        this.password = password
-        this.clientCertificateAlias = clientCertificateAlias
-    }
-
-    constructor(value: String? = DESUtils.empty) : this() {
-        decode(value, FeverSecurityKey::class.java).let {
+    constructor(value: String?) : this() {
+        decode<FeverSecurityKey>(value).let {
             serverUrl = it.serverUrl
             username = it.username
             password = it.password
             clientCertificateAlias = it.clientCertificateAlias
         }
     }
+
+    override fun toString(): String =
+        DESUtils.encrypt(json.encodeToString(this))
 }

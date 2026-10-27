@@ -1,10 +1,15 @@
 package me.ash.reader.domain.model.account.security
 
-class LocalSecurityKey private constructor() : SecurityKey() {
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 
-    constructor(value: String? = DESUtils.empty) : this() {
-        decode(value, LocalSecurityKey::class.java).let {
+@Serializable
+class LocalSecurityKey() : SecurityKey() {
 
-        }
+    constructor(value: String?) : this() {
+        decode<LocalSecurityKey>(value)
     }
+
+    override fun toString(): String =
+        DESUtils.encrypt(json.encodeToString(this))
 }

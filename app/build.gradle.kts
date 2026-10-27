@@ -164,7 +164,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.coroutines)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.profileinstaller)
     implementation(libs.work.runtime.ktx)
     implementation(libs.datastore.preferences)

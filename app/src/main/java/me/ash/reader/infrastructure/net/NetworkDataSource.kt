@@ -5,13 +5,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.io.File
 
 interface NetworkDataSource {
@@ -31,7 +35,7 @@ interface NetworkDataSource {
             return instance ?: synchronized(this) {
                 instance ?: Retrofit.Builder()
                     .baseUrl("https://api.github.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory("application/json; charset=UTF8".toMediaType()))
                     .build().create(NetworkDataSource::class.java).also {
                         instance = it
                     }
@@ -91,26 +95,28 @@ fun ResponseBody.downloadToFileWithProgress(saveFile: File): Flow<Download> =
         }
     }.flowOn(Dispatchers.IO).distinctUntilChanged()
 
+@Serializable
 data class LatestRelease(
-    val html_url: String? = null,
-    val tag_name: String? = null,
+    @SerialName("html_url") val htmlUrl: String? = null,
+    @SerialName("tag_name") val tagName: String? = null,
     val name: String? = null,
     val draft: Boolean? = null,
     val prerelease: Boolean? = null,
-    val created_at: String? = null,
-    val published_at: String? = null,
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("published_at") val publishedAt: String? = null,
     val assets: List<AssetsItem>? = null,
     val body: String? = null,
 )
 
+@Serializable
 data class AssetsItem(
     val name: String? = null,
-    val content_type: String? = null,
+    @SerialName("content_type") val contentType: String? = null,
     val size: Int? = null,
-    val download_count: Int? = null,
-    val created_at: String? = null,
-    val updated_at: String? = null,
-    val browser_download_url: String? = null,
+    @SerialName("download_count") val downloadCount: Int? = null,
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("updated_at") val updatedAt: String? = null,
+    @SerialName("browser_download_url") val browserDownloadUrl: String? = null,
 )
 
 sealed class Download {
