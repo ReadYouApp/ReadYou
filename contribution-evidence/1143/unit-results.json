@@ -1,0 +1,90 @@
+{
+  "baseline": {
+    "tests": 6,
+    "failures": 2
+  },
+  "fixed": {
+    "suites": 5,
+    "tests": 13,
+    "failures": 0
+  },
+  "cases": [
+    {
+      "suite": "me.ash.reader.infrastructure.rss.OPMLDataSourceTest",
+      "tests": [
+        {
+          "name": "testEmptyTitle",
+          "passed": true
+        },
+        {
+          "name": "testEmptyNestedFoldersDoNotHideSiblingFeeds",
+          "passed": true
+        },
+        {
+          "name": "testTopLevelFeedUsesDefaultGroup",
+          "passed": true
+        },
+        {
+          "name": "testNestedDefaultGroupUsesDefaultGroup",
+          "passed": true
+        },
+        {
+          "name": "testNestedFoldersKeepEveryFeedInOuterGroup",
+          "passed": true
+        },
+        {
+          "name": "testReadYouAttributesAndFallbackName",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "suite": "me.ash.reader.infrastructure.rss.RssHelperTest",
+      "tests": [
+        {
+          "name": "testFindThumbnail",
+          "passed": true
+        },
+        {
+          "name": "testEnclosureNoFilenameExtension",
+          "passed": true
+        },
+        {
+          "name": "testMediaNamespaceThumbnailInRSS20",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "suite": "me.ash.reader.ExampleUnitTest",
+      "tests": [
+        {
+          "name": "addition_isCorrect",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "suite": "me.ash.reader.ui.ext.StringExtTest",
+      "tests": [
+        {
+          "name": "testExtractDomain",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "suite": "me.ash.reader.infrastructure.rss.GoogleReaderIdTest",
+      "tests": [
+        {
+          "name": "testParse",
+          "passed": true
+        },
+        {
+          "name": "testConvert",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

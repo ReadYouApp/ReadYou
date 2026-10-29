@@ -98,4 +98,53 @@ class OPMLDataSourceTest {
         Assert.assertTrue(feed.isFullContent)
         Assert.assertTrue(feed.isBrowser)
     }
+    @Test
+    fun testNestedFoldersKeepEveryFeedInOuterGroup() {
+        val result = parse(fill("""
+            <outline text="Manga news">
+                <outline text="Direct" xmlUrl="https://direct.example/rss"/>
+                <outline text="Nested">
+                    <outline text="Deep" xmlUrl="https://deep.example/rss"
+                        isNotification="true" isFullContent="true" isBrowser="true"/>
+                    <outline text="Deeper">
+                        <outline text="Deepest" xmlUrl="https://deepest.example/rss"/>
+                    </outline>
+                </outline>
+                <outline text="Last" xmlUrl="https://last.example/rss"/>
+            </outline>
+        """))
+        Assert.assertEquals(listOf("Default", "Manga news"), result.map { it.group.name })
+        val group = result[1]
+        Assert.assertEquals(listOf("Direct", "Deep", "Deepest", "Last"), group.feeds.map { it.name })
+        Assert.assertTrue(group.feeds.all { it.groupId == group.group.id && it.accountId == 1 })
+        val deep = group.feeds[1]
+        Assert.assertTrue(deep.isNotification)
+        Assert.assertTrue(deep.isFullContent)
+        Assert.assertTrue(deep.isBrowser)
+    }
+
+    @Test
+    fun testNestedDefaultGroupUsesDefaultGroup() {
+        val result = parse(fill("""
+            <outline text="Default" isDefault="true">
+                <outline text="Nested"><outline text="Default feed" xmlUrl="https://default.example/rss"/></outline>
+            </outline>
+        """))
+        Assert.assertEquals(listOf("Default feed"), result[0].feeds.map { it.name })
+        Assert.assertEquals(defaultGroup.id, result[0].feeds.single().groupId)
+        Assert.assertEquals(1, result.size)
+    }
+
+    @Test
+    fun testEmptyNestedFoldersDoNotHideSiblingFeeds() {
+        val result = parse(fill("""
+            <outline text="Outer">
+                <outline text="Empty"><outline text="Also empty"/></outline>
+                <outline text="Feed" xmlUrl="https://feed.example/rss"/>
+            </outline>
+        """))
+        Assert.assertEquals(2, result.size)
+        Assert.assertEquals(listOf("Feed"), result[1].feeds.map { it.name })
+    }
+
 }

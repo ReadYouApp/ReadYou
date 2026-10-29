@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>Penguin nested import fixture — synthetic feeds</title></head>
+  <body>
+    <outline text="Manga news">
+      <outline type="rss" text="Reader releases" xmlUrl="https://penguin.example/reader.xml"/>
+      <outline text="Studios">
+        <outline type="rss" text="Studio journal" xmlUrl="https://penguin.example/studio.xml" isNotification="true" isFullContent="true" isBrowser="true"/>
+        <outline text="Community">
+          <outline type="rss" text="Chapter notes" xmlUrl="https://penguin.example/chapters.xml"/>
+        </outline>
+      </outline>
+    </outline>
+  </body>
+</opml>

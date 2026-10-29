@@ -73,7 +73,7 @@ class OPMLDataSource @Inject constructor(
                         )
                     )
                 }
-                for (subOutline in outline.subElements) {
+                for (subOutline in outline.descendants()) {
                     if (subOutline != null && subOutline.attributes != null) {
                         groupWithFeedList.addFeed(
                             Feed(
@@ -92,6 +92,23 @@ class OPMLDataSource @Inject constructor(
             }
         }
         return groupWithFeedList
+    }
+
+    // The data model has flat groups: nested feeds stay in their outer group.
+    // Keep document order without recursive calls for deeply nested exports.
+    private fun Outline.descendants(): Sequence<Outline> = sequence {
+        val pending = ArrayDeque<Iterator<Outline>>()
+        pending.addLast(subElements.iterator())
+        while (pending.isNotEmpty()) {
+            val iterator = pending.last
+            if (!iterator.hasNext()) {
+                pending.removeLast()
+                continue
+            }
+            val outline = iterator.next()
+            yield(outline)
+            pending.addLast(outline.subElements.iterator())
+        }
     }
 
     private fun MutableList<GroupWithFeed>.addGroup(group: Group) {

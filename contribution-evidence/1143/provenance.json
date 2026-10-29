@@ -1,0 +1,46 @@
+{
+  "package": "me.ash.reader",
+  "version": "0.16.2",
+  "originalApkSha256": "a27f6da6961f2d5cd27b515349dc71844a0d20cfacc38b5fc398152fa034ce5e",
+  "sourceBase": "d2b979ccad9a3e54b9499929a9dc2824578b0fd9",
+  "sourceFix": "879dedb60f47c375cd02f8e0a7070def5894ed6e",
+  "device": {
+    "avd": "penguin",
+    "serial": "emulator-5580",
+    "api": 35,
+    "abi": "arm64-v8a",
+    "size": "1080x1920",
+    "density": 320
+  },
+  "comparison": {
+    "before": "Original official APK payload, resigned with disposable fixture key",
+    "after": "Actual Morphe Manager 2.2.0 embedded-JVM export installed through its update UI",
+    "input": "Same three-feed nested OPML bytes; each side starts without the synthetic Manga news group",
+    "view": "All filter; Default group collapsed; Manga news expanded; light theme; Android demo clock 12:30",
+    "originalImportedFeeds": 1,
+    "patchedImportedFeeds": 3
+  },
+  "managerJvmExportSha256": "e2057e77e707f22d5e70b1876cfecbb0a06206c76ce2de616ab7985d3f40912b",
+  "sha256": {
+    "before.xml": "0cd4d69e831574193c48b6fc55f23746816c21190868bab99bd24e123f6c758e",
+    "before.png": "725c80c2d753386e8eaa1dfcf7c823ae7555b634142da22473026dbcbbb08687",
+    "nested.opml": "6d0e3b154f16560591747a8329b33dd288af934292cf2e02f3826d83d26dcb88",
+    "after.xml": "6f091761e5a49dd71cabfc5b0b18df9005aa8e0b77cd39772105704de882968e",
+    "after.png": "330d6b6e1ccdbd015d609aa13de9654f9d0fd12964d1a71b5c883fc92e9a37f8",
+    "unit-results.json": "277ab0229228839c535a27dcdd5ab6185375b98e1d73eacc70b6ab60167537d9",
+    "desktop-payload.json": "daabc707e08619a31b1b6ece74c5053a4775f3079a4007907b29f735232e3fe1",
+    "runtime-payloads.json": "35f3b2c0f21ecb65da7d29f3525c84c4e10f51d4f1c4ee2cc25550afba7faca7"
+  },
+  "beforeApkSha256": "943d8c62b2520fc4beb1589b58ae00544a88f71058a13a5b0cbca177d9d64a02",
+  "testSignerSha256": "5bcbdaac2aebee68090aa00926622ccb5439ad0bec86d3d219ad0b74036d3628",
+  "captures": {
+    "before": {
+      "capturedAt": "2026-10-29T02:50:15.868911+00:00",
+      "pngSha256": "725c80c2d753386e8eaa1dfcf7c823ae7555b634142da22473026dbcbbb08687"
+    },
+    "after": {
+      "capturedAt": "2026-10-29T02:57:54.568020+00:00",
+      "pngSha256": "330d6b6e1ccdbd015d609aa13de9654f9d0fd12964d1a71b5c883fc92e9a37f8"
+    }
+  }
+}
