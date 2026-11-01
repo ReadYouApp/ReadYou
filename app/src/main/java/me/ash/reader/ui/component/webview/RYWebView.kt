@@ -38,10 +38,12 @@ import me.ash.reader.ui.theme.palette.alwaysLight
 fun RYWebView(
     modifier: Modifier = Modifier,
     content: String,
+    baseUrl: String? = null,
     refererDomain: String? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
 ) {
     val context = LocalContext.current
+    val resolvedBaseUrl = WebViewHtml.resolveBaseUrl(baseUrl)
     val maxWidth = LocalConfiguration.current.screenWidthDp.dp.value
     val openLink = LocalOpenLink.current
     val openLinkSpecificBrowser = LocalOpenLinkSpecificBrowser.current
@@ -105,7 +107,7 @@ fun RYWebView(
                 Log.i("RLog", "CustomWebView: ${content}")
                 settings.defaultFontSize = fontSize
                 loadDataWithBaseURL(
-                    null,
+                    resolvedBaseUrl.ifBlank { null },
                     WebViewHtml.HTML.format(
                         WebViewStyle.get(
                             fontSize = fontSize,
@@ -128,7 +130,7 @@ fun RYWebView(
                             selectionTextColor = selectionTextColor,
                             selectionBgColor = selectionBgColor,
                         ),
-                        url,
+                        WebViewHtml.escapeAttribute(resolvedBaseUrl),
                         content,
                         WebViewScript.get(boldCharacters.value),
                     ),
