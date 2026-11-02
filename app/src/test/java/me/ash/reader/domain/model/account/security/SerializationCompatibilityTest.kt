@@ -126,11 +126,7 @@ class SerializationCompatibilityTest {
     @Test
     fun `Diff map serialization matches Gson format`() {
         val gsonMapJson = """{"id1":{"isUnread":true,"articleId":"id1","feedId":"f1"},"id2":{"isUnread":false,"articleId":"id2","feedId":"f2"}}"""
-        val mapSerializer = kotlinx.serialization.builtins.MapSerializer(
-            kotlinx.serialization.builtins.serializer<String>(),
-            Diff.serializer()
-        )
-        val decoded = json.decodeFromString(mapSerializer, gsonMapJson)
+        val decoded = json.decodeFromString<Map<String, Diff>>(gsonMapJson)
         assertEquals(2, decoded.size)
         assertEquals(true, decoded["id1"]?.isUnread)
         assertEquals(false, decoded["id2"]?.isUnread)
