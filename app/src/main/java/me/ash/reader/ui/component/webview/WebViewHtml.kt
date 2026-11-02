@@ -8,11 +8,8 @@ object WebViewHtml {
     fun resolveBaseUrl(url: String?): String {
         val normalized = url?.trim()?.takeIf { it.isNotBlank() }?.formatUrl() ?: return ""
         val uri = runCatching { URI(normalized) }.getOrNull() ?: return ""
-        return when (uri.scheme?.lowercase()) {
-            "http", "https" -> normalized.takeIf { uri.host != null } ?: ""
-            "file" -> normalized
-            else -> ""
-        }
+        val scheme = uri.scheme?.lowercase()
+        return if ((scheme == "http" || scheme == "https") && uri.host != null) normalized else ""
     }
 
     fun escapeAttribute(value: String): String =

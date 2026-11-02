@@ -24,6 +24,8 @@ class WebViewHtmlTest {
         )
         Assert.assertEquals("", WebViewHtml.resolveBaseUrl("https://example.com/a b"))
         Assert.assertEquals("", WebViewHtml.resolveBaseUrl("javascript:alert(1)"))
+        Assert.assertEquals("", WebViewHtml.resolveBaseUrl("file:///sdcard/article.html"))
+        Assert.assertEquals("", WebViewHtml.resolveBaseUrl("file:/etc/passwd"))
     }
 
     @Test
