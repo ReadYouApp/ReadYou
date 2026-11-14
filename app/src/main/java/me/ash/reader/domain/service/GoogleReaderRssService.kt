@@ -348,8 +348,11 @@ constructor(
             }
 
             launch {
+                // The read-items stream is intentionally limited to the last month so we do not
+                // download old read articles. Use the complete unread ID stream to reconcile
+                // read state for articles that are already stored locally, including older ones.
                 val toBeReadLocal =
-                    remoteReadIds.await().intersect(localUnreadIds).map {
+                    (localUnreadIds - remoteUnreadIds.await()).map {
                         accountId spacerDollar it
                     }
                 toBeReadLocal.chunked(1000).forEach {
@@ -538,21 +541,15 @@ constructor(
 
             val feed = feedDao.queryById(feedId)!!
 
+            val localUnreadMetadata =
+                articleDao.queryMetadataByFeedId(accountId, feedId, isUnread = true)
+            val localReadMetadata =
+                articleDao.queryMetadataByFeedId(accountId, feedId, isUnread = false)
+            val localUnreadIds = localUnreadMetadata.map { it.id.remoteId }.toSet()
+            val localReadIds = localReadMetadata.map { it.id.remoteId }.toSet()
             val localStarredIds =
-                articleDao
-                    .queryMetadataByFeedId(accountId, feedId, isUnread = true)
-                    .map { it.id.remoteId }
-                    .toSet()
-
-            val localUnreadIds =
-                articleDao
-                    .queryMetadataByFeedId(accountId, feedId, isUnread = true)
-                    .map { it.id.remoteId }
-                    .toSet()
-
-            val localReadIds =
-                articleDao
-                    .queryMetadataByFeedId(accountId, feedId, isUnread = false)
+                (localUnreadMetadata + localReadMetadata)
+                    .filter { it.isStarred }
                     .map { it.id.remoteId }
                     .toSet()
 
@@ -672,11 +669,16 @@ constructor(
     private suspend fun fetchItemIdsAndContinue(
         getItemIdsFunc: suspend (continuationId: String?) -> GoogleReaderDTO.ItemIds?
     ): MutableList<String> {
-        var result = getItemIdsFunc(null)
-        val ids = result?.itemRefs?.mapNotNull { it.id }?.toMutableList() ?: return mutableListOf()
-        while (result != null && result.continuation != null) {
-            result = getItemIdsFunc(result.continuation)
-            result?.itemRefs?.mapNotNull { it.id }?.let { ids.addAll(it) }
+        // An empty result means the server has no matching items; null means the request failed.
+        // Treating a failed unread-ID request as empty would incorrectly mark every local article
+        // as read during reconciliation.
+        var result = requireNotNull(getItemIdsFunc(null)) { "item ID request returned no result" }
+        val ids = result.itemRefs?.mapNotNull { it.id }?.toMutableList() ?: mutableListOf()
+        while (result.continuation != null) {
+            result = requireNotNull(getItemIdsFunc(result.continuation)) {
+                "item ID continuation request returned no result"
+            }
+            result.itemRefs?.mapNotNull { it.id }?.let { ids.addAll(it) }
         }
         return ids
     }
