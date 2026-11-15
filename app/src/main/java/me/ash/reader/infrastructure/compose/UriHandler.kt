@@ -94,8 +94,19 @@ internal class AppUriHandler(
                         }
 
                         OpenLinkPreference.DefaultBrowser -> {
-                            val packageName = getDefaultBrowserInfo()!!.activityInfo.packageName
-                            startActivity(intent.setPackage(packageName))
+                            // resolveActivity() may return an OEM resolver (e.g. com.zui.resolver)
+                            // that resolves for implicit VIEW intents but cannot be started when
+                            // pinned with setPackage(). Only pin it when that actually resolves.
+                            val packageName = getDefaultBrowserInfo()?.activityInfo?.packageName
+                            val targetedIntent = packageName?.let { Intent(intent).setPackage(it) }
+                            if (
+                                targetedIntent != null &&
+                                    targetedIntent.resolveActivity(packageManager) != null
+                            ) {
+                                startActivity(targetedIntent)
+                            } else {
+                                startActivity(intent)
+                            }
                         }
 
                         OpenLinkPreference.SpecificBrowser -> {
