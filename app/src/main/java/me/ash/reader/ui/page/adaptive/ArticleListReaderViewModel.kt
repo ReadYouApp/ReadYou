@@ -1,6 +1,7 @@
 package me.ash.reader.ui.page.adaptive
 
 import android.net.Uri
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,10 +21,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import me.ash.reader.domain.data.ArticlePagingListUseCase
 import me.ash.reader.domain.data.DiffMapHolder
 import me.ash.reader.domain.data.FilterState
@@ -312,6 +316,14 @@ constructor(
                         .prefetchArticleId()
                         .renderContent(this)
                 }
+            }
+        }
+    }
+
+    fun commitReadDiffs() {
+        diffMapHolder.commitReadDiffsNow {
+            withTimeoutOrNull(1_000) {
+                snapshotFlow { articleListUseCase.itemSnapshotList }.drop(1).first()
             }
         }
     }

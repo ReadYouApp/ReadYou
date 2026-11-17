@@ -190,6 +190,36 @@ class DiffMapHolder @Inject constructor(
         }
     }
 
+    /**
+     * Marks an article as read in the database immediately, instead of holding the change in
+     * [diffMap]. The unread article list then drops the article at once.
+     */
+    fun markAsReadNow(articleWithFeed: ArticleWithFeed) {
+        val diff = Diff(isUnread = false, articleWithFeed = articleWithFeed)
+        diffMap.remove(diff.articleId)
+        if (shouldSyncWithRemote) {
+            appendDiffToSync(diff)
+        }
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().batchMarkAsRead(articleIds = setOf(diff.articleId), isUnread = false)
+        }
+    }
+
+    /**
+     * Writes the read diffs to the database immediately, so that the unread article list drops
+     * the read articles. The diffs stay in [diffMap] until [awaitListRefresh] returns. If not,
+     * the articles show as unread for a moment before the list reloads.
+     */
+    fun commitReadDiffsNow(awaitListRefresh: suspend () -> Unit) {
+        val readIds = diffMap.filterValues { !it.isUnread }.keys
+        if (readIds.isEmpty()) return
+        applicationScope.launch(ioDispatcher) {
+            rssService.get().batchMarkAsRead(articleIds = readIds, isUnread = false)
+            awaitListRefresh()
+            diffMap -= readIds
+        }
+    }
+
     private fun appendDiffToSync(diff: Diff) {
         val syncedDiff = syncedDiffs[diff.articleId]
         if (syncedDiff == null || syncedDiff.isUnread != diff.isUnread) {

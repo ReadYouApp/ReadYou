@@ -31,11 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import java.util.concurrent.Executors
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import me.ash.reader.ui.component.reader.ExpandedContentWidth
@@ -98,6 +100,12 @@ fun ArticleListReaderPage(
         }
 
     var listAlpha by rememberSaveable { mutableFloatStateOf(1f) }
+
+    LaunchedEffect(navigator) {
+        snapshotFlow { navigator.currentDestination?.contentKey }
+            .filter { it == null }
+            .collect { viewModel.commitReadDiffs() }
+    }
 
     LaunchedEffect(isTwoPane) {
         Timber.d("isTwoPane: $isTwoPane")

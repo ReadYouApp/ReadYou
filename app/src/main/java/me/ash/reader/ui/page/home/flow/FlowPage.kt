@@ -185,9 +185,20 @@ fun FlowPage(
         }
     }
 
-    val onToggleRead: (ArticleWithFeed) -> Unit = remember {
-        { articleWithFeed -> viewModel.diffMapHolder.updateDiff(articleWithFeed) }
-    }
+    val isFilterUnread = filterUiState.filter.isUnread()
+
+    val onToggleRead: (ArticleWithFeed) -> Unit =
+        remember(isFilterUnread) {
+            { articleWithFeed ->
+                with(viewModel.diffMapHolder) {
+                    if (isFilterUnread && checkIfUnread(articleWithFeed)) {
+                        markAsReadNow(articleWithFeed)
+                    } else {
+                        updateDiff(articleWithFeed)
+                    }
+                }
+            }
+        }
 
     val sortByEarliest =
         filterUiState.filter.isUnread() &&
@@ -674,10 +685,14 @@ fun FlowPage(
                                 isSwipeEnabled = { listState.isScrollInProgress },
                                 onClick = { articleWithFeed, index ->
                                     if (articleWithFeed.feed.isBrowser) {
-                                        viewModel.diffMapHolder.updateDiff(
-                                            articleWithFeed,
-                                            isUnread = false,
-                                        )
+                                        if (isFilterUnread) {
+                                            viewModel.diffMapHolder.markAsReadNow(articleWithFeed)
+                                        } else {
+                                            viewModel.diffMapHolder.updateDiff(
+                                                articleWithFeed,
+                                                isUnread = false,
+                                            )
+                                        }
                                         context.openURL(
                                             articleWithFeed.article.link,
                                             openLink,
