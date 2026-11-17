@@ -3,7 +3,6 @@ import java.util.Properties
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.aboutlibraries)
@@ -92,21 +91,13 @@ android {
         }
         all { signingConfig = signingConfigs.getByName("release") }
     }
-    applicationVariants.all {
-        outputs.all {
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
-                "ReadYou-${defaultConfig.versionName}-${gitCommitHash}.apk"
-        }
-    }
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures { buildConfig = true }
+    // Required by the AGP 9.5 Compose Preview tasks; without it `./gradlew tasks` fails.
+    testOptions { unitTests { isIncludeAndroidResources = true } }
     packaging {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         resources.excludes.add("rome-utils-*.jar")
@@ -114,6 +105,23 @@ android {
     androidResources { generateLocaleConfig = true }
     composeCompiler { featureFlags = setOf(ComposeFeatureFlag.PausableComposition) }
     namespace = "me.ash.reader"
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach {
+            (it as com.android.build.api.variant.impl.VariantOutputImpl).outputFileName.set(
+                "ReadYou-${android.defaultConfig.versionName}-${gitCommitHash}.apk"
+            )
+        }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    }
 }
 
 aboutLibraries { excludeFields = arrayOf("generated") }
