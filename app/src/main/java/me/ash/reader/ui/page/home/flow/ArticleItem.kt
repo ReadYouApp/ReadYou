@@ -54,8 +54,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
 import androidx.compose.ui.unit.sp
-import coil.size.Precision
-import coil.size.Scale
+import coil3.size.Precision
+import coil3.size.Scale
 import me.ash.reader.R
 import me.ash.reader.domain.model.article.ArticleWithFeed
 import me.ash.reader.infrastructure.preference.FlowArticleListDescPreference

@@ -43,7 +43,6 @@ import me.ash.reader.ui.svg.WELCOME
 
 @Composable
 fun StartupPage(
-    //    navController: NavHostController,
     onNavigateToFeeds: () -> Unit
 ) {
     val context = LocalContext.current

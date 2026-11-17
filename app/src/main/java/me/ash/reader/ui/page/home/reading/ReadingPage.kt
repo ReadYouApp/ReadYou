@@ -61,7 +61,6 @@ private const val DOWNWARD = -1
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ReadingPage(
-    //    navController: NavHostController,
     viewModel: ArticleListReaderViewModel,
     navigationAction: NavigationAction,
     onLoadArticle: (String, Int) -> Unit,

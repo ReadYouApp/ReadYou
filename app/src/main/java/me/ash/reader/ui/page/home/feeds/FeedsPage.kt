@@ -90,7 +90,6 @@ import me.ash.reader.ui.page.settings.accounts.AccountViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun FeedsPage(
-    //    navController: NavHostController,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     accountViewModel: AccountViewModel = hiltViewModel(),

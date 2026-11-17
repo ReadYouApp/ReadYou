@@ -9,7 +9,7 @@ import me.ash.reader.ui.ext.encodeBase64
 import me.ash.reader.ui.ext.md5
 import okhttp3.FormBody
 import okhttp3.Request
-import okhttp3.executeAsync
+import okhttp3.coroutines.executeAsync
 import java.util.concurrent.ConcurrentHashMap
 
 class FeverAPI private constructor(
