@@ -33,7 +33,8 @@ import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import okhttp3.internal.platform.Platform
+import javax.net.ssl.TrustManagerFactory
+import java.security.KeyStore
 import java.io.File
 import java.net.Socket
 import java.security.KeyManagementException
@@ -147,7 +148,9 @@ fun OkHttpClient.Builder.setupSsl(
                 override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
             }
         } else {
-            Platform.get().platformTrustManager()
+            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
+                init(null as KeyStore?)
+            }.trustManagers.filterIsInstance<X509TrustManager>().single()
         }
 
         val sslContext = SSLContext.getInstance("TLS")

@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import coil.Coil
-import coil.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.ImageLoader
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -105,7 +105,7 @@ class AndroidApp : Application(), Configuration.Provider {
             workerInit()
             checkUpdate()
         }
-        Coil.setImageLoader(imageLoader)
+        SingletonImageLoader.setSafe { imageLoader }
     }
 
     /** Override the [Configuration.Builder] to provide the [HiltWorkerFactory]. */

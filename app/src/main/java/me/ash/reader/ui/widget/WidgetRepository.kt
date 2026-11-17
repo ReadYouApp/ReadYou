@@ -2,13 +2,13 @@ package me.ash.reader.ui.widget
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.graphics.drawable.toBitmapOrNull
+import coil3.toBitmap
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.size.Dimension
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.size.Dimension
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -148,8 +148,8 @@ constructor(
                         .size(width = Dimension.Pixels(600), height = Dimension.Undefined)
                         .build()
                 )
-                .drawable
-                ?.toBitmapOrNull()
+                .image
+                ?.toBitmap()
         }
     }
 

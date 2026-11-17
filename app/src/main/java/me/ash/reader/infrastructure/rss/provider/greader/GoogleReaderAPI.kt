@@ -23,7 +23,7 @@ import me.ash.reader.ui.ext.dollarLast
 import me.ash.reader.ui.ext.spacerDollar
 import okhttp3.FormBody
 import okhttp3.Request
-import okhttp3.executeAsync
+import okhttp3.coroutines.executeAsync
 import okio.IOException
 import timber.log.Timber
 

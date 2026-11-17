@@ -42,8 +42,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.HapticFeedbackConstantsCompat
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil3.compose.rememberAsyncImagePainter
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import me.ash.reader.R
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.showToast
@@ -77,7 +80,7 @@ fun ReaderImageViewer(
             val painter =
                 rememberAsyncImagePainter(
                     ImageRequest.Builder(LocalContext.current)
-                        .addHeader("Referer", imageData.imageUrl.extractDomain() ?: "")
+                        .httpHeaders(NetworkHeaders.Builder().set("Referer", imageData.imageUrl.extractDomain() ?: "").build())
                         .data(data = imageData.imageUrl)
                         .build()
                 )

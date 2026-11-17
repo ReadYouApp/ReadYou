@@ -1,6 +1,5 @@
 import java.io.FileInputStream
 import java.util.Properties
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlin.android)
@@ -36,7 +35,7 @@ if (releaseKeyPropsFile.exists()) {
 }
 
 android {
-    compileSdk = 36
+    compileSdk { version = release(37) { minorApiLevel = 2 } }
 
     defaultConfig {
         applicationId = "me.ash.reader"
@@ -98,10 +97,6 @@ android {
                 "ReadYou-${defaultConfig.versionName}-${gitCommitHash}.apk"
         }
     }
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -112,11 +107,17 @@ android {
         resources.excludes.add("rome-utils-*.jar")
     }
     androidResources { generateLocaleConfig = true }
-    composeCompiler { featureFlags = setOf(ComposeFeatureFlag.PausableComposition) }
     namespace = "me.ash.reader"
 }
 
-aboutLibraries { excludeFields = arrayOf("generated") }
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    }
+}
+
+aboutLibraries { export { excludeFields.add("generated") } }
 
 dependencies {
     // AboutLibraries
@@ -127,15 +128,11 @@ dependencies {
     implementation(libs.compose.html)
     implementation(platform(libs.compose.bom.alpha))
     implementation(libs.androidx.ui.graphics)
-    androidTestImplementation(platform(libs.compose.bom.stable))
-    implementation(libs.compose.animation.graphics)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.util)
     implementation(libs.compose.material)
     implementation(libs.compose.material.icons.extended)
-    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
-    androidTestImplementation(libs.compose.ui.test.junit4)
     implementation(libs.compose.material3)
 
     // Coil
@@ -143,13 +140,13 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(libs.coil.gif)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.network.cache.control)
 
     // Hilt
     implementation(libs.hilt.work)
     implementation(libs.hilt.android)
-    androidTestImplementation(platform(libs.compose.bom.stable))
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.viewmodel)
@@ -176,7 +173,6 @@ dependencies {
     implementation(libs.paging.runtime.ktx)
     implementation(libs.paging.compose)
     implementation(libs.browser)
-    implementation(libs.navigation.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.core.ktx)
@@ -189,7 +185,6 @@ dependencies {
 
     implementation(libs.navigation3.runtime)
     implementation(libs.navigation3.ui)
-    //    implementation(libs.compose.material3.adaptive.navigation3)
     implementation(libs.lifecycle.viewmodel.navigation3)
     implementation(libs.navigationevent)
     implementation(libs.compose.material3.adaptive.navigation)
@@ -203,8 +198,6 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.junit.jupiter)
     testImplementation(libs.mockito.kotlin)
 }

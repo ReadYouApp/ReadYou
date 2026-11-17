@@ -12,11 +12,13 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import me.ash.reader.R
 import me.ash.reader.infrastructure.preference.OpenLinkPreference
 import me.ash.reader.ui.component.base.FeedbackIconButton
@@ -29,6 +31,7 @@ fun LicenseListPage(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val libraries by produceLibraries(R.raw.aboutlibraries)
 
     RYScaffold(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
@@ -56,6 +59,7 @@ fun LicenseListPage(
         content = {
             Column {
                 LibrariesContainer(
+                    libraries = libraries,
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = WindowInsets(0, 0, 0, 24)
                         .add(WindowInsets.navigationBars)

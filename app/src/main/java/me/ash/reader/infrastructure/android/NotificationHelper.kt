@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.toBitmapOrNull
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.toBitmap
+import coil3.imageLoader
+import coil3.request.ImageRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Random
 import javax.inject.Inject
@@ -58,8 +58,8 @@ constructor(
                     feed.icon?.let { icon ->
                         context.imageLoader
                             .execute(ImageRequest.Builder(context).data(icon).build())
-                            .drawable
-                            ?.toBitmapOrNull()
+                            .image
+                            ?.toBitmap()
                     }
                 }
 
