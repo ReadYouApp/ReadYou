@@ -1,20 +1,28 @@
 name: "Build Commit"
-on: push
+on: [push, pull_request]
 
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3.3.0
-            - uses: actions/setup-java@v3.10.0
+            - uses: actions/checkout@v7
+            - uses: actions/setup-java@v6
               with:
                   distribution: temurin
                   java-version: 17
 
-            - uses: gradle/gradle-build-action@v2.4.2
+            - uses: gradle/gradle-build-action@v3
             - run: ./gradlew assembleGithubRelease
 
-            - uses: actions/upload-artifact@v4
+            - name: Rename APK
+              working-directory: app/build/outputs/apk/github/release
+              env:
+                  PR: ${{ github.event.pull_request.number }}
+              run: |
+                  apk=$(ls *.apk)
+                  mv "$apk" "${apk%-*}-${PR:+pr-$PR-}${{ github.run_number }}.${apk##*-}"
+
+            - uses: actions/upload-artifact@v7
               with:
-                  name: ReadYou-GitHub-Build-${{ github.sha }}
                   path: app/build/outputs/apk/github/release/*.apk
+                  archive: false
