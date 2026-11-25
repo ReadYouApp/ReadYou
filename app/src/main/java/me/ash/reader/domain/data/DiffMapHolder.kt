@@ -1,6 +1,8 @@
 package me.ash.reader.domain.data
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshotFlow
 import com.google.gson.Gson
@@ -13,6 +15,10 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapNotNull
@@ -110,9 +116,17 @@ class DiffMapHolder @Inject constructor(
 
     private fun syncOnChange() {
         remoteJob = applicationScope.launch(ioDispatcher) {
-            pendingSyncDiffsSnapshotFlow.debounce(2_000).collect {
+            val networkAvailable = callbackFlow {
+                val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val callback = object : ConnectivityManager.NetworkCallback() {
+                    override fun onAvailable(network: Network) { trySend(Unit) }
+                }
+                manager.registerDefaultNetworkCallback(callback)
+                awaitClose { manager.unregisterNetworkCallback(callback) }
+            }
+            merge(pendingSyncDiffsSnapshotFlow.map { Unit }, networkAvailable).debounce(2_000).collect {
                 withContext(ioDispatcher) {
-                    syncDiffsWithRemote(it)
+                    syncDiffsWithRemote(pendingSyncDiffs.toMap())
                 }
             }
         }
